@@ -1,0 +1,206 @@
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Play,
+  CheckCircle,
+  Sparkles,
+  Zap,
+  TrendingUp,
+} from "lucide-react";
+
+const Hero = () => {
+  return (
+    <section
+      id="home"
+      className="pt-32 pb-16 md:pt-40 md:pb-24 lg:pt-48 lg:pb-32 relative overflow-hidden"
+    >
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-light/5 via-transparent to-primary-dark/5 dark:from-primary-light/10 dark:via-transparent dark:to-primary-dark/10"></div>
+
+      <motion.div
+        animate={{
+          x: [0, 100, 0],
+          y: [0, -50, 0],
+          rotate: [0, 180, 360],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 bg-primary-light/5 dark:bg-primary-light/10 rounded-full blur-3xl"
+      />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-light/10 to-primary-dark/10 text-primary-dark dark:text-primary-light font-medium mb-6 border border-primary-light/20 dark:border-primary-light/30">
+              <Sparkles className="w-4 h-4 mr-2" />
+              🚀 Premier Digital Agency
+            </div>
+
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 lg:mb-6 leading-tight">
+              Triple S
+              <span className="block bg-gradient-to-r from-primary-light via-primary to-primary-dark bg-clip-text text-transparent">
+                Digital Solutions
+              </span>
+            </h1>
+
+            <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed">
+              We create{" "}
+              <span className="text-primary-dark dark:text-primary-light font-semibold">
+                stunning websites
+              </span>{" "}
+              and
+              <span className="text-primary-dark dark:text-primary-light font-semibold">
+                {" "}
+                powerful POS systems
+              </span>{" "}
+              that help businesses grow, increase sales, and streamline
+              operations.
+            </p>
+
+            <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 mb-8 lg:mb-10">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary flex items-center justify-center group text-base sm:text-lg"
+              >
+                Start Free Consultation
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+
+              <button className="btn-secondary flex items-center justify-center group">
+                <div className="relative">
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform" />
+                  <div className="absolute inset-0 animate-ping opacity-20 bg-primary-dark dark:bg-primary-light rounded-full"></div>
+                </div>
+                Watch Demo
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 dark:border-dark-light">
+              {[
+                {
+                  icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
+                  value: "24h",
+                  label: "Response",
+                },
+                {
+                  icon: <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />,
+                  value: "50+",
+                  label: "Projects",
+                },
+                {
+                  icon: <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />,
+                  value: "40%",
+                  label: "Growth",
+                },
+                {
+                  icon: <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />,
+                  value: "98%",
+                  label: "Satisfaction",
+                },
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-lg mb-2">
+                    <div className="text-primary-dark dark:text-primary-light">
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative mt-8 lg:mt-0"
+          >
+            <div className="relative bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl sm:rounded-3xl p-1 sm:p-2 shadow-2xl">
+              <div className="bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl p-1 sm:p-2 overflow-hidden">
+                <div className="bg-gradient-to-r from-primary-dark to-primary-darker rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="flex items-center space-x-2">
+                    {["bg-red-500", "bg-yellow-500", "bg-green-500"].map(
+                      (color, i) => (
+                        <div
+                          key={i}
+                          className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${color}`}
+                        ></div>
+                      )
+                    )}
+                  </div>
+                  <div className="text-white/90 text-xs sm:text-sm md:text-base">
+                    dashboard.triples.com
+                  </div>
+                </div>
+
+                <div className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="h-20 sm:h-24 lg:h-28 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary-light/10 to-primary/20 dark:from-primary-light/20 dark:to-primary/30 border border-primary-light/20 dark:border-primary-light/30"
+                      >
+                        <div className="p-2 sm:p-3">
+                          <div className="h-3 sm:h-4 bg-primary/30 dark:bg-primary/40 rounded-full mb-2 w-1/2"></div>
+                          <div className="h-6 sm:h-8 bg-gradient-to-r from-primary to-primary-dark dark:from-primary-light dark:to-primary rounded-lg mt-2"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="h-32 sm:h-40 lg:h-48 rounded-lg sm:rounded-xl bg-gradient-to-b from-primary-light/5 to-primary-dark/5 dark:from-primary-light/10 dark:to-primary-dark/10 border border-primary-light/10 dark:border-primary-light/20 p-3 sm:p-4">
+                    <div className="flex items-end justify-between h-20 sm:h-28">
+                      {["M", "T", "W", "T", "F", "S", "S"].map((day) => (
+                        <div
+                          key={day}
+                          className="w-6 sm:w-8 bg-gradient-to-t from-primary to-primary-light rounded-t-lg"
+                        >
+                          <div className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
+                            {day}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <motion.div
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute -top-3 -left-3 xs:-top-4 xs:-left-4 w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 bg-gradient-to-r from-primary-light to-primary rounded-xl sm:rounded-2xl -rotate-12 shadow-xl hidden xs:block"
+            >
+              <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm xs:text-base">
+                POS
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 15, 0] }}
+              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+              className="absolute -bottom-3 -right-3 xs:-bottom-4 xs:-right-4 w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-primary-dark to-primary-darker rounded-xl sm:rounded-2xl rotate-12 shadow-xl hidden xs:block"
+            >
+              <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm xs:text-base">
+                Web
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
