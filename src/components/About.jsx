@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import {
   Target,
@@ -10,6 +9,7 @@ import {
   Heart,
   TrendingUp,
   Lightbulb,
+  MapPin,
 } from "lucide-react";
 
 const About = () => {
@@ -17,25 +17,25 @@ const About = () => {
     {
       name: "Mohand Ashraf",
       role: "Front End Developer",
-      experience: "3 years",
+      experience: "2 years",
       expertise: "Front End",
     },
     {
       name: "Rafaat Ashraf",
       role: "Back End Developer",
-      experience: "3 years",
+      experience: "2 years",
       expertise: "Back End",
     },
     {
       name: "Mina Maged",
       role: "Project Manager",
-      experience: "3 years",
+      experience: "2 years",
       expertise: "Agile & Scrum",
     },
     {
       name: "Ibram Emad",
       role: "AI Developer",
-      experience: "3 years",
+      experience: "2 years",
       expertise: "AI Integration",
     },
   ];
@@ -69,34 +69,24 @@ const About = () => {
 
   const timeline = [
     {
-      year: "2018",
-      event: "Company Founded",
-      description: "Started with a small team of passionate developers",
+      year: "2025",
+      event: "Company Foundation",
+      description: "Triple S Digital Solutions was established in Fayoum",
     },
     {
-      year: "2019",
-      event: "First Major Project",
-      description: "Developed POS system for retail chain",
+      year: "2025",
+      event: "First Major Projects",
+      description: "Successfully delivered El Zawy Group websites",
     },
     {
-      year: "2020",
-      event: "Team Expansion",
-      description: "Grew to 15+ dedicated professionals",
+      year: "2025",
+      event: "Team Formation",
+      description: "Assembled a dedicated team of specialists",
     },
     {
-      year: "2021",
-      event: "International Clients",
-      description: "Started serving clients worldwide",
-    },
-    {
-      year: "2022",
-      event: "Award Recognition",
-      description: "Received Excellence in Innovation award",
-    },
-    {
-      year: "2023",
-      event: "50+ Projects",
-      description: "Milestone of 50 successful projects",
+      year: "2026",
+      event: "Future Goals",
+      description: "Expanding services across Egypt and beyond",
     },
   ];
 
@@ -127,9 +117,9 @@ const About = () => {
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-3xl mx-auto">
-            We are a passionate team of developers and designers dedicated to
-            creating exceptional digital experiences that drive business growth
-            and innovation.
+            We are a professional digital agency based in Fayoum, Egypt,
+            specializing in creating exceptional digital solutions that drive
+            business growth and technological innovation.
           </p>
         </motion.div>
 
@@ -145,22 +135,23 @@ const About = () => {
             </h3>
             <div className="space-y-3 sm:space-y-4 text-gray-600 dark:text-gray-300">
               <p className="text-sm sm:text-base">
-                Founded in 2018, Triple S began with a simple mission: to help
-                businesses thrive in the digital age. What started as a small
-                team of passionate developers has grown into a full-service
-                digital agency specializing in web development and POS systems.
+                Founded in 2025 in Fayoum, Egypt, Triple S Digital Solutions
+                emerged with a clear vision: to revolutionize digital
+                experiences for businesses in the modern era. We began as a
+                dedicated team of technology enthusiasts committed to bridging
+                the gap between innovative ideas and practical implementation.
               </p>
               <p className="text-sm sm:text-base">
-                Over the years, we've helped hundreds of businesses transform
-                their operations, increase efficiency, and drive growth through
-                tailored digital solutions. Our commitment to quality,
-                innovation, and client satisfaction has been the cornerstone of
-                our success.
+                From our inception, we have focused on delivering high-quality
+                web development, e-commerce solutions, and digital
+                transformation services. Our strategic location in Fayoum allows
+                us to combine local insight with global standards of excellence.
               </p>
               <p className="text-sm sm:text-base">
-                Today, we continue to push boundaries, embracing new
-                technologies and methodologies to deliver exceptional value to
-                our clients across various industries.
+                We pride ourselves on understanding the unique challenges faced
+                by businesses in today's competitive landscape. Our approach
+                combines technical expertise with creative thinking to deliver
+                solutions that not only meet but exceed client expectations.
               </p>
             </div>
 
@@ -305,7 +296,7 @@ const About = () => {
                 Our Vision
               </h3>
               <p className="text-white/80 text-sm sm:text-base">
-                To be the leading digital solutions provider in the region,
+                To become the leading digital solutions provider in Egypt,
                 recognized for excellence, innovation, and transformative impact
                 on businesses and communities.
               </p>
@@ -326,21 +317,21 @@ const About = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
             {[
               {
-                icon: <TrendingUp />,
-                value: "50+",
-                label: "Projects Completed",
+                icon: <MapPin />,
+                value: "Fayoum",
+                label: "Based In",
                 color: "text-blue-500",
               },
               {
-                icon: <Users />,
-                value: "30+",
-                label: "Happy Clients",
+                icon: <TrendingUp />,
+                value: "2+",
+                label: "Projects Completed",
                 color: "text-green-500",
               },
               {
-                icon: <Award />,
-                value: "15+",
-                label: "Awards Won",
+                icon: <Users />,
+                value: "4+",
+                label: "Team Members",
                 color: "text-yellow-500",
               },
               {

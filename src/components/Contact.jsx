@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Send,
-  Mail,
   Phone,
   MapPin,
   CheckCircle,
   MessageSquare,
   Clock,
   User,
+  Facebook,
 } from "lucide-react";
 
 const Contact = () => {
@@ -49,25 +49,25 @@ const Contact = () => {
 
   const contactMethods = [
     {
-      icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />,
-      title: "Email Us",
-      details: ["contact@triples.com", "support@triples.com"],
-      action: "mailto:contact@triples.com",
-      color: "from-blue-500 to-blue-600",
-    },
-    {
       icon: <Phone className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: "Call Us",
-      details: ["+20 115 942 4411", "Mon-Fri 9AM-6PM"],
-      action: "tel:+201159424411",
+      details: ["01273188267", "24/7 - Everyday"],
+      action: "tel:01273188267",
       color: "from-green-500 to-green-600",
     },
     {
       icon: <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: "WhatsApp",
-      details: ["Chat Available", "Response in < 5 min"],
-      action: "https://wa.me/201159424411",
+      details: ["01273188267", "Response in < 5 min"],
+      action: "https://wa.me/201273188267",
       color: "from-green-600 to-green-700",
+    },
+    {
+      icon: <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />,
+      title: "Facebook",
+      details: ["Triple S Digital", "Message us anytime"],
+      action: "https://www.facebook.com/profile.php?id=61580352808105",
+      color: "from-blue-500 to-blue-600",
     },
   ];
 
@@ -190,10 +190,10 @@ const Contact = () => {
                     <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
                     <div>
                       <div className="font-bold text-sm sm:text-base">
-                        Response Time
+                        Working Hours
                       </div>
                       <div className="text-sm text-primary-light">
-                        Within 2 hours
+                        24/7 - Everyday
                       </div>
                     </div>
                   </div>
@@ -269,7 +269,7 @@ const Contact = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
                         }
-                        placeholder="+20 115 942 4411"
+                        placeholder="01273188267"
                       />
                     </div>
 
@@ -415,7 +415,7 @@ const Contact = () => {
           <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 sm:py-3">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
             <span className="text-sm sm:text-base">
-              Based in Fayoum, Egypt • Serving clients worldwide since 2018
+              Based in Fayoum, Egypt • Available 24/7 - Everyday
             </span>
           </div>
         </motion.div>

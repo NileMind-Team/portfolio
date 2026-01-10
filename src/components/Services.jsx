@@ -6,7 +6,6 @@ import {
   CreditCard,
   Zap,
   Shield,
-  Clock,
   Cpu,
   BarChart,
   Settings,
@@ -26,9 +25,7 @@ const Services = () => {
         "Fast Loading",
         "CMS Integration",
       ],
-      time: "2-4 Weeks",
       color: "from-blue-500 to-blue-700",
-      price: "Starting from $1,000",
     },
     {
       icon: <Smartphone className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -41,9 +38,7 @@ const Services = () => {
         "Sales Reports",
         "Multi-branch",
       ],
-      time: "3-6 Weeks",
       color: "from-green-500 to-green-700",
-      price: "Starting from $1,500",
     },
     {
       icon: <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -56,9 +51,7 @@ const Services = () => {
         "Customer Portal",
         "Shipping API",
       ],
-      time: "4-8 Weeks",
       color: "from-purple-500 to-purple-700",
-      price: "Starting from $2,000",
     },
     {
       icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -70,9 +63,7 @@ const Services = () => {
         "Cloud Hosting",
         "Scalable",
       ],
-      time: "6-12 Weeks",
       color: "from-orange-500 to-orange-700",
-      price: "Custom Quote",
     },
   ];
 
@@ -153,7 +144,7 @@ const Services = () => {
                   {service.description}
                 </p>
 
-                <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+                <ul className="space-y-2 sm:space-y-3">
                   {service.features.map((feature, i) => (
                     <li
                       key={i}
@@ -164,21 +155,6 @@ const Services = () => {
                     </li>
                   ))}
                 </ul>
-
-                <div className="pt-4 sm:pt-6 border-t border-gray-100 dark:border-dark-light">
-                  <div className="flex items-center justify-between mb-2 sm:mb-3">
-                    <div className="flex items-center text-gray-500 dark:text-gray-400">
-                      <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                      <span className="text-xs sm:text-sm">{service.time}</span>
-                    </div>
-                    <div className="text-primary-dark dark:text-primary-light font-bold text-sm sm:text-base">
-                      {service.price}
-                    </div>
-                  </div>
-                  <button className="w-full py-2 bg-gray-50 dark:bg-dark-light hover:bg-gray-100 dark:hover:bg-dark-lighter text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors text-sm">
-                    Get Quote
-                  </button>
-                </div>
               </div>
             </motion.div>
           ))}
@@ -213,30 +189,6 @@ const Services = () => {
                 </p>
               </div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-primary-darker to-primary-dark rounded-xl lg:rounded-3xl p-6 sm:p-8 lg:p-12 text-white text-center"
-        >
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
-            Need a Custom Solution?
-          </h3>
-          <p className="text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base">
-            We specialize in creating tailored solutions for unique business
-            requirements. Let's discuss your specific needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <button className="bg-white text-primary-dark px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base">
-              Schedule Consultation
-            </button>
-            <button className="border-2 border-white text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors text-sm sm:text-base">
-              View Case Studies
-            </button>
           </div>
         </motion.div>
       </div>

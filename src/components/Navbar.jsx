@@ -12,7 +12,7 @@ const Navbar = () => {
     { label: "Home", href: "#home" },
     { label: "Services", href: "#services" },
     { label: "Portfolio", href: "#portfolio" },
-    { label: "Testimonials", href: "#testimonials" },
+    // { label: "Testimonials", href: "#testimonials" },
     { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" },
   ];
@@ -110,13 +110,6 @@ const Navbar = () => {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-primary"
-            >
-              Get Started
-            </motion.button>
           </div>
 
           {/* Mobile menu button */}

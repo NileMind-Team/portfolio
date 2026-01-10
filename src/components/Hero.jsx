@@ -1,19 +1,11 @@
-import React from "react";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Play,
-  CheckCircle,
-  Sparkles,
-  Zap,
-  TrendingUp,
-} from "lucide-react";
+import { Zap, CheckCircle, TrendingUp, Sparkles } from "lucide-react";
 
 const Hero = () => {
   return (
     <section
       id="home"
-      className="pt-32 pb-16 md:pt-40 md:pb-24 lg:pt-48 lg:pb-32 relative overflow-hidden"
+      className="pt-28 pb-16 md:pt-36 md:pb-24 lg:pt-44 lg:pb-32 relative overflow-hidden"
     >
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-light/5 via-transparent to-primary-dark/5 dark:from-primary-light/10 dark:via-transparent dark:to-primary-dark/10"></div>
@@ -35,19 +27,19 @@ const Hero = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-light/10 to-primary-dark/10 text-primary-dark dark:text-primary-light font-medium mb-6 border border-primary-light/20 dark:border-primary-light/30">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-light/10 to-primary-dark/10 text-primary-dark dark:text-primary-light font-medium mb-4 border border-primary-light/20 dark:border-primary-light/30">
               <Sparkles className="w-4 h-4 mr-2" />
               🚀 Premier Digital Agency
             </div>
 
-            <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 lg:mb-6 leading-tight">
+            <h1 className="text-4xl xs:text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 lg:mb-6 leading-tight">
               Triple S
-              <span className="block bg-gradient-to-r from-primary-light via-primary to-primary-dark bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-primary-light via-primary to-primary-dark bg-clip-text text-transparent mt-2">
                 Digital Solutions
               </span>
             </h1>
 
-            <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-300 text-lg sm:text-xl lg:text-2xl mb-8 lg:mb-12 max-w-xl leading-relaxed">
               We create{" "}
               <span className="text-primary-dark dark:text-primary-light font-semibold">
                 stunning websites
@@ -61,25 +53,6 @@ const Hero = () => {
               operations.
             </p>
 
-            <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 mb-8 lg:mb-10">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary flex items-center justify-center group text-base sm:text-lg"
-              >
-                Start Free Consultation
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-
-              <button className="btn-secondary flex items-center justify-center group">
-                <div className="relative">
-                  <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform" />
-                  <div className="absolute inset-0 animate-ping opacity-20 bg-primary-dark dark:bg-primary-light rounded-full"></div>
-                </div>
-                Watch Demo
-              </button>
-            </div>
-
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 dark:border-dark-light">
               {[
                 {
@@ -89,12 +62,12 @@ const Hero = () => {
                 },
                 {
                   icon: <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "50+",
+                  value: "2+",
                   label: "Projects",
                 },
                 {
                   icon: <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "40%",
+                  value: "100%",
                   label: "Growth",
                 },
                 {
