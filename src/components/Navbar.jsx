@@ -1,28 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// استيراد اللوجو من assets
 import logo from "../assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-  const [activeDropdown, setActiveDropdown] = useState(null);
 
   const navItems = [
     { label: "Home", href: "#home" },
-    {
-      label: "Services",
-      href: "#services",
-      submenu: [
-        { label: "Website Development", href: "#services" },
-        { label: "POS Systems", href: "#services" },
-        { label: "E-commerce Solutions", href: "#services" },
-        { label: "Custom Software", href: "#services" },
-      ],
-    },
+    { label: "Services", href: "#services" },
     { label: "Portfolio", href: "#portfolio" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "About", href: "#about" },
@@ -104,37 +92,13 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navItems.map((item) => (
-              <div key={item.label} className="relative group">
+              <div key={item.label} className="relative">
                 <a
                   href={item.href}
-                  className="flex items-center text-gray-600 hover:text-primary-dark font-medium transition-colors py-2 dark:text-gray-300 dark:hover:text-primary-light"
-                  onMouseEnter={() =>
-                    item.submenu && setActiveDropdown(item.label)
-                  }
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  className="text-gray-600 hover:text-primary-dark font-medium transition-colors py-2 dark:text-gray-300 dark:hover:text-primary-light"
                 >
                   {item.label}
-                  {item.submenu && <ChevronDown className="ml-1 w-4 h-4" />}
                 </a>
-
-                {/* Submenu Dropdown */}
-                {item.submenu && activeDropdown === item.label && (
-                  <div
-                    className="absolute left-0 top-full mt-2 w-48 bg-white dark:bg-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-dark-light"
-                    onMouseEnter={() => setActiveDropdown(item.label)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    {item.submenu.map((subItem) => (
-                      <a
-                        key={subItem.label}
-                        href={subItem.href}
-                        className="block px-4 py-3 text-gray-600 hover:text-primary-dark hover:bg-gray-50 dark:text-gray-300 dark:hover:text-primary-light dark:hover:bg-dark-light first:rounded-t-xl last:rounded-b-xl transition-colors"
-                      >
-                        {subItem.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
 
@@ -185,29 +149,14 @@ const Navbar = () => {
             >
               <div className="pt-4 pb-6 border-t border-gray-100 dark:border-dark-light">
                 {navItems.map((item) => (
-                  <div key={item.label}>
-                    <a
-                      href={item.href}
-                      className="block py-3 text-gray-600 hover:text-primary-dark font-medium dark:text-gray-300 dark:hover:text-primary-light"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.label}
-                    </a>
-                    {item.submenu && (
-                      <div className="ml-4 space-y-2">
-                        {item.submenu.map((subItem) => (
-                          <a
-                            key={subItem.label}
-                            href={subItem.href}
-                            className="block py-2 text-gray-500 hover:text-primary-dark dark:text-gray-400 dark:hover:text-primary-light"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            • {subItem.label}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="block py-3 text-gray-600 hover:text-primary-dark font-medium dark:text-gray-300 dark:hover:text-primary-light"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </a>
                 ))}
                 <div className="pt-4">
                   <button

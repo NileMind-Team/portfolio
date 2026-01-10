@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import Clients from "./components/Clients";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import Testimonials from "./components/Testimonials";
@@ -16,7 +15,7 @@ function App() {
 
       <main>
         <Hero />
-        <Clients />
+        {/* <Clients /> */}
         <Services />
         <Portfolio />
         <Testimonials />

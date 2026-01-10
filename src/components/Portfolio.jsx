@@ -1,15 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ExternalLink,
-  ShoppingCart,
-  Store,
-  Coffee,
-  Building,
-  Smartphone,
-  Users,
-  ChevronRight,
-} from "lucide-react";
+import { ExternalLink, ChevronRight } from "lucide-react";
+import logo from "../assets/logo1.png";
+import logo1 from "../assets/logo2.png";
 
 const Portfolio = () => {
   const [filter, setFilter] = useState("all");
@@ -18,74 +11,32 @@ const Portfolio = () => {
     {
       id: 1,
       category: "website",
-      title: "Bakery Online Store",
-      description: "Full e-commerce website with inventory management system",
-      icon: <Coffee />,
-      color: "from-orange-400 to-orange-600",
-      tags: ["E-commerce", "Inventory", "Payment"],
-      results: ["+200% online sales", "40% time saved", "Happy customers"],
-      client: "Sweet Delights Bakery",
-      duration: "4 weeks",
+      title: "Chicken One - ElZawy",
+      description:
+        "Modern corporate website with responsive design and smooth user experience",
+      logo: logo,
+      color: "from-[#F39101] to-[#FFA726]",
+      tags: ["Corporate", "Responsive", "Modern"],
+      results: ["Professional presence", "Mobile optimized", "User friendly"],
+      client: "El Zawy Group",
+      duration: "3 weeks",
+      link: "https://new-el-zawy.vercel.app/",
+      live: true,
     },
     {
       id: 2,
-      category: "pos",
-      title: "Retail POS System",
-      description: "Complete cashier system for retail stores with analytics",
-      icon: <ShoppingCart />,
-      color: "from-green-400 to-green-600",
-      tags: ["POS", "Analytics", "Multi-store"],
-      results: ["30% faster checkout", "Real-time reports", "Inventory sync"],
-      client: "Urban Retail Chain",
-      duration: "6 weeks",
-    },
-    {
-      id: 3,
       category: "website",
-      title: "Corporate Website",
-      description: "Business website with admin dashboard and blog",
-      icon: <Building />,
-      color: "from-blue-400 to-blue-600",
-      tags: ["Corporate", "CMS", "Responsive"],
-      results: ["+300% leads", "Mobile optimized", "SEO friendly"],
-      client: "Tech Solutions Inc.",
-      duration: "3 weeks",
-    },
-    {
-      id: 4,
-      category: "pos",
-      title: "Restaurant Management",
-      description: "POS system with table management and kitchen display",
-      icon: <Store />,
-      color: "from-red-400 to-red-600",
-      tags: ["Restaurant", "KDS", "Delivery"],
-      results: ["25% order accuracy", "Faster service", "Happy staff"],
-      client: "Mediterranean Bistro",
-      duration: "8 weeks",
-    },
-    {
-      id: 5,
-      category: "website",
-      title: "Mobile App UI",
-      description: "Modern mobile application interface design",
-      icon: <Smartphone />,
-      color: "from-purple-400 to-purple-600",
-      tags: ["Mobile App", "UI/UX", "Prototype"],
-      results: ["4.8 App Store rating", "Smooth UX", "High retention"],
-      client: "Fitness Mobile App",
+      title: "New - ElZawy",
+      description:
+        "Complete e-commerce platform with product management and shopping cart",
+      logo: logo1,
+      color: "from-[#D10003] to-[#FF5252]",
+      tags: ["E-commerce", "Shopping", "Products"],
+      results: ["Online sales", "Product catalog", "Secure checkout"],
+      client: "El Zawy Stores",
       duration: "5 weeks",
-    },
-    {
-      id: 6,
-      category: "custom",
-      title: "CRM System",
-      description: "Custom customer relationship management software",
-      icon: <Users />,
-      color: "from-cyan-400 to-cyan-600",
-      tags: ["CRM", "Custom", "Automation"],
-      results: ["50% efficiency gain", "Better tracking", "Happy team"],
-      client: "SalesForce Pro",
-      duration: "12 weeks",
+      link: "https://el-zawy.vercel.app/",
+      live: true,
     },
   ];
 
@@ -119,10 +70,19 @@ const Portfolio = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary-light/10 dark:bg-primary-light/20 mb-6">
-            <Building
+            <svg
               className="text-primary-dark dark:text-primary-light"
-              size={28}
-            />
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8" />
+              <path d="M12 17v4" />
+            </svg>
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
@@ -190,11 +150,24 @@ const Portfolio = () => {
                     className={`h-40 sm:h-48 lg:h-56 bg-gradient-to-r ${project.color} relative overflow-hidden`}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        {React.cloneElement(project.icon, {
-                          size: 32,
-                          className: "text-white",
-                        })}
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                        <img
+                          src={project.logo}
+                          alt={`${project.title} Logo`}
+                          className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-lg"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.style.display = "none";
+                            const parent = e.target.parentElement;
+                            parent.innerHTML = `
+                              <div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
+                                <span class="text-white font-bold text-lg">${project.title.charAt(
+                                  0
+                                )}</span>
+                              </div>
+                            `;
+                          }}
+                        />
                       </div>
                     </div>
 
@@ -219,6 +192,13 @@ const Portfolio = () => {
                     <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full">
                       {project.duration}
                     </div>
+
+                    {/* Live Badge */}
+                    {project.live && (
+                      <div className="absolute top-3 right-3 px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full animate-pulse">
+                        Live
+                      </div>
+                    )}
                   </div>
 
                   {/* Project Content */}
@@ -234,7 +214,7 @@ const Portfolio = () => {
                     <div className="mb-4 sm:mb-6">
                       <h4 className="font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center text-sm sm:text-base">
                         <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 mr-1 text-primary-light" />
-                        Results Achieved:
+                        Key Features:
                       </h4>
                       <ul className="space-y-1 sm:space-y-2">
                         {project.results.map((result, i) => (
@@ -250,10 +230,15 @@ const Portfolio = () => {
                     </div>
 
                     <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 dark:border-dark-light">
-                      <span className="text-primary-dark dark:text-primary-light font-semibold flex items-center group-hover:text-primary-darker dark:group-hover:text-primary text-sm sm:text-base">
-                        View Case Study
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary-dark dark:text-primary-light font-semibold flex items-center group-hover:text-primary-darker dark:group-hover:text-primary text-sm sm:text-base hover:underline"
+                      >
+                        Visit Website
                         <ExternalLink className="ml-2" size={16} />
-                      </span>
+                      </a>
                       <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                         {project.category}
                       </span>
@@ -274,9 +259,9 @@ const Portfolio = () => {
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
             {[
-              { value: "50+", label: "Completed Projects" },
-              { value: "30+", label: "Happy Clients" },
-              { value: "15+", label: "Industries Served" },
+              { value: projects.length, label: "Completed Projects" },
+              { value: "2+", label: "Happy Clients" },
+              { value: "2+", label: "Industries Served" },
               { value: "100%", label: "Client Satisfaction" },
             ].map((stat, index) => (
               <div key={index} className="p-3 sm:p-4">
@@ -292,7 +277,7 @@ const Portfolio = () => {
         </motion.div>
 
         {/* Call to Action */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -315,7 +300,7 @@ const Portfolio = () => {
               </button>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
