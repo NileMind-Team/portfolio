@@ -20,7 +20,7 @@ const Portfolio = () => {
       results: ["Professional presence", "Mobile optimized", "User friendly"],
       client: "El Zawy Group",
       duration: "3 weeks",
-      link: "https://new-el-zawy.vercel.app/",
+      link: "https://chicken-one.com/",
       live: true,
     },
     {
@@ -35,7 +35,7 @@ const Portfolio = () => {
       results: ["Online sales", "Product catalog", "Secure checkout"],
       client: "El Zawy Stores",
       duration: "5 weeks",
-      link: "https://el-zawy.vercel.app/",
+      link: "https://elzawy-new.com/",
       live: true,
     },
   ];
@@ -162,7 +162,7 @@ const Portfolio = () => {
                             parent.innerHTML = `
                               <div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
                                 <span class="text-white font-bold text-lg">${project.title.charAt(
-                                  0
+                                  0,
                                 )}</span>
                               </div>
                             `;
