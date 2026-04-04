@@ -8,8 +8,6 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
-
-// استيراد اللوجو من assets
 import logo from "../assets/logo.png";
 
 const Footer = () => {
