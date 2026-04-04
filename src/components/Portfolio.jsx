@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
 import logo1 from "../assets/logo2.png";
+import logo3 from "../assets/logo3.png";
+import logo4 from "../assets/logo4.png";
+import heroImage from "../assets/hero.jpeg";
 
 const Portfolio = () => {
   const [filter, setFilter] = useState("all");
@@ -36,6 +39,66 @@ const Portfolio = () => {
       client: "El Zawy Stores",
       duration: "5 weeks",
       link: "https://elzawy-new.com/",
+      live: true,
+    },
+    {
+      id: 3,
+      category: "pos",
+      title: "Cashier POS System",
+      description:
+        "Modern Point of Sale system with intuitive interface and real-time inventory management",
+      logo: heroImage,
+      color: "from-[#00ACC1] to-[#26C6DA]",
+      tags: ["POS", "Inventory", "Real-time"],
+      results: [
+        "Fast checkout process",
+        "Inventory tracking",
+        "Sales analytics",
+        "User-friendly interface",
+      ],
+      client: "Cashier Tech",
+      duration: "4 weeks",
+      link: "https://cashier-vert.vercel.app/",
+      live: true,
+    },
+    {
+      id: 4,
+      category: "custom",
+      title: "Aruqah - Real Estate Solutions",
+      description:
+        "Innovative real estate platform with advanced property management and analytics",
+      logo: logo4,
+      color: "from-[#2E7D32] to-[#4CAF50]",
+      tags: ["Real Estate", "Analytics", "Property Management"],
+      results: [
+        "Property listings",
+        "Market analytics",
+        "Client management",
+        "Smart search",
+      ],
+      client: "Aruqah",
+      duration: "6 weeks",
+      link: "https://aruqah.vercel.app/",
+      live: true,
+    },
+    {
+      id: 5,
+      category: "custom",
+      title: "Cosmetics Store",
+      description:
+        "Elegant cosmetics e-commerce platform with product showcase and online ordering",
+      logo: logo3,
+      color: "from-[#C2185B] to-[#E91E63]",
+      tags: ["E-commerce", "Cosmetics", "Online Store"],
+      results: [
+        "Product catalog",
+        "Shopping cart",
+        "Secure payments",
+        "Mobile responsive",
+      ],
+      client: "Cosmetics Brand",
+      duration: "5 weeks",
+      link: "https://cosmetics-flame-three.vercel.app/",
       live: true,
     },
   ];
@@ -150,25 +213,47 @@ const Portfolio = () => {
                     className={`h-40 sm:h-48 lg:h-56 bg-gradient-to-r ${project.color} relative overflow-hidden`}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                        <img
-                          src={project.logo}
-                          alt={`${project.title} Logo`}
-                          className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-lg"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.style.display = "none";
-                            const parent = e.target.parentElement;
-                            parent.innerHTML = `
-                              <div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
-                                <span class="text-white font-bold text-lg">${project.title.charAt(
-                                  0,
-                                )}</span>
-                              </div>
-                            `;
-                          }}
-                        />
-                      </div>
+                      {project.id === 3 ? (
+                        <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-300">
+                          <img
+                            src={project.logo}
+                            alt={`${project.title} Logo`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.style.display = "none";
+                              const parent = e.target.parentElement;
+                              parent.innerHTML = `
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
+                                  <span class="text-white font-bold text-lg">${project.title.charAt(
+                                    0,
+                                  )}</span>
+                                </div>
+                              `;
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                          <img
+                            src={project.logo}
+                            alt={`${project.title} Logo`}
+                            className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-lg"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.style.display = "none";
+                              const parent = e.target.parentElement;
+                              parent.innerHTML = `
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
+                                  <span class="text-white font-bold text-lg">${project.title.charAt(
+                                    0,
+                                  )}</span>
+                                </div>
+                              `;
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {/* Tags */}
@@ -260,8 +345,8 @@ const Portfolio = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
             {[
               { value: projects.length, label: "Completed Projects" },
-              { value: "2+", label: "Happy Clients" },
-              { value: "2+", label: "Industries Served" },
+              { value: "5+", label: "Happy Clients" },
+              { value: "3+", label: "Industries Served" },
               { value: "100%", label: "Client Satisfaction" },
             ].map((stat, index) => (
               <div key={index} className="p-3 sm:p-4">
@@ -275,32 +360,6 @@ const Portfolio = () => {
             ))}
           </div>
         </motion.div>
-
-        {/* Call to Action */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <div className="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-dark-light max-w-3xl mx-auto">
-            <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-              Ready to Start Your Project?
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
-              Let's discuss how we can create a similar success story for your
-              business
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <button className="btn-primary text-sm sm:text-base">
-                Schedule Free Consultation
-              </button>
-              <button className="btn-secondary text-sm sm:text-base">
-                Download Portfolio PDF
-              </button>
-            </div>
-          </div>
-        </motion.div> */}
       </div>
     </section>
   );

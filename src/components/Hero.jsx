@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Zap, CheckCircle, TrendingUp, Sparkles } from "lucide-react";
+import heroImage from "../assets/hero.jpeg";
 
 const Hero = () => {
   return (
@@ -109,7 +110,7 @@ const Hero = () => {
                           key={i}
                           className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${color}`}
                         ></div>
-                      )
+                      ),
                     )}
                   </div>
                   <div className="text-white/90 text-xs sm:text-sm md:text-base">
@@ -117,35 +118,13 @@ const Hero = () => {
                   </div>
                 </div>
 
+                {/* Hero Image Section */}
                 <div className="p-4 sm:p-6">
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="h-20 sm:h-24 lg:h-28 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary-light/10 to-primary/20 dark:from-primary-light/20 dark:to-primary/30 border border-primary-light/20 dark:border-primary-light/30"
-                      >
-                        <div className="p-2 sm:p-3">
-                          <div className="h-3 sm:h-4 bg-primary/30 dark:bg-primary/40 rounded-full mb-2 w-1/2"></div>
-                          <div className="h-6 sm:h-8 bg-gradient-to-r from-primary to-primary-dark dark:from-primary-light dark:to-primary rounded-lg mt-2"></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="h-32 sm:h-40 lg:h-48 rounded-lg sm:rounded-xl bg-gradient-to-b from-primary-light/5 to-primary-dark/5 dark:from-primary-light/10 dark:to-primary-dark/10 border border-primary-light/10 dark:border-primary-light/20 p-3 sm:p-4">
-                    <div className="flex items-end justify-between h-20 sm:h-28">
-                      {["M", "T", "W", "T", "F", "S", "S"].map((day) => (
-                        <div
-                          key={day}
-                          className="w-6 sm:w-8 bg-gradient-to-t from-primary to-primary-light rounded-t-lg"
-                        >
-                          <div className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
-                            {day}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <img
+                    src={heroImage}
+                    alt="Triple S Digital Solutions Dashboard"
+                    className="w-full h-auto rounded-lg sm:rounded-xl object-cover"
+                  />
                 </div>
               </div>
             </div>
