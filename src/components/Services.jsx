@@ -12,83 +12,175 @@ import {
   Headphones,
 } from "lucide-react";
 
-const Services = () => {
-  const services = [
-    {
-      icon: <Globe className="w-6 h-6 sm:w-8 sm:h-8" />,
-      title: "Website Development",
-      description:
-        "Professional responsive websites with modern design and SEO optimization.",
-      features: [
-        "Mobile-First Design",
-        "SEO Optimized",
-        "Fast Loading",
-        "CMS Integration",
+const Services = ({ lang }) => {
+  const content = {
+    en: {
+      badge: "Our Expert Services",
+      title: "Our",
+      titleHighlight: "Expert Services",
+      subtitle:
+        "Comprehensive digital solutions designed to meet your business needs and drive growth",
+      services: [
+        {
+          title: "Website Development",
+          description:
+            "Professional responsive websites with modern design and SEO optimization.",
+          features: [
+            "Mobile-First Design",
+            "SEO Optimized",
+            "Fast Loading",
+            "CMS Integration",
+          ],
+          icon: <Globe className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-blue-500 to-blue-700",
+        },
+        {
+          title: "POS Systems",
+          description:
+            "Advanced cashier systems with inventory management and sales analytics.",
+          features: [
+            "Real-time Sync",
+            "Inventory Tracking",
+            "Sales Reports",
+            "Multi-branch",
+          ],
+          icon: <Smartphone className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-green-500 to-green-700",
+        },
+        {
+          title: "E-commerce Solutions",
+          description:
+            "Complete online stores with payment integration and order management.",
+          features: [
+            "Payment Gateways",
+            "Order Management",
+            "Customer Portal",
+            "Shipping API",
+          ],
+          icon: <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-purple-500 to-purple-700",
+        },
+        {
+          title: "Custom Software",
+          description:
+            "Tailored business solutions to automate your operations.",
+          features: [
+            "Custom Workflows",
+            "API Integration",
+            "Cloud Hosting",
+            "Scalable",
+          ],
+          icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-orange-500 to-orange-700",
+        },
       ],
-      color: "from-blue-500 to-blue-700",
-    },
-    {
-      icon: <Smartphone className="w-6 h-6 sm:w-8 sm:h-8" />,
-      title: "POS Systems",
-      description:
-        "Advanced cashier systems with inventory management and sales analytics.",
-      features: [
-        "Real-time Sync",
-        "Inventory Tracking",
-        "Sales Reports",
-        "Multi-branch",
+      additionalTitle: "Additional Services",
+      additional: [
+        {
+          icon: <Settings />,
+          title: "Maintenance & Support",
+          description: "Ongoing support and updates",
+        },
+        {
+          icon: <Shield />,
+          title: "Security Audit",
+          description: "Comprehensive security assessment",
+        },
+        {
+          icon: <BarChart />,
+          title: "Performance Optimization",
+          description: "Speed and efficiency improvements",
+        },
+        {
+          icon: <Headphones />,
+          title: "24/7 Technical Support",
+          description: "Round-the-clock assistance",
+        },
       ],
-      color: "from-green-500 to-green-700",
     },
-    {
-      icon: <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />,
-      title: "E-commerce Solutions",
-      description:
-        "Complete online stores with payment integration and order management.",
-      features: [
-        "Payment Gateways",
-        "Order Management",
-        "Customer Portal",
-        "Shipping API",
+    ar: {
+      badge: "خدماتنا الخبيرة",
+      title: "خدماتنا",
+      titleHighlight: "الخبيرة",
+      subtitle: "حلول رقمية شاملة مصممة لتلبية احتياجات عملك ودفع النمو",
+      services: [
+        {
+          title: "تطوير المواقع",
+          description:
+            "مواقع ويب احترافية متجاوبة مع تصميم حديث وتحسين محركات البحث.",
+          features: [
+            "تصميم متجاوب",
+            "تحسين محركات البحث",
+            "تحميل سريع",
+            "نظام إدارة محتوى",
+          ],
+          icon: <Globe className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-blue-500 to-blue-700",
+        },
+        {
+          title: "أنظمة نقاط البيع",
+          description: "أنظمة كاشير متقدمة مع إدارة المخزون وتحليلات المبيعات.",
+          features: [
+            "مزامنة فورية",
+            "تتبع المخزون",
+            "تقارير المبيعات",
+            "فروع متعددة",
+          ],
+          icon: <Smartphone className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-green-500 to-green-700",
+        },
+        {
+          title: "حلول التجارة الإلكترونية",
+          description: "متاجر إلكترونية متكاملة مع بوابات دفع وإدارة الطلبات.",
+          features: [
+            "بوابات دفع",
+            "إدارة الطلبات",
+            "بوابة العملاء",
+            "واجهة برمجة التطبيقات",
+          ],
+          icon: <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-purple-500 to-purple-700",
+        },
+        {
+          title: "برمجيات مخصصة",
+          description: "حلول أعمال مخصصة لأتمتة عملياتك.",
+          features: [
+            "سير عمل مخصص",
+            "تكامل API",
+            "استضافة سحابية",
+            "قابل للتوسع",
+          ],
+          icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
+          color: "from-orange-500 to-orange-700",
+        },
       ],
-      color: "from-purple-500 to-purple-700",
-    },
-    {
-      icon: <Zap className="w-6 h-6 sm:w-8 sm:h-8" />,
-      title: "Custom Software",
-      description: "Tailored business solutions to automate your operations.",
-      features: [
-        "Custom Workflows",
-        "API Integration",
-        "Cloud Hosting",
-        "Scalable",
+      additionalTitle: "خدمات إضافية",
+      additional: [
+        {
+          icon: <Settings />,
+          title: "الصيانة والدعم",
+          description: "دعم وتحديثات مستمرة",
+        },
+        {
+          icon: <Shield />,
+          title: "تدقيق أمني",
+          description: "تقييم أمني شامل",
+        },
+        {
+          icon: <BarChart />,
+          title: "تحسين الأداء",
+          description: "تحسينات السرعة والكفاءة",
+        },
+        {
+          icon: <Headphones />,
+          title: "دعم فني 24/7",
+          description: "مساعدة على مدار الساعة",
+        },
       ],
-      color: "from-orange-500 to-orange-700",
     },
-  ];
+  };
 
-  const additionalServices = [
-    {
-      icon: <Settings />,
-      title: "Maintenance & Support",
-      description: "Ongoing support and updates",
-    },
-    {
-      icon: <Shield />,
-      title: "Security Audit",
-      description: "Comprehensive security assessment",
-    },
-    {
-      icon: <BarChart />,
-      title: "Performance Optimization",
-      description: "Speed and efficiency improvements",
-    },
-    {
-      icon: <Headphones />,
-      title: "24/7 Technical Support",
-      description: "Round-the-clock assistance",
-    },
-  ];
+  const t = content[lang];
 
   return (
     <section id="services" className="py-16 lg:py-20 bg-white dark:bg-dark">
@@ -107,20 +199,19 @@ const Services = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
-            Our{" "}
+            {t.title}{" "}
             <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-              Expert Services
+              {t.titleHighlight}
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-3xl mx-auto">
-            Comprehensive digital solutions designed to meet your business needs
-            and drive growth
+            {t.subtitle}
           </p>
         </motion.div>
 
         {/* Main Services */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 lg:mb-16">
-          {services.map((service, index) => (
+          {t.services.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -168,10 +259,10 @@ const Services = () => {
           className="mb-12 lg:mb-16"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 lg:mb-8">
-            Additional Services
+            {t.additionalTitle}
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {additionalServices.map((service, index) => (
+            {t.additional.map((service, index) => (
               <div
                 key={index}
                 className="bg-gradient-to-br from-gray-50 to-white dark:from-dark-light dark:to-dark-card rounded-xl p-4 sm:p-6 border border-gray-100 dark:border-dark-light"

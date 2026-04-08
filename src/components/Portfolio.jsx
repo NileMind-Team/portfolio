@@ -3,24 +3,73 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
 import logo1 from "../assets/logo2.png";
-import logo3 from "../assets/logo3.png";
-import logo4 from "../assets/logo4.png";
+import logo2 from "../assets/logo3.png";
+import logo3 from "../assets/logo4.png";
 import heroImage from "../assets/hero.jpeg";
 
-const Portfolio = () => {
+const Portfolio = ({ lang }) => {
   const [filter, setFilter] = useState("all");
+
+  const content = {
+    en: {
+      title: "Our",
+      titleHighlight: "Portfolio",
+      subtitle:
+        "Showcasing successful projects that transformed businesses across various industries",
+      categories: {
+        all: "All Projects",
+        website: "Websites",
+        pos: "POS Systems",
+        custom: "Custom Software",
+      },
+      visit: "Visit Website",
+      stats: [
+        { value: "5", label: "Completed Projects" },
+        { value: "5+", label: "Happy Clients" },
+        { value: "3+", label: "Industries Served" },
+        { value: "100%", label: "Client Satisfaction" },
+      ],
+      keyFeatures: "Key Features:",
+    },
+    ar: {
+      title: "أعمالنا",
+      titleHighlight: "المميزة",
+      subtitle: "نعرض مشاريع ناجحة غيرت أعمال عبر مختلف الصناعات",
+      categories: {
+        all: "كل المشاريع",
+        website: "مواقع",
+        pos: "نقاط بيع",
+        custom: "برمجيات مخصصة",
+      },
+      visit: "زيارة الموقع",
+      stats: [
+        { value: "٥", label: "مشروع مكتمل" },
+        { value: "٥+", label: "عميل سعيد" },
+        { value: "٣+", label: "صناعة خدمنا" },
+        { value: "١٠٠٪", label: "رضا العملاء" },
+      ],
+      keyFeatures: "الميزات الرئيسية:",
+    },
+  };
+
+  const t = content[lang];
+  const isRTL = lang === "ar";
 
   const projects = [
     {
       id: 1,
       category: "website",
-      title: "Chicken One - ElZawy",
-      description:
+      titleEn: "Chicken One - ElZawy",
+      titleAr: "تشيكن ون - الزعوي",
+      descriptionEn:
         "Modern corporate website with responsive design and smooth user experience",
+      descriptionAr: "موقع شركة عصري بتصميم متجاوب وتجربة مستخدم سلسة",
       logo: logo,
       color: "from-[#F39101] to-[#FFA726]",
-      tags: ["Corporate", "Responsive", "Modern"],
-      results: ["Professional presence", "Mobile optimized", "User friendly"],
+      tagsEn: ["Corporate", "Responsive", "Modern"],
+      tagsAr: ["شركات", "متجاوب", "حديث"],
+      resultsEn: ["Professional presence", "Mobile optimized", "User friendly"],
+      resultsAr: ["حضور احترافي", "محسن للجوال", "سهل الاستخدام"],
       client: "El Zawy Group",
       duration: "3 weeks",
       link: "https://chicken-one.com/",
@@ -29,13 +78,18 @@ const Portfolio = () => {
     {
       id: 2,
       category: "website",
-      title: "New - ElZawy",
-      description:
+      titleEn: "New - ElZawy",
+      titleAr: "نيو - الزعوي",
+      descriptionEn:
         "Complete e-commerce platform with product management and shopping cart",
+      descriptionAr:
+        "منصة تجارة إلكترونية متكاملة مع إدارة المنتجات وسلة التسوق",
       logo: logo1,
       color: "from-[#D10003] to-[#FF5252]",
-      tags: ["E-commerce", "Shopping", "Products"],
-      results: ["Online sales", "Product catalog", "Secure checkout"],
+      tagsEn: ["E-commerce", "Shopping", "Products"],
+      tagsAr: ["تجارة إلكترونية", "تسوق", "منتجات"],
+      resultsEn: ["Online sales", "Product catalog", "Secure checkout"],
+      resultsAr: ["مبيعات عبر الإنترنت", "كتالوج منتجات", "دفع آمن"],
       client: "El Zawy Stores",
       duration: "5 weeks",
       link: "https://elzawy-new.com/",
@@ -44,17 +98,26 @@ const Portfolio = () => {
     {
       id: 3,
       category: "pos",
-      title: "Cashier POS System",
-      description:
+      titleEn: "Cashier POS System",
+      titleAr: "نظام كاشير نقاط البيع",
+      descriptionEn:
         "Modern Point of Sale system with intuitive interface and real-time inventory management",
+      descriptionAr: "نظام نقاط بيع حديث بواجهة بديهية وإدارة مخزون فورية",
       logo: heroImage,
       color: "from-[#00ACC1] to-[#26C6DA]",
-      tags: ["POS", "Inventory", "Real-time"],
-      results: [
+      tagsEn: ["POS", "Inventory", "Real-time"],
+      tagsAr: ["نقاط بيع", "مخزون", "فوري"],
+      resultsEn: [
         "Fast checkout process",
         "Inventory tracking",
         "Sales analytics",
         "User-friendly interface",
+      ],
+      resultsAr: [
+        "عملية دفع سريعة",
+        "تتبع المخزون",
+        "تحليلات المبيعات",
+        "واجهة سهلة الاستخدام",
       ],
       client: "Cashier Tech",
       duration: "4 weeks",
@@ -64,17 +127,26 @@ const Portfolio = () => {
     {
       id: 4,
       category: "custom",
-      title: "Aruqah - Real Estate Solutions",
-      description:
+      titleEn: "Aruqah - Real Estate Solutions",
+      titleAr: "أروقة - حلول عقارية",
+      descriptionEn:
         "Innovative real estate platform with advanced property management and analytics",
-      logo: logo4,
+      descriptionAr: "منصة عقارية مبتكرة مع إدارة متقدمة للعقارات وتحليلات",
+      logo: logo3,
       color: "from-[#2E7D32] to-[#4CAF50]",
-      tags: ["Real Estate", "Analytics", "Property Management"],
-      results: [
+      tagsEn: ["Real Estate", "Analytics", "Property Management"],
+      tagsAr: ["عقارات", "تحليلات", "إدارة عقارية"],
+      resultsEn: [
         "Property listings",
         "Market analytics",
         "Client management",
         "Smart search",
+      ],
+      resultsAr: [
+        "قوائم العقارات",
+        "تحليلات المبيعات",
+        "إدارة العملاء",
+        "بحث ذكي",
       ],
       client: "Aruqah",
       duration: "6 weeks",
@@ -84,17 +156,27 @@ const Portfolio = () => {
     {
       id: 5,
       category: "custom",
-      title: "Cosmetics Store",
-      description:
+      titleEn: "Cosmetics Store",
+      titleAr: "متجر مستحضرات التجميل",
+      descriptionEn:
         "Elegant cosmetics e-commerce platform with product showcase and online ordering",
-      logo: logo3,
+      descriptionAr:
+        "منصة تجارة إلكترونية أنيقة لمستحضرات التجميل مع عرض المنتجات والطلب عبر الإنترنت",
+      logo: logo2,
       color: "from-[#C2185B] to-[#E91E63]",
-      tags: ["E-commerce", "Cosmetics", "Online Store"],
-      results: [
+      tagsEn: ["E-commerce", "Cosmetics", "Online Store"],
+      tagsAr: ["تجارة إلكترونية", "تجميل", "متجر إلكتروني"],
+      resultsEn: [
         "Product catalog",
         "Shopping cart",
         "Secure payments",
         "Mobile responsive",
+      ],
+      resultsAr: [
+        "كتالوج منتجات",
+        "سلة تسوق",
+        "مدفوعات آمنة",
+        "متجاوب مع الجوال",
       ],
       client: "Cosmetics Brand",
       duration: "5 weeks",
@@ -104,20 +186,20 @@ const Portfolio = () => {
   ];
 
   const categories = [
-    { key: "all", label: "All Projects", count: projects.length },
+    { key: "all", label: t.categories.all, count: projects.length },
     {
       key: "website",
-      label: "Websites",
+      label: t.categories.website,
       count: projects.filter((p) => p.category === "website").length,
     },
     {
       key: "pos",
-      label: "POS Systems",
+      label: t.categories.pos,
       count: projects.filter((p) => p.category === "pos").length,
     },
     {
       key: "custom",
-      label: "Custom Software",
+      label: t.categories.custom,
       count: projects.filter((p) => p.category === "custom").length,
     },
   ];
@@ -128,7 +210,10 @@ const Portfolio = () => {
   return (
     <section
       id="portfolio"
-      className="py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 dark:from-dark dark:to-dark-light"
+      className={`py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 dark:from-dark dark:to-dark-light ${
+        isRTL ? "rtl" : "ltr"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
@@ -149,14 +234,13 @@ const Portfolio = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
-            Our{" "}
+            {t.title}{" "}
             <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-              Portfolio
+              {t.titleHighlight}
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 lg:mb-10">
-            Showcasing successful projects that transformed businesses across
-            various industries
+            {t.subtitle}
           </p>
 
           {/* Category Filter */}
@@ -167,11 +251,11 @@ const Portfolio = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(category.key)}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2 text-sm sm:text-base ${
+                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 text-sm sm:text-base ${
                   filter === category.key
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg"
                     : "bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-light"
-                }`}
+                } ${isRTL ? "flex-row" : ""}`}
               >
                 <span>{category.label}</span>
                 <span
@@ -208,7 +292,6 @@ const Portfolio = () => {
                 className="group"
               >
                 <div className="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl overflow-hidden card-hover h-full">
-                  {/* Project Header */}
                   <div
                     className={`h-40 sm:h-48 lg:h-56 bg-gradient-to-r ${project.color} relative overflow-hidden`}
                   >
@@ -217,19 +300,11 @@ const Portfolio = () => {
                         <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-300">
                           <img
                             src={project.logo}
-                            alt={`${project.title} Logo`}
+                            alt={`${project.titleEn} Logo`}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.target.onerror = null;
                               e.target.style.display = "none";
-                              const parent = e.target.parentElement;
-                              parent.innerHTML = `
-                                <div class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
-                                  <span class="text-white font-bold text-lg">${project.title.charAt(
-                                    0,
-                                  )}</span>
-                                </div>
-                              `;
                             }}
                           />
                         </div>
@@ -237,92 +312,125 @@ const Portfolio = () => {
                         <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
                           <img
                             src={project.logo}
-                            alt={`${project.title} Logo`}
+                            alt={`${project.titleEn} Logo`}
                             className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-lg"
                             onError={(e) => {
                               e.target.onerror = null;
-                              e.target.style.display = "none";
-                              const parent = e.target.parentElement;
-                              parent.innerHTML = `
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-light to-primary-darker rounded-lg flex items-center justify-center shadow-lg">
-                                  <span class="text-white font-bold text-lg">${project.title.charAt(
-                                    0,
-                                  )}</span>
-                                </div>
-                              `;
                             }}
                           />
                         </div>
                       )}
                     </div>
 
-                    {/* Tags */}
-                    <div className="absolute top-3 left-3 flex flex-wrap gap-1 sm:gap-2">
-                      {project.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div
+                      className={`absolute top-3 ${
+                        isRTL ? "right-3" : "left-3"
+                      } flex flex-wrap gap-1 sm:gap-2`}
+                    >
+                      {(lang === "en" ? project.tagsEn : project.tagsAr).map(
+                        (tag, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ),
+                      )}
                     </div>
 
-                    {/* Client Badge */}
-                    <div className="absolute bottom-3 left-3 px-2 py-1 bg-black/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full">
+                    <div
+                      className={`absolute bottom-3 ${
+                        isRTL ? "right-3" : "left-3"
+                      } px-2 py-1 bg-black/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full`}
+                    >
                       {project.client}
                     </div>
 
-                    {/* Duration Badge */}
-                    <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full">
+                    <div
+                      className={`absolute bottom-3 ${
+                        isRTL ? "left-3" : "right-3"
+                      } px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full`}
+                    >
                       {project.duration}
                     </div>
 
-                    {/* Live Badge */}
                     {project.live && (
-                      <div className="absolute top-3 right-3 px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full animate-pulse">
+                      <div
+                        className={`absolute top-3 ${
+                          isRTL ? "left-3" : "right-3"
+                        } px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full animate-pulse`}
+                      >
                         Live
                       </div>
                     )}
                   </div>
 
-                  {/* Project Content */}
                   <div className="p-4 sm:p-6">
                     <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-primary-dark dark:group-hover:text-primary-light transition-colors">
-                      {project.title}
+                      {lang === "en" ? project.titleEn : project.titleAr}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-3 sm:mb-4">
-                      {project.description}
+                      {lang === "en"
+                        ? project.descriptionEn
+                        : project.descriptionAr}
                     </p>
 
-                    {/* Results */}
                     <div className="mb-4 sm:mb-6">
-                      <h4 className="font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center text-sm sm:text-base">
-                        <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 mr-1 text-primary-light" />
-                        Key Features:
+                      <h4
+                        className={`font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center text-sm sm:text-base ${
+                          isRTL ? "flex-row-reverse justify-end" : ""
+                        }`}
+                      >
+                        <ChevronRight
+                          className={`w-3 h-3 sm:w-4 sm:h-4 ${
+                            isRTL ? "ml-1 rotate-180" : "mr-1"
+                          } text-primary-light`}
+                        />
+                        {t.keyFeatures}
                       </h4>
-                      <ul className="space-y-1 sm:space-y-2">
-                        {project.results.map((result, i) => (
+                      <ul
+                        className={`space-y-1 sm:space-y-2 ${
+                          isRTL ? "text-right" : ""
+                        }`}
+                      >
+                        {(lang === "en"
+                          ? project.resultsEn
+                          : project.resultsAr
+                        ).map((result, i) => (
                           <li
                             key={i}
-                            className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400"
+                            className={`flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 ${
+                              isRTL ? "flex-row" : ""
+                            }`}
                           >
-                            <div className="w-1.5 h-1.5 bg-primary-light rounded-full mr-2"></div>
+                            <div
+                              className={`w-1.5 h-1.5 bg-primary-light rounded-full ${
+                                isRTL ? "ml-2" : "mr-2"
+                              }`}
+                            ></div>
                             {result}
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 dark:border-dark-light">
+                    <div
+                      className={`flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 dark:border-dark-light ${
+                        isRTL ? "flex-row-reverse" : ""
+                      }`}
+                    >
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-dark dark:text-primary-light font-semibold flex items-center group-hover:text-primary-darker dark:group-hover:text-primary text-sm sm:text-base hover:underline"
+                        className={`text-primary-dark dark:text-primary-light font-semibold flex items-center group-hover:text-primary-darker dark:group-hover:text-primary text-sm sm:text-base hover:underline ${
+                          isRTL ? "flex-row" : ""
+                        }`}
                       >
-                        Visit Website
-                        <ExternalLink className="ml-2" size={16} />
+                        {isRTL && <ExternalLink className="ml-2" size={16} />}
+                        {t.visit}
+                        {!isRTL && <ExternalLink className="ml-2" size={16} />}
                       </a>
                       <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                         {project.category}
@@ -342,13 +450,12 @@ const Portfolio = () => {
           viewport={{ once: true }}
           className="bg-gradient-to-r from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-xl lg:rounded-2xl p-6 sm:p-8 border border-primary-light/20 dark:border-primary-light/30 mb-8 lg:mb-12"
         >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
-            {[
-              { value: projects.length, label: "Completed Projects" },
-              { value: "5+", label: "Happy Clients" },
-              { value: "3+", label: "Industries Served" },
-              { value: "100%", label: "Client Satisfaction" },
-            ].map((stat, index) => (
+          <div
+            className={`grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center ${
+              isRTL ? "sm:grid-cols-4" : ""
+            }`}
+          >
+            {t.stats.map((stat, index) => (
               <div key={index} className="p-3 sm:p-4">
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-dark dark:text-primary-light mb-1 sm:mb-2">
                   {stat.value}

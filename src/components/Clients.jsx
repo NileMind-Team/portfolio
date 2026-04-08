@@ -11,68 +11,182 @@ import {
   Target,
 } from "lucide-react";
 
-const Clients = () => {
+const Clients = ({ lang }) => {
+  const content = {
+    en: {
+      badge: "Trusted by Industry Leaders",
+      title: "Trusted by",
+      titleHighlight: "Industry Leaders",
+      subtitle:
+        "Join hundreds of businesses that trust us with their digital transformation journey",
+      stats: [
+        {
+          icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "50+",
+          label: "Happy Clients",
+          color: "from-blue-500 to-blue-600",
+        },
+        {
+          icon: <Star className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "98%",
+          label: "Satisfaction Rate",
+          color: "from-yellow-500 to-yellow-600",
+        },
+        {
+          icon: <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "40%",
+          label: "Growth Increase",
+          color: "from-green-500 to-green-600",
+        },
+        {
+          icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "25+",
+          label: "Awards Won",
+          color: "from-purple-500 to-purple-600",
+        },
+      ],
+      featuresTitle: "Why Clients Choose Us",
+      features: [
+        {
+          icon: <ThumbsUp />,
+          title: "Quality Assurance",
+          description: "Rigorous testing process",
+        },
+        {
+          icon: <Clock />,
+          title: "On-time Delivery",
+          description: "97% projects delivered on time",
+        },
+        {
+          icon: <Globe />,
+          title: "Global Standards",
+          description: "International quality standards",
+        },
+        {
+          icon: <Target />,
+          title: "Goal Oriented",
+          description: "Focus on business objectives",
+        },
+      ],
+    },
+    ar: {
+      badge: "موثوق من قبل قادة الصناعة",
+      title: "موثوق من قبل",
+      titleHighlight: "قادة الصناعة",
+      subtitle: "انضم إلى مئات الشركات التي تثق بنا في رحلة التحول الرقمي",
+      stats: [
+        {
+          icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "٥٠+",
+          label: "عميل سعيد",
+          color: "from-blue-500 to-blue-600",
+        },
+        {
+          icon: <Star className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "٩٨٪",
+          label: "معدل الرضا",
+          color: "from-yellow-500 to-yellow-600",
+        },
+        {
+          icon: <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "٤٠٪",
+          label: "زيادة النمو",
+          color: "from-green-500 to-green-600",
+        },
+        {
+          icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" />,
+          value: "٢٥+",
+          label: "جائزة فاز بها",
+          color: "from-purple-500 to-purple-600",
+        },
+      ],
+      featuresTitle: "لماذا يختارنا العملاء",
+      features: [
+        {
+          icon: <ThumbsUp />,
+          title: "ضمان الجودة",
+          description: "عملية اختبار صارمة",
+        },
+        {
+          icon: <Clock />,
+          title: "التسليم في الوقت المحدد",
+          description: "٩٧٪ من المشاريع تم تسليمها في الوقت المحدد",
+        },
+        {
+          icon: <Globe />,
+          title: "معايير عالمية",
+          description: "معايير جودة دولية",
+        },
+        {
+          icon: <Target />,
+          title: "موجه نحو الهدف",
+          description: "التركيز على أهداف العمل",
+        },
+      ],
+    },
+  };
+
+  const t = content[lang];
+  const isRTL = lang === "ar";
+
   const clients = [
-    { name: "TechRetail", logo: "TR", industry: "Retail", years: 2 },
-    { name: "FoodChain", logo: "FC", industry: "Restaurant", years: 3 },
-    { name: "StyleHub", logo: "SH", industry: "Fashion", years: 1 },
-    { name: "AutoParts", logo: "AP", industry: "Automotive", years: 2 },
-    { name: "BookStore", logo: "BS", industry: "Education", years: 4 },
-    { name: "HealthPlus", logo: "HP", industry: "Healthcare", years: 2 },
-  ];
-
-  const stats = [
     {
-      icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
-      value: "50+",
-      label: "Happy Clients",
-      color: "from-blue-500 to-blue-600",
+      nameEn: "TechRetail",
+      nameAr: "تيك ريتيل",
+      logo: "TR",
+      industryEn: "Retail",
+      industryAr: "تجزئة",
+      years: 2,
     },
     {
-      icon: <Star className="w-5 h-5 sm:w-6 sm:h-6" />,
-      value: "98%",
-      label: "Satisfaction Rate",
-      color: "from-yellow-500 to-yellow-600",
+      nameEn: "FoodChain",
+      nameAr: "فود تشين",
+      logo: "FC",
+      industryEn: "Restaurant",
+      industryAr: "مطاعم",
+      years: 3,
     },
     {
-      icon: <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />,
-      value: "40%",
-      label: "Growth Increase",
-      color: "from-green-500 to-green-600",
+      nameEn: "StyleHub",
+      nameAr: "ستايل هاب",
+      logo: "SH",
+      industryEn: "Fashion",
+      industryAr: "أزياء",
+      years: 1,
     },
     {
-      icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" />,
-      value: "25+",
-      label: "Awards Won",
-      color: "from-purple-500 to-purple-600",
-    },
-  ];
-
-  const features = [
-    {
-      icon: <ThumbsUp />,
-      title: "Quality Assurance",
-      description: "Rigorous testing process",
+      nameEn: "AutoParts",
+      nameAr: "أوتو بارتس",
+      logo: "AP",
+      industryEn: "Automotive",
+      industryAr: "سيارات",
+      years: 2,
     },
     {
-      icon: <Clock />,
-      title: "On-time Delivery",
-      description: "97% projects delivered on time",
+      nameEn: "BookStore",
+      nameAr: "بوك ستور",
+      logo: "BS",
+      industryEn: "Education",
+      industryAr: "تعليم",
+      years: 4,
     },
     {
-      icon: <Globe />,
-      title: "Global Standards",
-      description: "International quality standards",
-    },
-    {
-      icon: <Target />,
-      title: "Goal Oriented",
-      description: "Focus on business objectives",
+      nameEn: "HealthPlus",
+      nameAr: "هيلث بلس",
+      logo: "HP",
+      industryEn: "Healthcare",
+      industryAr: "رعاية صحية",
+      years: 2,
     },
   ];
 
   return (
-    <section className="py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white dark:from-dark dark:to-dark-light">
+    <section
+      className={`py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white dark:from-dark dark:to-dark-light ${
+        isRTL ? "rtl" : "ltr"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -88,14 +202,13 @@ const Clients = () => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
-            Trusted by{" "}
+            {t.title}{" "}
             <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-              Industry Leaders
+              {t.titleHighlight}
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
-            Join hundreds of businesses that trust us with their digital
-            transformation journey
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -118,14 +231,21 @@ const Clients = () => {
                   </span>
                 </div>
                 <h3 className="font-bold text-base sm:text-lg mb-1">
-                  {client.name}
+                  {lang === "en" ? client.nameEn : client.nameAr}
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-1">
-                  {client.industry}
+                  {lang === "en" ? client.industryEn : client.industryAr}
                 </p>
                 <div className="text-xs text-primary-dark dark:text-primary-light font-medium">
-                  {client.years} {client.years === 1 ? "Year" : "Years"}{" "}
-                  Together
+                  {client.years}{" "}
+                  {lang === "en"
+                    ? client.years === 1
+                      ? "Year"
+                      : "Years"
+                    : client.years === 1
+                      ? "سنة"
+                      : "سنوات"}{" "}
+                  {lang === "en" ? "Together" : "معاً"}
                 </div>
               </div>
             </motion.div>
@@ -134,7 +254,7 @@ const Clients = () => {
 
         {/* Stats Section */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 lg:mb-16">
-          {stats.map((stat, index) => (
+          {t.stats.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -168,13 +288,22 @@ const Clients = () => {
           className="bg-gradient-to-r from-primary-light/5 to-primary-dark/5 dark:from-primary-light/10 dark:to-primary-dark/10 rounded-xl lg:rounded-3xl p-6 sm:p-8 border border-primary-light/10 dark:border-primary-light/20"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 lg:mb-8">
-            Why Clients Choose Us
+            {t.featuresTitle}
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {features.map((feature, index) => (
+            {t.features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                initial={{
+                  opacity: 0,
+                  x: isRTL
+                    ? index % 2 === 0
+                      ? 20
+                      : -20
+                    : index % 2 === 0
+                      ? -20
+                      : 20,
+                }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
