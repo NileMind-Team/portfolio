@@ -5,6 +5,7 @@ import logo from "../assets/logo1.png";
 import logo1 from "../assets/logo2.png";
 import logo2 from "../assets/logo3.png";
 import logo3 from "../assets/logo4.png";
+import logo4 from "../assets/logo5.png";
 import heroImage from "../assets/hero.jpeg";
 
 const Portfolio = ({ lang }) => {
@@ -24,9 +25,9 @@ const Portfolio = ({ lang }) => {
       },
       visit: "Visit Website",
       stats: [
-        { value: "5", label: "Completed Projects" },
-        { value: "5+", label: "Happy Clients" },
-        { value: "3+", label: "Industries Served" },
+        { value: "6", label: "Completed Projects" },
+        { value: "6+", label: "Happy Clients" },
+        { value: "4+", label: "Industries Served" },
         { value: "100%", label: "Client Satisfaction" },
       ],
       keyFeatures: "Key Features:",
@@ -43,9 +44,9 @@ const Portfolio = ({ lang }) => {
       },
       visit: "زيارة الموقع",
       stats: [
-        { value: "٥", label: "مشروع مكتمل" },
-        { value: "٥+", label: "عميل سعيد" },
-        { value: "٣+", label: "صناعة خدمنا" },
+        { value: "٦", label: "مشروع مكتمل" },
+        { value: "٦+", label: "عميل سعيد" },
+        { value: "٤+", label: "صناعة خدمنا" },
         { value: "١٠٠٪", label: "رضا العملاء" },
       ],
       keyFeatures: "الميزات الرئيسية:",
@@ -97,6 +98,36 @@ const Portfolio = ({ lang }) => {
     },
     {
       id: 3,
+      category: "website",
+      titleEn: "Fateer wi 3asal",
+      titleAr: "فطير و عسل",
+      descriptionEn:
+        "Delicious food ordering platform with online ordering and delivery management",
+      descriptionAr:
+        "منصة طعام لذيذة مع إمكانية الطلب عبر الإنترنت وإدارة التوصيل",
+      logo: logo4,
+      color: "from-[#FF6B35] to-[#FF8C42]",
+      tagsEn: ["Food", "Online Order", "Delivery"],
+      tagsAr: ["طعام", "طلب أونلاين", "توصيل"],
+      resultsEn: [
+        "Online ordering system",
+        "Delivery management",
+        "Menu management",
+        "Customer reviews",
+      ],
+      resultsAr: [
+        "نظام طلب أونلاين",
+        "إدارة التوصيل",
+        "إدارة القائمة",
+        "تقييمات العملاء",
+      ],
+      client: "Fateer wi 3asal",
+      duration: "4 weeks",
+      link: "https://fateerwasal.com",
+      live: true,
+    },
+    {
+      id: 4,
       category: "pos",
       titleEn: "Cashier POS System",
       titleAr: "نظام كاشير نقاط البيع",
@@ -125,7 +156,7 @@ const Portfolio = ({ lang }) => {
       live: true,
     },
     {
-      id: 4,
+      id: 5,
       category: "custom",
       titleEn: "Aruqah - Real Estate Solutions",
       titleAr: "أروقة - حلول عقارية",
@@ -154,7 +185,7 @@ const Portfolio = ({ lang }) => {
       live: true,
     },
     {
-      id: 5,
+      id: 6,
       category: "custom",
       titleEn: "Cosmetics Store",
       titleAr: "متجر مستحضرات التجميل",
@@ -296,7 +327,7 @@ const Portfolio = ({ lang }) => {
                     className={`h-40 sm:h-48 lg:h-56 bg-gradient-to-r ${project.color} relative overflow-hidden`}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      {project.id === 3 ? (
+                      {project.id === 4 ? (
                         <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-300">
                           <img
                             src={project.logo}
