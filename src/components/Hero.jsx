@@ -6,7 +6,7 @@ const Hero = ({ lang }) => {
   const content = {
     en: {
       badge: "🚀 Premier Digital Agency",
-      title: "Triple S",
+      title: "DoGehter",
       titleHighlight: "Digital Solutions",
       desc1: "We create",
       descSpan1: "stunning websites",
@@ -21,7 +21,7 @@ const Hero = ({ lang }) => {
     },
     ar: {
       badge: "🚀 وكالة رقمية رائدة",
-      title: "تريبل إس",
+      title: "DoGehter",
       titleHighlight: "الحلول الرقمية",
       desc1: "نحن نصنع",
       descSpan1: "مواقع ويب مذهلة",
@@ -144,7 +144,7 @@ const Hero = ({ lang }) => {
                 <div className="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center justify-between mb-3 sm:mb-4">
                   {/* النص - يظهر في النص دايماً */}
                   <div className="text-white/90 text-xs sm:text-sm md:text-base text-center flex-1 px-2 font-mono">
-                    dashboard.triples.com
+                    dashboard.DoGehter.com
                   </div>
 
                   {/* النقاط - هتتحرك حسب اللغة */}
@@ -161,7 +161,7 @@ const Hero = ({ lang }) => {
                 <div className="p-4 sm:p-6">
                   <img
                     src={heroImage}
-                    alt="Triple S Digital Solutions Dashboard"
+                    alt="DoGehter Digital Solutions Dashboard"
                     className="w-full h-auto rounded-lg sm:rounded-xl object-cover"
                   />
                 </div>

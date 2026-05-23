@@ -185,7 +185,7 @@ const Contact = ({ lang }) => {
     {
       icon: <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: t.facebook,
-      details: ["Triple S Digital", "Message us anytime"],
+      details: ["DoGehter Digital", "Message us anytime"],
       action: "https://www.facebook.com/profile.php?id=61580352808105",
       color: "from-blue-500 to-blue-600",
     },
@@ -468,8 +468,8 @@ const Contact = ({ lang }) => {
                       className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm"
                     >
                       {lang === "en"
-                        ? "I agree to receive emails and promotional materials from Triple S. Your data is protected according to our privacy policy."
-                        : "أوافق على تلقي رسائل البريد الإلكتروني والمواد الترويجية من تريبل إس. بياناتك محمية وفقًا لسياسة الخصوصية الخاصة بنا."}
+                        ? "I agree to receive emails and promotional materials from DoGehter. Your data is protected according to our privacy policy."
+                        : "أوافق على تلقي رسائل البريد الإلكتروني والمواد الترويجية من DoGehter. بياناتك محمية وفقًا لسياسة الخصوصية الخاصة بنا."}
                     </label>
                   </div>
 

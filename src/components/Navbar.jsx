@@ -81,7 +81,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 relative">
                 <img
                   src={logo}
-                  alt="Triple S Logo"
+                  alt="DoGehter Logo"
                   className="w-full h-full object-contain rounded-xl"
                   onError={(e) => {
                     e.target.onerror = null;
@@ -96,7 +96,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               </div>
               <div className="flex flex-col">
                 <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-dark to-primary-darker bg-clip-text text-transparent dark:from-primary-light dark:to-primary">
-                  Triple S
+                  DoGehter
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
                   Digital Solutions

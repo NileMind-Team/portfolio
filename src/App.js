@@ -17,7 +17,6 @@ function App() {
   });
   const [loading, setLoading] = useState(true);
 
-  // تطبيق الدارك مود على الـ html
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -27,11 +26,10 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  // تطبيق اللغة على الـ html
   useEffect(() => {
     localStorage.setItem("lang", lang);
     if (lang === "ar") {
-      document.title = "تريبل إس - الحلول الرقمية";
+      document.title = "DoGehter - Digital Solutions";
       document.documentElement.setAttribute("dir", "rtl");
       document.documentElement.setAttribute("lang", "ar");
       document.documentElement.classList.add("arabic");
@@ -40,10 +38,10 @@ function App() {
         .querySelector('meta[name="description"]')
         ?.setAttribute(
           "content",
-          "تريبل إس - وكالة رقمية محترفة في مصر تقدم حلول ويب وتجارة إلكترونية وأنظمة نقاط بيع متطورة",
+          "DoGehter - وكالة رقمية محترفة في مصر تقدم حلول ويب وتجارة إلكترونية وأنظمة نقاط بيع متطورة",
         );
     } else {
-      document.title = "Triple S - Digital Solutions";
+      document.title = "DoGehter - Digital Solutions";
       document.documentElement.setAttribute("dir", "ltr");
       document.documentElement.setAttribute("lang", "en");
       document.documentElement.classList.add("english");
@@ -52,7 +50,7 @@ function App() {
         .querySelector('meta[name="description"]')
         ?.setAttribute(
           "content",
-          "Triple S - Professional digital agency in Egypt offering web development, e-commerce, and POS solutions",
+          "DoGehter - Professional digital agency in Egypt offering web development, e-commerce, and POS solutions",
         );
     }
   }, [lang]);

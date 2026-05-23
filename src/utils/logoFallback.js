@@ -22,7 +22,7 @@ export const renderLogo = (size = "medium", darkMode = false) => {
     return (
       <img
         src={logoUrl}
-        alt="Triple S Logo"
+        alt="DoGehter Logo"
         className={`${sizes[size]} object-contain rounded-xl`}
       />
     );

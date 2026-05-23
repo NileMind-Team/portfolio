@@ -29,7 +29,7 @@ const Footer = ({ lang }) => {
       hours: "Working Hours",
       rights: "All rights reserved.",
       made: "Made with",
-      by: "by Triple S Team",
+      by: "by DoGehter Team",
       privacy: "Privacy",
       terms: "Terms",
       cookies: "Cookies",
@@ -51,7 +51,7 @@ const Footer = ({ lang }) => {
       hours: "ساعات العمل",
       rights: "جميع الحقوق محفوظة.",
       made: "صنع بـ",
-      by: "بواسطة فريق تريبل إس",
+      by: "بواسطة فريق DoGehter",
       privacy: "الخصوصية",
       terms: "الشروط",
       cookies: "الكوكيز",
@@ -123,7 +123,7 @@ const Footer = ({ lang }) => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
                   <img
                     src={logo}
-                    alt="Triple S Logo"
+                    alt="DoGehter Logo"
                     className="w-full h-full object-contain rounded-xl"
                     onError={(e) => {
                       e.target.onerror = null;
@@ -137,7 +137,7 @@ const Footer = ({ lang }) => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <div className="text-xl sm:text-2xl font-bold">Triple S</div>
+                  <div className="text-xl sm:text-2xl font-bold">DoGehter</div>
                   <div className="text-primary-light text-xs sm:text-sm">
                     Digital Solutions
                   </div>
@@ -248,7 +248,7 @@ const Footer = ({ lang }) => {
         <div className="border-t border-gray-800 pt-6 lg:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="text-gray-400 text-xs mb-4 sm:mb-0">
-              © {currentYear} Triple S Digital Solutions. {t.rights}
+              © {currentYear} DoGehter Digital Solutions. {t.rights}
             </div>
             <div className="flex items-center gap-1 text-gray-400 text-xs mb-4 sm:mb-0">
               <span>{t.made}</span>
