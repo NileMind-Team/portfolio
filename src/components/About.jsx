@@ -19,11 +19,11 @@ const About = ({ lang }) => {
       title: "About",
       titleHighlight: "DoGehter",
       subtitle:
-        "We are a professional digital agency based in Fayoum, Egypt, specializing in creating exceptional digital solutions that drive business growth and technological innovation.",
+        "We are a professional digital agency based in cairo, Egypt, specializing in creating exceptional digital solutions that drive business growth and technological innovation.",
       storyTitle: "Our Story",
       story: [
-        "Founded in 2025 in Fayoum, Egypt, DoGehter Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
-        "From our inception, we have focused on delivering high-quality web development, e-commerce solutions, and digital transformation services. Our strategic location in Fayoum allows us to combine local insight with global standards of excellence.",
+        "Founded in 2025 in cairo, Egypt, DoGehter Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
+        "From our inception, we have focused on delivering high-quality web development, e-commerce solutions, and digital transformation services. Our strategic location in cairo allows us to combine local insight with global standards of excellence.",
         "We pride ourselves on understanding the unique challenges faced by businesses in today's competitive landscape. Our approach combines technical expertise with creative thinking to deliver solutions that not only meet but exceed client expectations.",
       ],
       valuesTitle: "Our Values",
@@ -85,7 +85,7 @@ const About = ({ lang }) => {
         {
           year: "2025",
           event: "Company Foundation",
-          description: "DoGehter Digital Solutions was established in Fayoum",
+          description: "DoGehter Digital Solutions was established in cairo",
         },
         {
           year: "2025",
@@ -113,7 +113,7 @@ const About = ({ lang }) => {
       stats: [
         {
           icon: <MapPin />,
-          value: "Fayoum",
+          value: "cairo",
           label: "Based In",
           color: "text-blue-500",
         },
@@ -142,11 +142,11 @@ const About = ({ lang }) => {
       title: "عن",
       titleHighlight: "DoGehter",
       subtitle:
-        "وكالة رقمية محترفة مقرها الفيوم، مصر، متخصصة في إنشاء حلول رقمية استثنائية تدفع نمو الأعمال والابتكار التكنولوجي.",
+        "وكالة رقمية محترفة مقرها القاهرة، مصر، متخصصة في إنشاء حلول رقمية استثنائية تدفع نمو الأعمال والابتكار التكنولوجي.",
       storyTitle: "قصتنا",
       story: [
-        "تأسست DoGehter للحلول الرقمية في عام 2025 في الفيوم، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
-        "منذ البداية، ركزنا على تقديم تطوير ويب عالي الجودة وحلول التجارة الإلكترونية وخدمات التحول الرقمي. موقعنا الاستراتيجي في الفيوم يتيح لنا الجمع بين البصيرة المحلية والمعايير العالمية للتميز.",
+        "تأسست DoGehter للحلول الرقمية في عام 2025 في القاهرة، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
+        "منذ البداية، ركزنا على تقديم تطوير ويب عالي الجودة وحلول التجارة الإلكترونية وخدمات التحول الرقمي. موقعنا الاستراتيجي في القاهرة يتيح لنا الجمع بين البصيرة المحلية والمعايير العالمية للتميز.",
         "نفتخر بفهمنا للتحديات الفريدة التي تواجه الشركات في المشهد التنافسي اليوم. يجمع نهجنا بين الخبرة التقنية والتفكير الإبداعي لتقديم حلول لا تلبي توقعات العملاء فحسب، بل تتجاوزها.",
       ],
       valuesTitle: "قيمنا",
@@ -205,7 +205,7 @@ const About = ({ lang }) => {
         {
           year: "٢٠٢٥",
           event: "تأسيس الشركة",
-          description: "تأسست DoGehter للحلول الرقمية في الفيوم",
+          description: "تأسست DoGehter للحلول الرقمية في القاهرة",
         },
         {
           year: "٢٠٢٥",
@@ -233,7 +233,7 @@ const About = ({ lang }) => {
       stats: [
         {
           icon: <MapPin />,
-          value: "الفيوم",
+          value: "القاهرة",
           label: "المقر",
           color: "text-blue-500",
         },

@@ -146,8 +146,8 @@ const Footer = ({ lang }) => {
             </div>
             <p className="text-gray-400 mb-6 lg:mb-8 max-w-2xl text-sm">
               {lang === "en"
-                ? "Professional digital agency based in Fayoum, Egypt. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
-                : "وكالة رقمية محترفة مقرها الفيوم، مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
+                ? "Professional digital agency based in cairo, Egypt. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
+                : "وكالة رقمية محترفة مقرها القاهرة، مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
             </p>
             <div>
               <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">
@@ -209,7 +209,7 @@ const Footer = ({ lang }) => {
                 <div className={isRTL ? "text-right" : "text-left"}>
                   <div className="text-xs text-gray-400">{t.location}</div>
                   <div className="text-sm sm:text-base">
-                    {lang === "en" ? "Fayoum, Egypt" : "الفيوم، مصر"}
+                    {lang === "en" ? "cairo, Egypt" : "القاهرة، مصر"}
                   </div>
                 </div>
               </div>

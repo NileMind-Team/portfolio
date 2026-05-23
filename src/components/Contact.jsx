@@ -60,7 +60,7 @@ const Contact = ({ lang }) => {
       hours: "Working Hours",
       support: "Dedicated Support",
       supportText: "Personal account manager",
-      location: "Based in Fayoum, Egypt • Available 24/7 - Everyday",
+      location: "Based in cairo, Egypt • Available 24/7 - Everyday",
     },
     ar: {
       badge: "تواصل معنا",
@@ -95,7 +95,7 @@ const Contact = ({ lang }) => {
       hours: "ساعات العمل",
       support: "دعم مخصص",
       supportText: "مدير حساب شخصي",
-      location: "مقرنا في الفيوم، مصر • متوفرون 24/7 طوال أيام الأسبوع",
+      location: "مقرنا في القاهرة، مصر • متوفرون 24/7 طوال أيام الأسبوع",
     },
   };
 
