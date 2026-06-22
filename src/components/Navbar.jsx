@@ -199,7 +199,13 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
                     className={`block py-3 text-gray-600 hover:text-primary-dark font-medium dark:text-gray-300 dark:hover:text-primary-light ${
                       isRTL ? "text-right text-base" : "text-left text-sm"
                     }`}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsOpen(false);
+                      setTimeout(() => {
+                        document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" });
+                      }, 300);
+                    }}
                   >
                     {item.label}
                   </a>

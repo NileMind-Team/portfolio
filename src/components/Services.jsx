@@ -183,7 +183,7 @@ const Services = ({ lang }) => {
   const t = content[lang];
 
   return (
-    <section id="services" className="py-16 lg:py-20 bg-white dark:bg-dark">
+    <section id="services" className="pt-16 lg:pt-20 pb-8 lg:pb-10 bg-white dark:bg-dark">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -251,37 +251,6 @@ const Services = ({ lang }) => {
           ))}
         </div>
 
-        {/* Additional Services */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mb-12 lg:mb-16"
-        >
-          <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 lg:mb-8">
-            {t.additionalTitle}
-          </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {t.additional.map((service, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-gray-50 to-white dark:from-dark-light dark:to-dark-card rounded-xl p-4 sm:p-6 border border-gray-100 dark:border-dark-light"
-              >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                  <div className="text-primary-dark dark:text-primary-light">
-                    {service.icon}
-                  </div>
-                </div>
-                <h4 className="font-bold text-base sm:text-lg mb-1 sm:mb-2">
-                  {service.title}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                  {service.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

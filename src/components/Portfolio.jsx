@@ -7,6 +7,7 @@ import logo2 from "../assets/logo3.png";
 import logo3 from "../assets/logo4.png";
 import logo4 from "../assets/logo5.png";
 import heroImage from "../assets/hero.jpeg";
+import sharmLogo from "../assets/sharm-kitesurf.png";
 
 const Portfolio = ({ lang }) => {
   const [filter, setFilter] = useState("all");
@@ -25,8 +26,8 @@ const Portfolio = ({ lang }) => {
       },
       visit: "Visit Website",
       stats: [
-        { value: "6", label: "Completed Projects" },
-        { value: "6+", label: "Happy Clients" },
+        { value: "7", label: "Completed Projects" },
+        { value: "7+", label: "Happy Clients" },
         { value: "4+", label: "Industries Served" },
         { value: "100%", label: "Client Satisfaction" },
       ],
@@ -44,8 +45,8 @@ const Portfolio = ({ lang }) => {
       },
       visit: "زيارة الموقع",
       stats: [
-        { value: "٦", label: "مشروع مكتمل" },
-        { value: "٦+", label: "عميل سعيد" },
+        { value: "٧", label: "مشروع مكتمل" },
+        { value: "٧+", label: "عميل سعيد" },
         { value: "٤+", label: "صناعة خدمنا" },
         { value: "١٠٠٪", label: "رضا العملاء" },
       ],
@@ -214,6 +215,36 @@ const Portfolio = ({ lang }) => {
       link: "https://cosmetics-flame-three.vercel.app/",
       live: true,
     },
+    {
+      id: 7,
+      category: "website",
+      titleEn: "Sharm Kite Surf",
+      titleAr: "شرم كايت سيرف",
+      descriptionEn:
+        "Water sports & kite surfing platform in Sharm El Sheikh with online booking and activity showcase",
+      descriptionAr:
+        "منصة رياضات مائية وركوب الطائرة الورقية في شرم الشيخ مع حجز عبر الإنترنت وعرض الأنشطة",
+      logo: sharmLogo,
+      color: "from-[#0077B6] to-[#00B4D8]",
+      tagsEn: ["Water Sports", "Booking", "Tourism"],
+      tagsAr: ["رياضات مائية", "حجز", "سياحة"],
+      resultsEn: [
+        "Online booking system",
+        "Activity showcase",
+        "Mobile responsive",
+        "Multilingual support",
+      ],
+      resultsAr: [
+        "نظام حجز أونلاين",
+        "عرض الأنشطة",
+        "متجاوب مع الجوال",
+        "دعم متعدد اللغات",
+      ],
+      client: "Sharm Kite Surf",
+      duration: "4 weeks",
+      link: "https://sharmkitesurf.com",
+      live: true,
+    },
   ];
 
   const categories = [
@@ -241,7 +272,7 @@ const Portfolio = ({ lang }) => {
   return (
     <section
       id="portfolio"
-      className={`py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 dark:from-dark dark:to-dark-light ${
+      className={`pt-8 lg:pt-10 pb-16 lg:pb-20 bg-gradient-to-b from-white to-gray-50 dark:from-dark dark:to-dark-light ${
         isRTL ? "rtl" : "ltr"
       }`}
       dir={isRTL ? "rtl" : "ltr"}
@@ -340,11 +371,11 @@ const Portfolio = ({ lang }) => {
                           />
                         </div>
                       ) : (
-                        <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
                           <img
                             src={project.logo}
                             alt={`${project.titleEn} Logo`}
-                            className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-lg"
+                            className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-full"
                             onError={(e) => {
                               e.target.onerror = null;
                             }}
@@ -474,30 +505,6 @@ const Portfolio = ({ lang }) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Portfolio Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-xl lg:rounded-2xl p-6 sm:p-8 border border-primary-light/20 dark:border-primary-light/30 mb-8 lg:mb-12"
-        >
-          <div
-            className={`grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center ${
-              isRTL ? "sm:grid-cols-4" : ""
-            }`}
-          >
-            {t.stats.map((stat, index) => (
-              <div key={index} className="p-3 sm:p-4">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-dark dark:text-primary-light mb-1 sm:mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

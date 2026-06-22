@@ -43,8 +43,8 @@ const Testimonials = ({ lang }) => {
 
   const testimonials = [
     {
-      nameEn: "Ahmed Mohamed",
-      nameAr: "أحمد محمد",
+      nameEn: "Maria",
+      nameAr: "ماريا",
       roleEn: "Owner, Cairo Café",
       roleAr: "مالك، كافيه القاهرة",
       companyEn: "Cairo Café",
@@ -54,7 +54,7 @@ const Testimonials = ({ lang }) => {
       contentAr:
         "لقد غير نظام نقاط البيع عمليات مطعمنا بالكامل. أصبح تتبع المبيعات وإدارة المخزون فعالين للغاية لدرجة أننا وفرنا 15 ساعة أسبوعيًا في المهام الإدارية!",
       rating: 5,
-      image: "AM",
+      image: "M",
       dateEn: "March 2024",
       dateAr: "مارس ٢٠٢٤",
       improvementsEn: [
@@ -69,8 +69,8 @@ const Testimonials = ({ lang }) => {
       ],
     },
     {
-      nameEn: "Sarah Ahmed",
-      nameAr: "سارة أحمد",
+      nameEn: "Omnia Ahmed",
+      nameAr: "أمنية أحمد",
       roleEn: "CEO, Fashion Boutique",
       roleAr: "الرئيس التنفيذي، بوتيك أزياء",
       companyEn: "StyleHub Fashion",
@@ -80,7 +80,7 @@ const Testimonials = ({ lang }) => {
       contentAr:
         "زاد موقع التجارة الإلكترونية الخاص بنا المبيعات عبر الإنترنت بنسبة 300٪ في 3 أشهر فقط. كان الفريق محترفًا ومستجيبًا وقدم بالضبط ما نحتاجه في الوقت المحدد.",
       rating: 5,
-      image: "SJ",
+      image: "OA",
       dateEn: "February 2024",
       dateAr: "فبراير ٢٠٢٤",
       improvementsEn: [
@@ -95,8 +95,8 @@ const Testimonials = ({ lang }) => {
       ],
     },
     {
-      nameEn: "Mohamed Ali",
-      nameAr: "محمد علي",
+      nameEn: "Mohamed Harb",
+      nameAr: "محمد حرب",
       roleEn: "Manager, Auto Parts Store",
       roleAr: "مدير، متجر قطع غيار السيارات",
       companyEn: "AutoParts Pro",
@@ -106,7 +106,7 @@ const Testimonials = ({ lang }) => {
       contentAr:
         "وفر لنا نظام إدارة المخزون المخصص 20 ساعة أسبوعيًا. فريق الدعم متاح دائمًا عند الحاجة والنظام موثوق به بشكل لا يصدق.",
       rating: 4,
-      image: "MA",
+      image: "MH",
       dateEn: "January 2024",
       dateAr: "يناير ٢٠٢٤",
       improvementsEn: [

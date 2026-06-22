@@ -22,7 +22,7 @@ const About = ({ lang }) => {
         "We are a professional digital agency based in cairo, Egypt, specializing in creating exceptional digital solutions that drive business growth and technological innovation.",
       storyTitle: "Our Story",
       story: [
-        "Founded in 2025 in cairo, Egypt, DoGehter Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
+        "Founded in 2023 in cairo, Egypt, DoGehter Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
         "From our inception, we have focused on delivering high-quality web development, e-commerce solutions, and digital transformation services. Our strategic location in cairo allows us to combine local insight with global standards of excellence.",
         "We pride ourselves on understanding the unique challenges faced by businesses in today's competitive landscape. Our approach combines technical expertise with creative thinking to deliver solutions that not only meet but exceed client expectations.",
       ],
@@ -79,6 +79,42 @@ const About = ({ lang }) => {
           experience: "2 years",
           expertise: "AI Integration",
         },
+        {
+          name: "Mina Romany",
+          role: "Backend Developer",
+          experience: "3 years",
+          expertise: "Backend",
+        },
+        {
+          name: "Naguib Mousa",
+          role: "Mobile Application",
+          experience: "2 years",
+          expertise: "Mobile Dev",
+        },
+        {
+          name: "Andrew Magdy",
+          role: "Front End Developer",
+          experience: "4 years",
+          expertise: "Front End",
+        },
+        {
+          name: "Diana Sameh",
+          role: "Graphic Designer",
+          experience: "3 years",
+          expertise: "Design",
+        },
+        {
+          name: "Ahmed Mohsen",
+          role: "DevOps Engineer",
+          experience: "2 years",
+          expertise: "DevOps",
+        },
+        {
+          name: "Micheal Maged",
+          role: "Sales Manager",
+          experience: "6 years",
+          expertise: "Sales",
+        },
       ],
       journeyTitle: "Our Journey",
       timeline: [
@@ -119,7 +155,7 @@ const About = ({ lang }) => {
         },
         {
           icon: <TrendingUp />,
-          value: "2+",
+          value: "14+",
           label: "Projects Completed",
           color: "text-green-500",
         },
@@ -131,7 +167,7 @@ const About = ({ lang }) => {
         },
         {
           icon: <Heart />,
-          value: "100%",
+          value: "88%",
           label: "Client Satisfaction",
           color: "text-red-500",
         },
@@ -145,7 +181,7 @@ const About = ({ lang }) => {
         "وكالة رقمية محترفة مقرها القاهرة، مصر، متخصصة في إنشاء حلول رقمية استثنائية تدفع نمو الأعمال والابتكار التكنولوجي.",
       storyTitle: "قصتنا",
       story: [
-        "تأسست DoGehter للحلول الرقمية في عام 2025 في القاهرة، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
+        "تأسست DoGehter للحلول الرقمية في عام 2023 في القاهرة، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
         "منذ البداية، ركزنا على تقديم تطوير ويب عالي الجودة وحلول التجارة الإلكترونية وخدمات التحول الرقمي. موقعنا الاستراتيجي في القاهرة يتيح لنا الجمع بين البصيرة المحلية والمعايير العالمية للتميز.",
         "نفتخر بفهمنا للتحديات الفريدة التي تواجه الشركات في المشهد التنافسي اليوم. يجمع نهجنا بين الخبرة التقنية والتفكير الإبداعي لتقديم حلول لا تلبي توقعات العملاء فحسب، بل تتجاوزها.",
       ],
@@ -199,6 +235,42 @@ const About = ({ lang }) => {
           experience: "سنتان",
           expertise: "AI Integration",
         },
+        {
+          name: "مينا روماني",
+          role: "Backend Developer",
+          experience: "٣ سنوات",
+          expertise: "Backend",
+        },
+        {
+          name: "نجيب موسى",
+          role: "Mobile Application",
+          experience: "سنتان",
+          expertise: "Mobile Dev",
+        },
+        {
+          name: "أندرو ماجدي",
+          role: "Front End Developer",
+          experience: "٤ سنوات",
+          expertise: "Front End",
+        },
+        {
+          name: "ديانا سامح",
+          role: "Graphic Designer",
+          experience: "٣ سنوات",
+          expertise: "Design",
+        },
+        {
+          name: "أحمد محسن",
+          role: "DevOps Engineer",
+          experience: "سنتان",
+          expertise: "DevOps",
+        },
+        {
+          name: "ميشيل ماجد",
+          role: "Sales Manager",
+          experience: "٦ سنوات",
+          expertise: "Sales",
+        },
       ],
       journeyTitle: "رحلتنا",
       timeline: [
@@ -239,7 +311,7 @@ const About = ({ lang }) => {
         },
         {
           icon: <TrendingUp />,
-          value: "٢+",
+          value: "١٤+",
           label: "مشروع مكتمل",
           color: "text-green-500",
         },
@@ -251,7 +323,7 @@ const About = ({ lang }) => {
         },
         {
           icon: <Heart />,
-          value: "١٠٠٪",
+          value: "٨٨٪",
           label: "رضا العملاء",
           color: "text-red-500",
         },
@@ -308,144 +380,51 @@ const About = ({ lang }) => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-12 lg:mb-20">
-          {/* Our Story */}
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl sm:text-3xl font-bold mb-4 lg:mb-6">
-              {t.storyTitle}
-            </h3>
-            <div className="space-y-3 sm:space-y-4 text-gray-600 dark:text-gray-300">
-              {t.story.map((paragraph, idx) => (
-                <p key={idx} className="text-sm sm:text-base">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            {/* Values */}
-            <div className="mt-8 lg:mt-12">
-              <h4 className="text-xl sm:text-2xl font-bold mb-4 lg:mb-6">
-                {t.valuesTitle}
-              </h4>
-              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                {t.values.map((value, index) => (
-                  <div
-                    key={index}
-                    className="bg-white dark:bg-dark-card rounded-xl p-4 sm:p-6 border border-gray-100 dark:border-dark-light"
-                  >
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                      <div className="text-primary-dark dark:text-primary-light">
-                        {value.icon}
-                      </div>
+        {/* Team Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 lg:mb-20"
+        >
+          <h3 className="text-2xl sm:text-3xl font-bold mb-6 lg:mb-8">
+            {t.teamTitle}
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {t.team.map((member, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-dark-card rounded-xl p-3 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-full flex-shrink-0 flex items-center justify-center">
+                    <div className="text-lg sm:text-xl font-bold text-primary-dark dark:text-primary-light">
+                      {getInitials(member.name)}
                     </div>
-                    <h5 className="font-bold text-base sm:text-lg mb-1 sm:mb-2">
-                      {value.title}
-                    </h5>
-                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                      {value.description}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-base sm:text-lg truncate">
+                      {member.name}
+                    </h4>
+                    <p className="text-primary-dark dark:text-primary-light font-medium text-sm sm:text-base">
+                      {member.role}
                     </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Team & Timeline */}
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? -30 : 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8 lg:space-y-12"
-          >
-            {/* Team Section */}
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-4 lg:mb-6">
-                {t.teamTitle}
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                {t.team.map((member, index) => (
-                  <div
-                    key={index}
-                    className="bg-white dark:bg-dark-card rounded-xl p-3 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
-                  >
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Avatar Circle */}
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-full flex-shrink-0 flex items-center justify-center">
-                        <div className="text-lg sm:text-xl font-bold text-primary-dark dark:text-primary-light">
-                          {getInitials(member.name)}
-                        </div>
-                      </div>
-
-                      {/* Member Info */}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-base sm:text-lg truncate">
-                          {member.name}
-                        </h4>
-                        <p className="text-primary-dark dark:text-primary-light font-medium text-sm sm:text-base">
-                          {member.role}
-                        </p>
-                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 gap-2 sm:gap-4">
-                          <span className="flex items-center whitespace-nowrap">
-                            <Clock className="w-3 h-3 ml-1" />
-                            {member.experience}
-                          </span>
-                          <span className="flex items-center whitespace-nowrap">
-                            <Award className="w-3 h-3 ml-1" />
-                            {member.expertise}
-                          </span>
-                        </div>
-                      </div>
+                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 gap-2 sm:gap-4">
+                      <span className="flex items-center whitespace-nowrap">
+                        <Clock className="w-3 h-3 ml-1" />
+                        {member.experience}
+                      </span>
+                      <span className="flex items-center whitespace-nowrap">
+                        <Award className="w-3 h-3 ml-1" />
+                        {member.expertise}
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Timeline */}
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-4 lg:mb-6">
-                {t.journeyTitle}
-              </h3>
-              <div className="relative">
-                <div
-                  className={`absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-light to-primary-dark ${
-                    isRTL ? "right-4" : "left-4"
-                  }`}
-                ></div>
-                <div className="space-y-4 sm:space-y-6">
-                  {t.timeline.map((item, index) => (
-                    <div
-                      key={index}
-                      className={`relative ${
-                        isRTL ? "pr-10 sm:pr-12" : "pl-10 sm:pl-12"
-                      }`}
-                    >
-                      <div
-                        className={`absolute top-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base ${
-                          isRTL ? "right-0" : "left-0"
-                        }`}
-                      >
-                        {item.year}
-                      </div>
-                      <div className="bg-white dark:bg-dark-card rounded-xl p-3 sm:p-4 border border-gray-100 dark:border-dark-light">
-                        <h4 className="font-bold text-base sm:text-lg mb-1 sm:mb-2">
-                          {item.event}
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Mission & Vision */}
         <motion.div
