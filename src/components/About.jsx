@@ -115,6 +115,18 @@ const About = ({ lang }) => {
           experience: "6 years",
           expertise: "Sales",
         },
+        {
+          name: "Radwa Aymen",
+          role: "UI & UX Designer",
+          experience: "2 years",
+          expertise: "UI/UX",
+        },
+        {
+          name: "Omnia Mohamed",
+          role: "Media Buyer",
+          experience: "3 years",
+          expertise: "Media",
+        },
       ],
       journeyTitle: "Our Journey",
       timeline: [
@@ -271,6 +283,18 @@ const About = ({ lang }) => {
           experience: "٦ سنوات",
           expertise: "Sales",
         },
+        {
+          name: "رضوى أيمن",
+          role: "UI & UX Designer",
+          experience: "سنتان",
+          expertise: "UI/UX",
+        },
+        {
+          name: "أمنية محمد",
+          role: "Media Buyer",
+          experience: "٣ سنوات",
+          expertise: "Media",
+        },
       ],
       journeyTitle: "رحلتنا",
       timeline: [
@@ -387,7 +411,7 @@ const About = ({ lang }) => {
           viewport={{ once: true }}
           className="mb-12 lg:mb-20"
         >
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6 lg:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-6 lg:mb-8 text-center">
             {t.teamTitle}
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -459,37 +483,6 @@ const About = ({ lang }) => {
           </div>
         </motion.div>
 
-        {/* Fun Facts */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-12 lg:mt-16"
-        >
-          <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 lg:mb-8">
-            {t.numbersTitle}
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
-            {t.stats.map((stat, index) => (
-              <div
-                key={index}
-                className="text-center p-4 sm:p-6 bg-white dark:bg-dark-card rounded-xl border border-gray-100 dark:border-dark-light"
-              >
-                <div
-                  className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full ${stat.color.replace("text", "bg")}/10 mb-3 sm:mb-4`}
-                >
-                  <div className={stat.color}>{stat.icon}</div>
-                </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

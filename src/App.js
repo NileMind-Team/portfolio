@@ -29,7 +29,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem("lang", lang);
     if (lang === "ar") {
-      document.title = "DoGehter - Digital Solutions";
+      document.title = "DoGether | شركة برمجة";
       document.documentElement.setAttribute("dir", "rtl");
       document.documentElement.setAttribute("lang", "ar");
       document.documentElement.classList.add("arabic");
@@ -38,10 +38,19 @@ function App() {
         .querySelector('meta[name="description"]')
         ?.setAttribute(
           "content",
-          "DoGehter - وكالة رقمية محترفة في مصر تقدم حلول ويب وتجارة إلكترونية وأنظمة نقاط بيع متطورة",
+          "DoGether شركة برمجة محترفة في الفيوم والقاهرة، مصر. نقدم تطوير مواقع الويب، تطبيقات الجوال، متاجر إلكترونية، أنظمة نقاط البيع، تصميم UI/UX وحلول رقمية متكاملة للشركات.",
+        );
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute("content", "DoGether Tech | شركة برمجة");
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute(
+          "content",
+          "DoGether Tech شركة برمجة محترفة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية. اتصل: 01062485133",
         );
     } else {
-      document.title = "DoGehter - Digital Solutions";
+      document.title = "DoGether | شركة برمجة";
       document.documentElement.setAttribute("dir", "ltr");
       document.documentElement.setAttribute("lang", "en");
       document.documentElement.classList.add("english");
@@ -50,7 +59,16 @@ function App() {
         .querySelector('meta[name="description"]')
         ?.setAttribute(
           "content",
-          "DoGehter - Professional digital agency in Egypt offering web development, e-commerce, and POS solutions",
+          "DoGether is a professional software development company in Fayoum and Cairo, Egypt. We deliver web development, mobile apps, e-commerce platforms, POS systems, UI/UX design and custom digital solutions.",
+        );
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute("content", "DoGether Tech | Software Company in Egypt");
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute(
+          "content",
+          "DoGether Tech — Professional software company in Egypt. Websites, mobile apps, e-commerce, POS systems and digital solutions. Call: 01062485133",
         );
     }
   }, [lang]);

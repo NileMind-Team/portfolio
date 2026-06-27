@@ -80,12 +80,12 @@ const Footer = ({ lang }) => {
   const socialLinks = [
     {
       icon: <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />,
-      href: "https://www.facebook.com/profile.php?id=61580352808105",
+      href: "https://www.facebook.com/Dogethertech",
       label: "Facebook",
     },
     {
       icon: <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />,
-      href: "https://wa.me/201273188267",
+      href: "https://wa.me/201062485133",
       label: "WhatsApp",
     },
   ];
@@ -225,7 +225,7 @@ const Footer = ({ lang }) => {
                   <div className="text-xs text-gray-400">
                     {lang === "en" ? "Phone / WhatsApp" : "هاتف / واتساب"}
                   </div>
-                  <div className="text-sm sm:text-base">01273188267</div>
+                  <div className="text-sm sm:text-base">01062485133</div>
                 </div>
               </div>
             </div>

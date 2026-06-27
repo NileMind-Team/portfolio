@@ -1,0 +1,72 @@
+# DoGether | شركة برمجة في مصر
+
+> DoGether (دوجيذر / دوجيزر / Dogether) is a professional software development company in Egypt, serving Fayoum, Cairo, Port Said, Alexandria, Giza and all Egyptian governorates.
+
+## Brand Names / أسماء العلامة التجارية
+
+- English: DoGether, Dogether, dogether, DoGether Tech, dogethertech
+- Arabic: دوجيذر, دوجيزر, DoGether شركة برمجة
+- Domain: dogethertech.com
+
+## What is DoGether? / ما هي DoGether؟
+
+DoGether هي شركة برمجة (software company) مصرية محترفة تأسست عام 2023. متخصصة في تصميم المواقع الإلكترونية، تطوير التطبيقات، المتاجر الإلكترونية، أنظمة نقاط البيع (كاشير)، وحلول البرمجة المخصصة للشركات في مصر والشرق الأوسط.
+
+## Services / الخدمات
+
+### تصميم مواقع الويب — Web Design & Development
+Professional responsive websites, corporate sites, landing pages.
+تصميم موقع الكتروني، برمجة مواقع، موقع احترافي، تصميم موقع شركة.
+
+### تصميم تطبيق موبايل — Mobile App Development
+iOS and Android applications, cross-platform apps.
+تصميم تطبيق، تطوير تطبيقات، تطبيق جوال، تطبيق موبايل.
+
+### متجر إلكتروني — E-commerce
+Full online store with cart, payments, and inventory.
+متجر الكتروني، تجارة إلكترونية، موقع بيع أونلاين.
+
+### نظام كاشير ونقاط البيع — POS System
+Sales and inventory management for retail and restaurants.
+نظام كاشير، نقاط البيع، POS system، إدارة مبيعات.
+
+### تصميم UI/UX
+User interface and experience design.
+تصميم واجهة مستخدم، تجربة المستخدم.
+
+### برمجة مخصصة — Custom Software
+ERP, CRM, dashboards, automation systems.
+برمجة مخصصة، نظام إدارة، حلول برمجية.
+
+## Locations Served / المناطق التي نخدمها
+
+- الفيوم — Fayoum (مقر الشركة)
+- القاهرة — Cairo
+- بورسعيد — Port Said
+- الإسكندرية — Alexandria
+- الجيزة — Giza
+- المنصورة — Mansoura
+- جميع محافظات مصر — All Egypt
+- الشرق الأوسط — MENA Region
+
+## Search Keywords / كلمات البحث
+
+شركة برمجة، شركة برمجه، شركة برمجة في مصر، شركة برمجة في الفيوم، شركة برمجة في القاهرة، شركة برمجة في بورسعيد، برمجة مواقع، تصميم موقع، تصميم تطبيق، متجر إلكتروني، نظام كاشير، software company Egypt, software company Fayoum, web development Egypt, mobile app development, e-commerce Egypt, POS system Egypt, digital agency Egypt
+
+## Contact / التواصل
+
+- Phone/WhatsApp: +201062485133
+- Website: https://dogethertech.com
+- Facebook: https://www.facebook.com/Dogethertech
+
+## Team / الفريق
+
+12 متخصص: مطورو Front-End، Back-End، تطبيقات موبايل، مصممو UI/UX، مدراء مشاريع، مهندسو DevOps، فريق مبيعات.
+
+## Portfolio / أعمالنا
+
+- Chicken One — موقع شركة (chicken-one.com)
+- Fateer wi 3asal — منصة طلب طعام (fateerwasal.com)
+- Aruqah — منصة عقارية (aruqah.vercel.app)
+- Sharm Kite Surf — رياضات مائية (sharmkitesurf.com)
+- Cashier POS — نظام نقاط بيع

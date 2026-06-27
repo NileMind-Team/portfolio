@@ -74,33 +74,22 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
             animate={{ opacity: 1, x: 0 }}
             className="flex-shrink-0"
           >
-            <a
-              href="#home"
-              className={`flex items-center ${isRTL ? "space-x-reverse" : ""} space-x-3 no-underline`}
-            >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 relative">
+            <a href="#home" className="no-underline">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
                 <img
                   src={logo}
-                  alt="DoGehter Logo"
+                  alt="DoGether Logo"
                   className="w-full h-full object-contain rounded-xl"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.style.display = "none";
                     e.target.parentElement.innerHTML = `
-                      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary-light to-primary-darker rounded-xl flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-lg">SSS</span>
+                      <div class="w-12 h-12 bg-gradient-to-br from-primary-light to-primary-darker rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg">DG</span>
                       </div>
                     `;
                   }}
                 />
-              </div>
-              <div className="flex flex-col">
-                <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-dark to-primary-darker bg-clip-text text-transparent dark:from-primary-light dark:to-primary">
-                  DoGehter
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
-                  Digital Solutions
-                </div>
               </div>
             </a>
           </motion.div>
@@ -135,6 +124,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               {/* Language Toggle */}
               <button
                 onClick={toggleLanguage}
+                aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-dark-light text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-lighter transition-colors flex items-center gap-1 min-w-[52px] justify-center"
               >
                 <Globe size={18} />
@@ -146,6 +136,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
+                aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-dark-light text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-lighter transition-colors"
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}

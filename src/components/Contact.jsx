@@ -149,9 +149,14 @@ const Contact = ({ lang }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus("loading");
+
+    const message = `*رسالة جديدة من الموقع*\n\n👤 *الاسم:* ${formData.name}\n📧 *الإيميل:* ${formData.email}\n📞 *الهاتف:* ${formData.phone || "لم يُذكر"}\n🏢 *الشركة:* ${formData.company || "لم تُذكر"}\n🛠️ *الخدمة:* ${formData.service}\n💰 *الميزانية:* ${formData.budget}\n\n📝 *التفاصيل:*\n${formData.message}`;
+
+    const whatsappUrl = `https://wa.me/201062485133?text=${encodeURIComponent(message)}`;
+
     setTimeout(() => {
       setStatus("success");
-      console.log("Form submitted:", formData);
+      window.open(whatsappUrl, "_blank");
       setTimeout(() => {
         setFormData({
           name: "",
@@ -171,22 +176,22 @@ const Contact = ({ lang }) => {
     {
       icon: <Phone className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: t.call,
-      details: ["01273188267", "24/7 - Everyday"],
-      action: "tel:01273188267",
+      details: ["01062485133", "24/7 - Everyday"],
+      action: "tel:+201062485133",
       color: "from-green-500 to-green-600",
     },
     {
       icon: <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: t.whatsapp,
-      details: ["01273188267", "Response in < 5 min"],
-      action: "https://wa.me/201273188267",
+      details: ["01062485133", "Response in < 5 min"],
+      action: "https://wa.me/201062485133",
       color: "from-green-600 to-green-700",
     },
     {
       icon: <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: t.facebook,
-      details: ["DoGehter Digital", "Message us anytime"],
-      action: "https://www.facebook.com/profile.php?id=61580352808105",
+      details: ["DoGether Tech", "Message us anytime"],
+      action: "https://www.facebook.com/Dogethertech",
       color: "from-blue-500 to-blue-600",
     },
   ];
@@ -374,7 +379,7 @@ const Contact = ({ lang }) => {
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
                         }
-                        placeholder="01273188267"
+                        placeholder="01062485133"
                       />
                     </div>
                     <div>
@@ -395,10 +400,11 @@ const Contact = ({ lang }) => {
 
                   <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label htmlFor="service-select" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
                         {t.service}
                       </label>
                       <select
+                        id="service-select"
                         className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
                         value={formData.service}
                         onChange={(e) =>
@@ -414,10 +420,11 @@ const Contact = ({ lang }) => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label htmlFor="budget-select" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
                         {t.budget}
                       </label>
                       <select
+                        id="budget-select"
                         className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
                         value={formData.budget}
                         onChange={(e) =>
