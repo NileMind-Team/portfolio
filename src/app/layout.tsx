@@ -1,0 +1,238 @@
+import type { Metadata, Viewport } from 'next'
+import { Inter, Poppins } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  variable: '--font-poppins',
+})
+
+export const viewport: Viewport = {
+  themeColor: '#0d47a1',
+}
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://dogethertech.com'),
+  title: 'DoGether Tech | شركة برمجة - Software Company Egypt',
+  description: 'DoGether Tech — أفضل شركة برمجة في مصر. تصميم مواقع احترافية، تطبيقات جوال، متاجر إلكترونية، أنظمة POS وكاشير، تصميم UI/UX. نخدم الفيوم، القاهرة وجميع محافظات مصر. تواصل: 01062485133',
+  keywords: [
+    'DoGether Tech', 'شركة برمجة في مصر', 'software company Egypt',
+    'تصميم مواقع', 'تطوير تطبيقات', 'متجر إلكتروني', 'نظام نقاط البيع POS',
+  ].join(', '),
+  authors: [{ name: 'DoGether Tech', url: 'https://dogethertech.com' }],
+  creator: 'DoGether Tech',
+  publisher: 'DoGether Tech',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://dogethertech.com/',
+    title: 'DoGether Tech | شركة برمجة',
+    description: 'DoGether Tech شركة برمجة محترفة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
+    siteName: 'DoGether Tech',
+    locale: 'ar_EG',
+    images: [{
+      url: '/DoGehter-icon.png',
+      width: 512,
+      height: 512,
+      alt: 'DoGether Tech شركة برمجة',
+    }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'DoGether Tech | شركة برمجة',
+    description: 'شركة برمجة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
+    images: ['/DoGehter-icon.png'],
+  },
+  alternates: {
+    canonical: 'https://dogethertech.com/',
+    languages: {
+      'ar': 'https://dogethertech.com/',
+      'en': 'https://dogethertech.com/',
+      'x-default': 'https://dogethertech.com/',
+    },
+  },
+  icons: {
+    icon: [
+      { url: '/DoGehter-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/DoGehter-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: '/DoGehter-icon.png',
+  },
+  manifest: '/site.webmanifest',
+  category: 'technology',
+}
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'ProfessionalService', 'Organization'],
+  '@id': 'https://dogethertech.com/#business',
+  name: 'DoGether Tech',
+  alternateName: [
+    'DoGether', 'DoGether Egypt', 'DoGether Software', 'DoGether Digital Solutions',
+    'دوجيذر تك', 'دوجيذر', 'دوجيزر', 'شركة دوجيذر', 'Dogether', 'dogethertech'
+  ],
+  legalName: 'DoGether Tech',
+  knowsAbout: [
+    'Web Development', 'Mobile App Development', 'E-commerce', 'POS Systems',
+    'UI/UX Design', 'Custom Software Development', 'Digital Transformation',
+    'تطوير مواقع الويب', 'تطوير تطبيقات الجوال', 'التجارة الإلكترونية',
+    'أنظمة نقاط البيع', 'تصميم واجهات المستخدم', 'البرمجة المخصصة'
+  ],
+  url: 'https://dogethertech.com',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://dogethertech.com/DoGehter-icon.png',
+    width: 512,
+    height: 512,
+  },
+  image: 'https://dogethertech.com/DoGehter-icon.png',
+  description: 'DoGether Tech شركة برمجة محترفة في مصر — الفيوم، القاهرة، بورسعيد وجميع المحافظات. تطوير مواقع، تطبيقات، متاجر إلكترونية، POS، UI/UX.',
+  foundingDate: '2023',
+  numberOfEmployees: { '@type': 'QuantitativeValue', value: 12 },
+  priceRange: '$$',
+  telephone: '+201062485133',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Fayoum',
+    addressRegion: 'Fayoum Governorate',
+    postalCode: '63511',
+    addressCountry: 'EG',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: 29.3084, longitude: 30.8428 },
+  areaServed: [
+    { '@type': 'City', name: 'Fayoum' },
+    { '@type': 'City', name: 'Cairo' },
+    { '@type': 'City', name: 'Port Said' },
+    { '@type': 'City', name: 'Alexandria' },
+    { '@type': 'City', name: 'Giza' },
+    { '@type': 'Country', name: 'Egypt' },
+  ],
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Sunday'],
+    opens: '09:00',
+    closes: '22:00',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+201062485133',
+    contactType: 'customer service',
+    availableLanguage: ['Arabic', 'English'],
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'خدمات DoGether Tech',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'تطوير مواقع الويب', description: 'تصميم وتطوير مواقع احترافية متجاوبة' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'متجر إلكتروني', description: 'منصات تجارة إلكترونية متكاملة' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'تطبيقات الجوال', description: 'تطبيقات iOS وAndroid' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'نظام نقاط البيع POS', description: 'أنظمة كاشير وإدارة مبيعات' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'تصميم UI/UX', description: 'تصميم واجهات مستخدم جذابة' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'DevOps & Cloud', description: 'استضافة وإدارة سيرفرات' } },
+    ],
+  },
+  sameAs: ['https://dogethertech.com', 'https://www.facebook.com/Dogethertech'],
+}
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'ما هي DoGether Tech؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech شركة برمجة محترفة في مصر (Software Company Egypt) متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2023 وتخدم عملاء في مصر والشرق الأوسط.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'هل DoGether Tech أفضل شركة برمجة في مصر؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech من أفضل شركات البرمجة في مصر — تقدم حلول برمجية احترافية بجودة عالية وأسعار تنافسية، مع فريق من 12 متخصصاً في التطوير والتصميم والذكاء الاصطناعي.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'هل DoGether شركة برمجة في الفيوم؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'نعم، DoGether Tech شركة برمجة مقرها الفيوم، مصر، وتخدم عملاء في القاهرة والإسكندرية وبورسعيد وجميع محافظات مصر. للتواصل: +201062485133' },
+    },
+    {
+      '@type': 'Question',
+      name: 'ما هو سعر تصميم موقع إلكتروني في مصر؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'تقدم DoGether Tech تصميم مواقع إلكترونية احترافية بأسعار تنافسية تبدأ من 5,000 جنيه مصري حسب متطلبات المشروع. تواصل للحصول على عرض سعر مجاني.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'ما هي خدمات شركة البرمجة DoGether؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'تقدم DoGether Tech: تطوير مواقع الويب، إنشاء متاجر إلكترونية، تطوير تطبيقات جوال (Android & iOS)، أنظمة نقاط البيع POS والكاشير، تصميم UI/UX، وخدمات DevOps والاستضافة السحابية.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does DoGether Tech offer web development services in Egypt?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes, DoGether Tech is a professional web development company in Egypt offering custom website design, e-commerce development, mobile apps, POS systems, and digital solutions for businesses across Egypt and the Middle East.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'كيف أتواصل مع شركة البرمجة DoGether Tech؟',
+      acceptedAnswer: { '@type': 'Answer', text: 'تواصل مع DoGether Tech عبر: هاتف/واتساب +201062485133 | فيسبوك: facebook.com/Dogethertech | الموقع: dogethertech.com' },
+    },
+  ],
+}
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://dogethertech.com/#website',
+  name: 'DoGether Tech',
+  url: 'https://dogethertech.com',
+  description: 'شركة برمجة في مصر - مواقع، تطبيقات، متاجر إلكترونية، POS',
+  inLanguage: ['ar', 'en'],
+  publisher: { '@id': 'https://dogethertech.com/#business' },
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="ar" dir="rtl" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        <meta name="geo.region" content="EG-FYM" />
+        <meta name="geo.placename" content="Fayoum, Egypt" />
+        <meta name="geo.position" content="29.3084;30.8428" />
+        <meta name="ICBM" content="29.3084, 30.8428" />
+        <meta name="revisit-after" content="3 days" />
+        <meta name="rating" content="general" />
+        <meta property="fb:pages" content="https://www.facebook.com/Dogethertech" />
+        <meta property="article:publisher" content="https://www.facebook.com/Dogethertech" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
+      <body>
+        {children}
+      </body>
+    </html>
+  )
+}

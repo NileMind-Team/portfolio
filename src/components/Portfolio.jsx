@@ -1,4 +1,7 @@
+'use client'
+
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
@@ -359,26 +362,23 @@ const Portfolio = ({ lang }) => {
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       {project.id === 4 ? (
-                        <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-300">
-                          <img
+                        <div className="relative w-full h-full transform group-hover:scale-110 transition-transform duration-300">
+                          <Image
                             src={project.logo}
-                            alt={`${project.titleEn} Logo`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.style.display = "none";
-                            }}
+                            alt={`${project.titleEn} - DoGether Tech شركة برمجة مصر`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                         </div>
                       ) : (
                         <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
-                          <img
+                          <Image
                             src={project.logo}
-                            alt={`${project.titleEn} Logo`}
+                            alt={`${project.titleEn} - DoGether Tech شركة برمجة مصر`}
+                            width={96}
+                            height={96}
                             className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-full"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                            }}
                           />
                         </div>
                       )}

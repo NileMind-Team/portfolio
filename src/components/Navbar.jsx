@@ -1,7 +1,10 @@
+'use client'
+
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo.png";
+import logoImg from "../assets/logo.png";
 
 const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,25 +79,17 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
           >
             <a href="#home" className="no-underline">
               <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
-                <img
-                  src={logo}
-                  alt="DoGether Logo"
+                <Image
+                  src={logoImg}
+                  alt="DoGether Tech - شركة برمجة في مصر | Software Company Egypt"
                   className="w-full h-full object-contain rounded-xl"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.style.display = "none";
-                    e.target.parentElement.innerHTML = `
-                      <div class="w-12 h-12 bg-gradient-to-br from-primary-light to-primary-darker rounded-xl flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-lg">DG</span>
-                      </div>
-                    `;
-                  }}
+                  sizes="56px"
                 />
               </div>
             </a>
           </motion.div>
 
-          {/* Desktop Navigation - مع تباعد مناسب للعربية */}
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">
             <div
               className={`flex items-center ${
@@ -117,11 +112,9 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               ))}
             </div>
 
-            {/* Buttons Container - مع مسافة كافية */}
             <div
               className={`flex items-center gap-3 ${isRTL ? "mr-2" : "ml-2"}`}
             >
-              {/* Language Toggle */}
               <button
                 onClick={toggleLanguage}
                 aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
@@ -133,7 +126,6 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
                 </span>
               </button>
 
-              {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
                 aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}

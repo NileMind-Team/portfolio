@@ -1,4 +1,7 @@
+'use client'
+
 import React from "react";
+import Image from "next/image";
 import {
   Facebook,
   ArrowUp,
@@ -8,7 +11,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import logo from "../assets/logo.png";
+import logoImg from "../assets/logo.png";
 
 const Footer = ({ lang }) => {
   const currentYear = new Date().getFullYear();
@@ -120,20 +123,12 @@ const Footer = ({ lang }) => {
                 href="#home"
                 className={`flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 no-underline`}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
-                  <img
-                    src={logo}
-                    alt="DoGehter Logo"
+                <div className="w-12 h-12 sm:w-14 sm:h-14 relative flex-shrink-0">
+                  <Image
+                    src={logoImg}
+                    alt="DoGether Tech Logo"
                     className="w-full h-full object-contain rounded-xl"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.style.display = "none";
-                      e.target.parentElement.innerHTML = `
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light to-primary-darker rounded-xl flex items-center justify-center shadow-lg">
-                          <span class="text-white font-bold text-xl">SSS</span>
-                        </div>
-                      `;
-                    }}
+                    sizes="56px"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -258,22 +253,13 @@ const Footer = ({ lang }) => {
             <div
               className={`flex ${isRTL ? "gap-4 lg:gap-6" : "space-x-4 lg:space-x-6"}`}
             >
-              <a
-                href="#privacy"
-                className="text-gray-400 hover:text-white text-xs"
-              >
+              <a href="#privacy" className="text-gray-400 hover:text-white text-xs">
                 {t.privacy}
               </a>
-              <a
-                href="#terms"
-                className="text-gray-400 hover:text-white text-xs"
-              >
+              <a href="#terms" className="text-gray-400 hover:text-white text-xs">
                 {t.terms}
               </a>
-              <a
-                href="#cookies"
-                className="text-gray-400 hover:text-white text-xs"
-              >
+              <a href="#cookies" className="text-gray-400 hover:text-white text-xs">
                 {t.cookies}
               </a>
             </div>

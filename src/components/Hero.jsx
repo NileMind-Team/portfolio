@@ -1,6 +1,9 @@
+'use client'
+
+import Image from 'next/image'
 import { motion } from "framer-motion";
 import { Zap, CheckCircle, TrendingUp, Sparkles } from "lucide-react";
-import heroImage from "../assets/hero.jpeg";
+import heroImg from "../assets/hero.jpeg";
 
 const Hero = ({ lang }) => {
   const content = {
@@ -142,12 +145,9 @@ const Hero = ({ lang }) => {
             <div className="relative bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl sm:rounded-3xl p-1 sm:p-2 shadow-2xl">
               <div className="bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl p-1 sm:p-2 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center justify-between mb-3 sm:mb-4">
-                  {/* النص - يظهر في النص دايماً */}
                   <div className="text-white/90 text-xs sm:text-sm md:text-base text-center flex-1 px-2 font-mono">
                     dashboard.DoGehter.com
                   </div>
-
-                  {/* النقاط - هتتحرك حسب اللغة */}
                   <div
                     className={`flex items-center gap-2 sm:gap-3 shrink-0 ${
                       isRTL ? "order-1" : ""
@@ -159,10 +159,12 @@ const Hero = ({ lang }) => {
                   </div>
                 </div>
                 <div className="p-4 sm:p-6">
-                  <img
-                    src={heroImage}
-                    alt="DoGehter Digital Solutions Dashboard"
+                  <Image
+                    src={heroImg}
+                    alt="DoGether Tech Software Solutions - شركة برمجة في مصر | Web Development, Mobile Apps, POS Systems Egypt"
                     className="w-full h-auto rounded-lg sm:rounded-xl object-cover"
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               </div>
