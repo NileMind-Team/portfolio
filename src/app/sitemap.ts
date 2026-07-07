@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const cities = ['fayoum', 'cairo', 'giza', 'alexandria', 'beni-suef', 'minya', 'port-said']
+const cities = ['fayoum', 'cairo', 'giza', 'alexandria', 'beni-suef', 'minya', 'port-said', 'sharqia']
 const base = 'https://dogethertech.com'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,6 +17,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1.0,
+    },
+    {
+      url: `${base}/software-company`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${base}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${base}/services/mobile-app`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
     },
     ...cityPages,
   ]
