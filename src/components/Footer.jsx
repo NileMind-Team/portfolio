@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Facebook,
   ArrowUp,
@@ -65,6 +66,19 @@ const Footer = ({ lang }) => {
   const t = content[lang];
   const isRTL = lang === "ar";
 
+  // Internal links to dedicated service pages (fixes orphan pages for indexing)
+  const servicePages = [
+    { href: "/services/website", label: lang === "en" ? "Web Design" : "تصميم المواقع" },
+    { href: "/services/mobile-app", label: lang === "en" ? "Mobile Apps" : "تطبيقات الجوال" },
+    { href: "/services/store", label: lang === "en" ? "Online Stores" : "المتاجر الإلكترونية" },
+    { href: "/services/pos", label: lang === "en" ? "POS Systems" : "أنظمة نقاط البيع" },
+    { href: "/services/digital-menu", label: lang === "en" ? "Digital Menu" : "القائمة الرقمية" },
+    { href: "/services/custom-system", label: lang === "en" ? "Custom Systems" : "أنظمة مخصصة" },
+    { href: "/services/management-system", label: lang === "en" ? "Management Systems" : "إدارة الأعمال" },
+    { href: "/services/support", label: lang === "en" ? "Support & Maintenance" : "الدعم والصيانة" },
+  ];
+  const servicesHeading = lang === "en" ? "Services" : "خدماتنا";
+
   const footerLinks = {
     [t.company]: [
       { label: t.about, href: "#about" },
@@ -73,9 +87,10 @@ const Footer = ({ lang }) => {
       { label: t.contact, href: "#contact" },
     ],
     [t.quick]: [
-      { label: t.home, href: "#home" },
-      { label: t.story, href: "#about" },
-      { label: t.projects, href: "#portfolio" },
+      { label: lang === "en" ? "Software Company Egypt" : "شركة برمجة في مصر", href: "/software-company" },
+      { label: lang === "en" ? "All Services" : "كل الخدمات", href: "/services" },
+      { label: lang === "en" ? "Our Work" : "أعمالنا", href: "/work" },
+      { label: lang === "en" ? "Blog" : "المدونة", href: "/blog" },
       { label: t.quote, href: "#contact" },
     ],
   };
@@ -115,7 +130,7 @@ const Footer = ({ lang }) => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8 lg:mb-12">
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-2">
             <div
               className={`flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 mb-4 lg:mb-6`}
             >
@@ -141,8 +156,8 @@ const Footer = ({ lang }) => {
             </div>
             <p className="text-gray-400 mb-6 lg:mb-8 max-w-2xl text-sm">
               {lang === "en"
-                ? "Professional digital agency based in cairo, Egypt. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
-                : "وكالة رقمية محترفة مقرها القاهرة، مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
+                ? "Professional digital agency based in Fayoum, Egypt — serving businesses across all governorates. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
+                : "وكالة رقمية محترفة مقرها الفيوم، مصر — نخدم الأعمال في كل محافظات مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
             </p>
             <div>
               <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">
@@ -164,6 +179,30 @@ const Footer = ({ lang }) => {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Services column — internal links to dedicated service pages */}
+          <div>
+            <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-6">
+              {servicesHeading}
+            </h3>
+            <ul className="space-y-2 sm:space-y-3">
+              {servicePages.map((page) => (
+                <li key={page.href}>
+                  <Link
+                    href={page.href}
+                    className="text-gray-400 hover:text-primary-light transition-colors flex items-center group text-sm"
+                  >
+                    <span
+                      className={`w-1 h-1 bg-primary-light rounded-full ${
+                        isRTL ? "ml-2 sm:ml-3" : "mr-2 sm:mr-3"
+                      } opacity-0 group-hover:opacity-100 transition-opacity`}
+                    ></span>
+                    {page.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {Object.entries(footerLinks).map(([category, links]) => (
@@ -204,7 +243,7 @@ const Footer = ({ lang }) => {
                 <div className={isRTL ? "text-right" : "text-left"}>
                   <div className="text-xs text-gray-400">{t.location}</div>
                   <div className="text-sm sm:text-base">
-                    {lang === "en" ? "cairo, Egypt" : "القاهرة، مصر"}
+                    {lang === "en" ? "Fayoum, Egypt" : "الفيوم، مصر"}
                   </div>
                 </div>
               </div>

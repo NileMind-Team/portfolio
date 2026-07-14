@@ -7,6 +7,10 @@ export const metadata: Metadata = {
     'DoGether Tech تطور تطبيقات جوال احترافية بـ Flutter لنظامَي iOS وAndroid في مصر. تصميم UI/UX، نشر على المتاجر، صيانة مستمرة. تواصل: 01062485133',
   alternates: {
     canonical: 'https://dogethertech.com/services/mobile-app',
+    languages: {
+      ar: 'https://dogethertech.com/services/mobile-app',
+      en: 'https://dogethertech.com/en/services/mobile-app-development',
+    },
   },
   openGraph: {
     title: 'تطوير تطبيقات الجوال في مصر | Flutter iOS & Android | DoGether Tech',
@@ -118,6 +122,28 @@ export default function MobileAppPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            serviceType: 'Mobile App Development',
+            name: 'تطوير تطبيقات الجوال',
+            description:
+              'تطوير تطبيقات جوال احترافية بـ Flutter لنظامَي iOS وAndroid في مصر — تصميم UI/UX، نشر على المتاجر، وصيانة مستمرة.',
+            provider: {
+              '@type': 'Organization',
+              name: 'DoGether Tech',
+              '@id': 'https://dogethertech.com/#business',
+              url: 'https://dogethertech.com',
+              telephone: '+201062485133',
+            },
+            areaServed: { '@type': 'Country', name: 'Egypt' },
+            url: 'https://dogethertech.com/services/mobile-app',
+          }),
+        }}
       />
 
       {/* Header */}

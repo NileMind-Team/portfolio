@@ -1,6 +1,7 @@
 'use client'
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Globe,
@@ -184,6 +185,15 @@ const Services = ({ lang }) => {
 
   const t = content[lang];
 
+  // Internal links to dedicated service pages (same order in both languages)
+  const serviceLinks = [
+    "/services/website",
+    "/services/pos",
+    "/services/store",
+    "/services/custom-system",
+  ];
+  const learnMore = lang === "en" ? "Learn more" : "اعرف المزيد";
+
   return (
     <section id="services" className="pt-16 lg:pt-20 pb-8 lg:pb-10 bg-white dark:bg-dark">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -237,7 +247,7 @@ const Services = ({ lang }) => {
                   {service.description}
                 </p>
 
-                <ul className="space-y-2 sm:space-y-3">
+                <ul className="space-y-2 sm:space-y-3 mb-5 sm:mb-6">
                   {service.features.map((feature, i) => (
                     <li
                       key={i}
@@ -248,6 +258,14 @@ const Services = ({ lang }) => {
                     </li>
                   ))}
                 </ul>
+
+                <Link
+                  href={serviceLinks[index]}
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-primary-dark dark:text-primary-light hover:gap-2 transition-all"
+                >
+                  {learnMore}
+                  <span aria-hidden="true">{lang === "en" ? "→" : "←"}</span>
+                </Link>
               </div>
             </motion.div>
           ))}

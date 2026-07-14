@@ -105,7 +105,7 @@ const localBusinessSchema = {
   },
   image: 'https://dogethertech.com/DoGehter-icon.png',
   description: 'DoGether Tech شركة برمجة محترفة في مصر — الفيوم، القاهرة، بورسعيد وجميع المحافظات. تطوير مواقع، تطبيقات، متاجر إلكترونية، POS، UI/UX.',
-  foundingDate: '2023',
+  foundingDate: '2025',
   numberOfEmployees: { '@type': 'QuantitativeValue', value: 12 },
   priceRange: '$$',
   telephone: '+201062485133',
@@ -159,7 +159,7 @@ const faqSchema = {
     {
       '@type': 'Question',
       name: 'ما هي DoGether Tech؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech شركة برمجة محترفة في مصر (Software Company Egypt) متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2023 وتخدم عملاء في مصر والشرق الأوسط.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech شركة برمجة محترفة في مصر (Software Company Egypt) متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2025 وتخدم عملاء في مصر والشرق الأوسط.' },
     },
     {
       '@type': 'Question',

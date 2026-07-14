@@ -5,7 +5,13 @@ export const metadata: Metadata = {
   title: 'تصميم وتطوير مواقع الويب في مصر | Next.js & React | DoGether Tech',
   description:
     'DoGether Tech تصمم وتطور مواقع ويب احترافية في مصر بتقنية Next.js وReact. مواقع سريعة، متجاوبة، وصديقة لـ SEO. تواصل: 01062485133',
-  alternates: { canonical: 'https://dogethertech.com/services/website' },
+  alternates: {
+    canonical: 'https://dogethertech.com/services/website',
+    languages: {
+      ar: 'https://dogethertech.com/services/website',
+      en: 'https://dogethertech.com/en/services/web-development',
+    },
+  },
   openGraph: {
     title: 'تصميم وتطوير مواقع الويب في مصر | DoGether Tech',
     description: 'مواقع ويب Next.js احترافية في مصر — سريعة، متجاوبة، وصديقة لـ SEO',
@@ -93,6 +99,7 @@ export default function WebsitePage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Web Development', name: 'تصميم وتطوير مواقع الويب', description: 'تصميم وتطوير مواقع ويب احترافية في مصر بتقنية Next.js وReact — سريعة، متجاوبة، وصديقة لمحركات البحث.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/website' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
