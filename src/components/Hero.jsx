@@ -105,7 +105,7 @@ const Hero = ({ lang }) => {
                 },
                 {
                   icon: <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "2+",
+                  value: "7+",
                   label: t.stat2,
                 },
                 {
