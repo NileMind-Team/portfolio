@@ -1,0 +1,6 @@
+{
+  "nextIndex": 56,
+  "totalUrls": 174,
+  "lastRunDate": "2026-07-20",
+  "lastRunNote": "Quota already exhausted by an earlier run today. Index 56 (alexandria/management-system) hit 'تم تجاوز الحصة' on the first attempt. 0 URLs requested this run; nextIndex unchanged."
+}

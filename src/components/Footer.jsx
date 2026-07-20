@@ -33,7 +33,7 @@ const Footer = ({ lang }) => {
       hours: "Working Hours",
       rights: "All rights reserved.",
       made: "Made with",
-      by: "by DoGehter Team",
+      by: "by DoGether Team",
       privacy: "Privacy",
       terms: "Terms",
       cookies: "Cookies",
@@ -55,7 +55,7 @@ const Footer = ({ lang }) => {
       hours: "ساعات العمل",
       rights: "جميع الحقوق محفوظة.",
       made: "صنع بـ",
-      by: "بواسطة فريق DoGehter",
+      by: "بواسطة فريق DoGether",
       privacy: "الخصوصية",
       terms: "الشروط",
       cookies: "الكوكيز",
@@ -147,7 +147,7 @@ const Footer = ({ lang }) => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <div className="text-xl sm:text-2xl font-bold">DoGehter</div>
+                  <div className="text-xl sm:text-2xl font-bold">DoGether</div>
                   <div className="text-primary-light text-xs sm:text-sm">
                     Digital Solutions
                   </div>
@@ -282,7 +282,7 @@ const Footer = ({ lang }) => {
         <div className="border-t border-gray-800 pt-6 lg:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="text-gray-400 text-xs mb-4 sm:mb-0">
-              © {currentYear} DoGehter Digital Solutions. {t.rights}
+              © {currentYear} DoGether Digital Solutions. {t.rights}
             </div>
             <div className="flex items-center gap-1 text-gray-400 text-xs mb-4 sm:mb-0">
               <span>{t.made}</span>

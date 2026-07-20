@@ -17,14 +17,14 @@ import {
 const About = ({ lang }) => {
   const content = {
     en: {
-      badge: "About DoGehter",
+      badge: "About DoGether",
       title: "About",
-      titleHighlight: "DoGehter",
+      titleHighlight: "DoGether",
       subtitle:
         "We are a professional digital agency based in Fayoum, Egypt — serving clients across all governorates — specializing in creating exceptional digital solutions that drive business growth and technological innovation.",
       storyTitle: "Our Story",
       story: [
-        "Founded in 2025 in Fayoum, Egypt, DoGehter Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
+        "Founded in 2025 in Fayoum, Egypt, DoGether Digital Solutions emerged with a clear vision: to revolutionize digital experiences for businesses in the modern era. We began as a dedicated team of technology enthusiasts committed to bridging the gap between innovative ideas and practical implementation.",
         "From our inception, we have focused on delivering high-quality web development, e-commerce solutions, and digital transformation services. Based in Fayoum and serving clients across every Egyptian governorate, we combine local insight with global standards of excellence.",
         "We pride ourselves on understanding the unique challenges faced by businesses in today's competitive landscape. Our approach combines technical expertise with creative thinking to deliver solutions that not only meet but exceed client expectations.",
       ],
@@ -135,7 +135,7 @@ const About = ({ lang }) => {
         {
           year: "2025",
           event: "Company Foundation",
-          description: "DoGehter Digital Solutions was established in Fayoum",
+          description: "DoGether Digital Solutions was established in Fayoum",
         },
         {
           year: "2025",
@@ -188,14 +188,14 @@ const About = ({ lang }) => {
       ],
     },
     ar: {
-      badge: "عن DoGehter",
+      badge: "عن DoGether",
       title: "عن",
-      titleHighlight: "DoGehter",
+      titleHighlight: "DoGether",
       subtitle:
         "وكالة رقمية محترفة مقرها الفيوم، مصر — نخدم عملاء في كل المحافظات — متخصصة في إنشاء حلول رقمية استثنائية تدفع نمو الأعمال والابتكار التكنولوجي.",
       storyTitle: "قصتنا",
       story: [
-        "تأسست DoGehter للحلول الرقمية في عام 2025 في الفيوم، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
+        "تأسست DoGether للحلول الرقمية في عام 2025 في الفيوم، مصر، برؤية واضحة: إحداث ثورة في التجارب الرقمية للشركات في العصر الحديث. بدأنا كفريق متخصص من عشاق التكنولوجيا ملتزمين بسد الفجوة بين الأفكار المبتكرة والتنفيذ العملي.",
         "منذ البداية، ركزنا على تقديم تطوير ويب عالي الجودة وحلول التجارة الإلكترونية وخدمات التحول الرقمي. مقرنا في الفيوم وخدمتنا تصل إلى كل محافظات مصر — نجمع بين البصيرة المحلية والمعايير العالمية للتميز.",
         "نفتخر بفهمنا للتحديات الفريدة التي تواجه الشركات في المشهد التنافسي اليوم. يجمع نهجنا بين الخبرة التقنية والتفكير الإبداعي لتقديم حلول لا تلبي توقعات العملاء فحسب، بل تتجاوزها.",
       ],
@@ -303,7 +303,7 @@ const About = ({ lang }) => {
         {
           year: "٢٠٢٥",
           event: "تأسيس الشركة",
-          description: "تأسست DoGehter للحلول الرقمية في الفيوم",
+          description: "تأسست DoGether للحلول الرقمية في الفيوم",
         },
         {
           year: "٢٠٢٥",

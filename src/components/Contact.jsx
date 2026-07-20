@@ -477,8 +477,8 @@ const Contact = ({ lang }) => {
                       className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm"
                     >
                       {lang === "en"
-                        ? "I agree to receive emails and promotional materials from DoGehter. Your data is protected according to our privacy policy."
-                        : "أوافق على تلقي رسائل البريد الإلكتروني والمواد الترويجية من DoGehter. بياناتك محمية وفقًا لسياسة الخصوصية الخاصة بنا."}
+                        ? "I agree to receive emails and promotional materials from DoGether. Your data is protected according to our privacy policy."
+                        : "أوافق على تلقي رسائل البريد الإلكتروني والمواد الترويجية من DoGether. بياناتك محمية وفقًا لسياسة الخصوصية الخاصة بنا."}
                     </label>
                   </div>
 

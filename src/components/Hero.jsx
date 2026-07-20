@@ -9,7 +9,7 @@ const Hero = ({ lang }) => {
   const content = {
     en: {
       badge: "🚀 Premier Digital Agency",
-      title: "DoGehter",
+      title: "DoGether",
       titleHighlight: "Digital Solutions",
       desc1: "We create",
       descSpan1: "stunning websites",
@@ -24,7 +24,7 @@ const Hero = ({ lang }) => {
     },
     ar: {
       badge: "🚀 وكالة رقمية رائدة",
-      title: "DoGehter",
+      title: "DoGether",
       titleHighlight: "الحلول الرقمية",
       desc1: "نحن نصنع",
       descSpan1: "مواقع ويب مذهلة",
@@ -146,7 +146,7 @@ const Hero = ({ lang }) => {
               <div className="bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl p-1 sm:p-2 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center justify-between mb-3 sm:mb-4">
                   <div className="text-white/90 text-xs sm:text-sm md:text-base text-center flex-1 px-2 font-mono">
-                    dashboard.DoGehter.com
+                    dashboard.DoGether.com
                   </div>
                   <div
                     className={`flex items-center gap-2 sm:gap-3 shrink-0 ${

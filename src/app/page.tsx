@@ -7,6 +7,7 @@ import Services from '@/components/Services'
 import Portfolio from '@/components/Portfolio'
 import About from '@/components/About'
 import Contact from '@/components/Contact'
+import Faq from '@/components/Faq'
 import Footer from '@/components/Footer'
 import Clients from '@/components/Clients'
 import Testimonials from '@/components/Testimonials'
@@ -15,7 +16,6 @@ export default function Home() {
   const [lang, setLang] = useState<'en' | 'ar'>('ar')
   const [darkMode, setDarkMode] = useState<boolean>(true)
 
-  // Read localStorage after hydration only — Arabic renders server-side first
   useEffect(() => {
     const savedLang = (localStorage.getItem('lang') as 'en' | 'ar') || 'ar'
     const savedDark = localStorage.getItem('darkMode')
@@ -44,6 +44,7 @@ export default function Home() {
         <Portfolio lang={lang} />
         <Testimonials lang={lang} />
         <About lang={lang} />
+        <Faq lang={lang} />
         <Contact lang={lang} />
       </main>
       <Footer lang={lang} />

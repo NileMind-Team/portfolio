@@ -49,25 +49,20 @@ export const metadata: Metadata = {
     siteName: 'DoGether Tech',
     locale: 'ar_EG',
     images: [{
-      url: '/DoGehter-icon.png',
-      width: 512,
-      height: 512,
-      alt: 'DoGether Tech شركة برمجة',
+      url: '/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'DoGether Tech — شركة برمجة في مصر',
     }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'DoGether Tech | شركة برمجة',
     description: 'شركة برمجة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
-    images: ['/DoGehter-icon.png'],
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: 'https://dogethertech.com/',
-    languages: {
-      'ar': 'https://dogethertech.com/',
-      'en': 'https://dogethertech.com/',
-      'x-default': 'https://dogethertech.com/',
-    },
   },
   icons: {
     icon: [
@@ -127,9 +122,9 @@ const localBusinessSchema = {
   ],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Sunday'],
-    opens: '09:00',
-    closes: '22:00',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '00:00',
+    closes: '23:59',
   },
   contactPoint: {
     '@type': 'ContactPoint',
@@ -150,48 +145,6 @@ const localBusinessSchema = {
     ],
   },
   sameAs: ['https://dogethertech.com', 'https://www.facebook.com/Dogethertech'],
-}
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'ما هي DoGether Tech؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech شركة برمجة محترفة في مصر (Software Company Egypt) متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2025 وتخدم عملاء في مصر والشرق الأوسط.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'هل DoGether Tech أفضل شركة برمجة في مصر؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'DoGether Tech من أفضل شركات البرمجة في مصر — تقدم حلول برمجية احترافية بجودة عالية وأسعار تنافسية، مع فريق من 12 متخصصاً في التطوير والتصميم والذكاء الاصطناعي.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'هل DoGether شركة برمجة في الفيوم؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'نعم، DoGether Tech شركة برمجة مقرها الفيوم، مصر، وتخدم عملاء في القاهرة والإسكندرية وبورسعيد وجميع محافظات مصر. للتواصل: +201062485133' },
-    },
-    {
-      '@type': 'Question',
-      name: 'ما هو سعر تصميم موقع إلكتروني في مصر؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'تقدم DoGether Tech تصميم مواقع إلكترونية احترافية بأسعار تنافسية تبدأ من 5,000 جنيه مصري حسب متطلبات المشروع. تواصل للحصول على عرض سعر مجاني.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'ما هي خدمات شركة البرمجة DoGether؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'تقدم DoGether Tech: تطوير مواقع الويب، إنشاء متاجر إلكترونية، تطوير تطبيقات جوال (Android & iOS)، أنظمة نقاط البيع POS والكاشير، تصميم UI/UX، وخدمات DevOps والاستضافة السحابية.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'Does DoGether Tech offer web development services in Egypt?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Yes, DoGether Tech is a professional web development company in Egypt offering custom website design, e-commerce development, mobile apps, POS systems, and digital solutions for businesses across Egypt and the Middle East.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'كيف أتواصل مع شركة البرمجة DoGether Tech؟',
-      acceptedAnswer: { '@type': 'Answer', text: 'تواصل مع DoGether Tech عبر: هاتف/واتساب +201062485133 | فيسبوك: facebook.com/Dogethertech | الموقع: dogethertech.com' },
-    },
-  ],
 }
 
 const websiteSchema = {
@@ -220,10 +173,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
         <script
           type="application/ld+json"

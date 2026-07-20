@@ -43,6 +43,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }))
 
+  // Service × governorate pages (dynamic [city]/[service] route) — 16 cities × 8 services
+  const serviceCityPages = cities.flatMap((city) =>
+    services.map((s) => ({
+      url: `${base}/software-company/${city}/${s}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }))
+  )
+
   const blogPages = articles.map((a) => ({
     url: `${base}/blog/${a.slug}`,
     lastModified: new Date(a.date),
@@ -61,6 +71,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/en/services/web-development`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     ...servicePages,
     ...fayoumServicePages,
+    ...serviceCityPages,
     ...cityPages,
     ...blogPages,
   ]
