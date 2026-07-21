@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'دعم فني وصيانة مواقع وتطبيقات في مصر | DoGether Tech',
+  title: 'دعم فني وصيانة مواقع وتطبيقات في مصر | DoGether',
   description:
-    'DoGether Tech تقدم خدمات دعم فني وصيانة دورية لمواقع الويب والتطبيقات والأنظمة في مصر. استجابة سريعة، تحديثات منتظمة، وأداء مستمر. تواصل: 01062485133',
+    'DoGether تقدم خدمات دعم فني وصيانة دورية لمواقع الويب والتطبيقات والأنظمة في مصر. استجابة سريعة، تحديثات منتظمة، وأداء مستمر. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/support' },
   openGraph: {
-    title: 'دعم فني وصيانة مواقع وتطبيقات في مصر | DoGether Tech',
+    title: 'دعم فني وصيانة مواقع وتطبيقات في مصر | DoGether',
     description: 'دعم فني وصيانة دورية لمواقعك وتطبيقاتك — استجابة سريعة وأداء مستمر',
     url: 'https://dogethertech.com/services/support',
   },
@@ -93,11 +93,11 @@ export default function SupportPage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Technical Support & Maintenance', name: 'الدعم الفني والصيانة', description: 'خدمات دعم فني وصيانة دورية لمواقع الويب والتطبيقات والأنظمة في مصر — استجابة سريعة، تحديثات منتظمة، وأداء مستمر.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/support' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Technical Support & Maintenance', name: 'الدعم الفني والصيانة', description: 'خدمات دعم فني وصيانة دورية لمواقع الويب والتطبيقات والأنظمة في مصر — استجابة سريعة، تحديثات منتظمة، وأداء مستمر.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/support' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
@@ -127,7 +127,7 @@ export default function SupportPage() {
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">موقعك يحتاج رعاية — لا مجرد بناء</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">تطوير الموقع أو التطبيق هو البداية فقط. المكتبات تحتاج تحديثات، الثغرات الأمنية تظهر، الأداء يتراجع مع الوقت، والمحتوى يحتاج تحديثاً. بدون صيانة دورية، موقعك الجميل يتحول لعبء بدلاً من أن يكون أصلاً تجارياً.</p>
-          <p className="text-lg text-slate-700 leading-relaxed">DoGether Tech تتولى الصيانة الدورية لمواقعك وتطبيقاتك وأنظمتك — سواء بنتها نحن أو شركة أخرى — بحيث تعمل بأقصى كفاءة دائماً.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">DoGether تتولى الصيانة الدورية لمواقعك وتطبيقاتك وأنظمتك — سواء بنتها نحن أو شركة أخرى — بحيث تعمل بأقصى كفاءة دائماً.</p>
         </section>
 
         <section className="mb-14">
@@ -187,7 +187,7 @@ export default function SupportPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

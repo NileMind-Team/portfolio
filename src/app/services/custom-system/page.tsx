@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'تطوير أنظمة برمجية مخصصة في مصر | DoGether Tech',
+  title: 'تطوير أنظمة برمجية مخصصة في مصر | DoGether',
   description:
-    'DoGether Tech تطور أنظمة برمجية مخصصة في مصر لأي قطاع. كود مخصص 100%، تمتلكه بالكامل، قابل للتوسع. تواصل: 01062485133',
+    'DoGether تطور أنظمة برمجية مخصصة في مصر لأي قطاع. كود مخصص 100%، تمتلكه بالكامل، قابل للتوسع. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/custom-system' },
   openGraph: {
-    title: 'تطوير أنظمة برمجية مخصصة في مصر | DoGether Tech',
+    title: 'تطوير أنظمة برمجية مخصصة في مصر | DoGether',
     description: 'أنظمة برمجية مخصصة لاحتياجات شركتك — لا قوالب، لا اشتراكات، تملكه بالكامل',
     url: 'https://dogethertech.com/services/custom-system',
   },
@@ -84,11 +84,11 @@ export default function CustomSystemPage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Custom Software Development', name: 'تطوير أنظمة برمجية مخصصة', description: 'تطوير أنظمة برمجية مخصصة في مصر لأي قطاع — كود مخصص بالكامل تمتلكه أنت، قابل للتوسع، بدون اشتراكات شهرية.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/custom-system' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Custom Software Development', name: 'تطوير أنظمة برمجية مخصصة', description: 'تطوير أنظمة برمجية مخصصة في مصر لأي قطاع — كود مخصص بالكامل تمتلكه أنت، قابل للتوسع، بدون اشتراكات شهرية.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/custom-system' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">ناقش مشروعك</a>
         </div>
       </header>
@@ -118,7 +118,7 @@ export default function CustomSystemPage() {
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">الحلول الجاهزة تعالج مشاكل الآخرين — لا مشاكلك</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">كل عمل تجاري له آلية عمل خاصة به — طريقة تفكير، تصنيف، متابعة، وإعداد تقارير مختلفة. الحلول الجاهزة تصمم لـ"متوسط" العملاء، وهذا يعني أنك إما ستكيّف عملك ليناسب البرنامج أو ستعيش مع قيود لا نهاية لها.</p>
-          <p className="text-lg text-slate-700 leading-relaxed">DoGether Tech تبني النظام الذي يتكيف مع عملك — لا العكس. نبدأ بفهم عميق لكل خطوة في سير عملك، ثم نترجمها إلى نظام برمجي دقيق تمتلكه بالكامل.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">DoGether تبني النظام الذي يتكيف مع عملك — لا العكس. نبدأ بفهم عميق لكل خطوة في سير عملك، ثم نترجمها إلى نظام برمجي دقيق تمتلكه بالكامل.</p>
         </section>
 
         <section className="mb-14">
@@ -174,7 +174,7 @@ export default function CustomSystemPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

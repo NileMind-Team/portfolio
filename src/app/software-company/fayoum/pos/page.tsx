@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'برنامج كاشير في الفيوم | نظام نقاط بيع POS | DoGether Tech',
+  title: 'برنامج كاشير في الفيوم | نظام نقاط بيع POS | DoGether',
   description:
     'برنامج كاشير ونظام نقاط بيع POS للمحلات والمطاعم والصيدليات في الفيوم. يعمل أونلاين وأوفلاين، مرتبط بالمخزون، وسهل الاستخدام. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/software-company/fayoum/pos' },
   openGraph: {
-    title: 'برنامج كاشير في الفيوم | DoGether Tech',
+    title: 'برنامج كاشير في الفيوم | DoGether',
     description: 'نظام نقاط بيع POS للمحلات والمطاعم والصيدليات في الفيوم — أونلاين وأوفلاين',
     url: 'https://dogethertech.com/software-company/fayoum/pos',
   },
@@ -55,7 +55,7 @@ const serviceSchema = {
   serviceType: 'POS System Development',
   name: 'برنامج كاشير في الفيوم',
   description: 'أنظمة نقاط بيع وكاشير للمحلات والمطاعم والصيدليات في محافظة الفيوم.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'City', name: 'Fayoum' },
   url: 'https://dogethertech.com/software-company/fayoum/pos',
 }
@@ -69,7 +69,7 @@ export default function FayoumPosPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على ديمو</a>
         </div>
       </header>
@@ -99,7 +99,7 @@ export default function FayoumPosPage() {
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">نظام كاشير مبني لطريقة عمل محلك في الفيوم</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">
-            كثير من أصحاب المحلات في الفيوم ما زالوا يديرون المبيعات بالورقة والقلم أو ببرامج جاهزة لا تناسب طبيعة نشاطهم. النتيجة: أخطاء في الحساب، مخزون غير معروف، وقرارات بلا أرقام. برنامج الكاشير من DoGether Tech ينظّم كل ذلك في شاشة واحدة سهلة، ويُبنى ليعكس طريقة عمل محلك بالضبط — لا قالباً جاهزاً.
+            كثير من أصحاب المحلات في الفيوم ما زالوا يديرون المبيعات بالورقة والقلم أو ببرامج جاهزة لا تناسب طبيعة نشاطهم. النتيجة: أخطاء في الحساب، مخزون غير معروف، وقرارات بلا أرقام. برنامج الكاشير من DoGether ينظّم كل ذلك في شاشة واحدة سهلة، ويُبنى ليعكس طريقة عمل محلك بالضبط — لا قالباً جاهزاً.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
             سواء كنت تدير مطعماً في وسط الفيوم يحتاج إدارة طاولات وطلبات توصيل، صيدلية تحتاج تتبع تواريخ صلاحية الأدوية، أو سوبرماركت يحتاج مسح باركود سريع — نصمم النظام على مقاسك. ولأن مقرنا في الفيوم، نقدر ندعمك عن قرب في التركيب والتدريب.
@@ -159,7 +159,7 @@ export default function FayoumPosPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

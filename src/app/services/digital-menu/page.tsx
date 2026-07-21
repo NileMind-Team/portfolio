@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'قائمة رقمية للمطاعم والمقاهي في مصر | QR Code | DoGether Tech',
+  title: 'قائمة رقمية للمطاعم والمقاهي في مصر | QR Code | DoGether',
   description:
-    'قائمة رقمية بـ QR Code لمطعمك أو مقهاك في مصر. تحديث فوري للأسعار، دعم عربي وإنجليزي، بدون تطبيق. DoGether Tech تواصل: 01062485133',
+    'قائمة رقمية بـ QR Code لمطعمك أو مقهاك في مصر. تحديث فوري للأسعار، دعم عربي وإنجليزي، بدون تطبيق. DoGether تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/digital-menu' },
   openGraph: {
-    title: 'قائمة رقمية للمطاعم والمقاهي في مصر | DoGether Tech',
+    title: 'قائمة رقمية للمطاعم والمقاهي في مصر | DoGether',
     description: 'قائمة رقمية QR Code للمطاعم — تحديث فوري للأسعار، عربي وإنجليزي، بدون تطبيق',
     url: 'https://dogethertech.com/services/digital-menu',
   },
@@ -84,11 +84,11 @@ export default function DigitalMenuPage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Digital Menu', name: 'القائمة الرقمية للمطاعم والمقاهي', description: 'قائمة رقمية بـ QR Code للمطاعم والمقاهي في مصر — تحديث فوري للأسعار، دعم عربي وإنجليزي، بدون تطبيق.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/digital-menu' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Digital Menu', name: 'القائمة الرقمية للمطاعم والمقاهي', description: 'قائمة رقمية بـ QR Code للمطاعم والمقاهي في مصر — تحديث فوري للأسعار، دعم عربي وإنجليزي، بدون تطبيق.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/digital-menu' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -118,7 +118,7 @@ export default function DigitalMenuPage() {
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">لماذا تحتاج مطعمك قائمة رقمية؟</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">القائمة الورقية تتبلى وتتوسّخ وتحتاج طباعة جديدة مع كل تغيير في السعر أو الأصناف. القائمة الرقمية بـ QR Code تُحل هذه المشكلة كلها: تحديث في ثوانٍ من الجوال، لا تكاليف طباعة، وزبون يتصفح قائمة أنيقة بصور جذابة.</p>
-          <p className="text-lg text-slate-700 leading-relaxed">DoGether Tech تصمم قوائم رقمية تعكس هوية مطعمك — بألوانك، خطوطك، وصورك — لا قوالب مملة متكررة. بنينا قوائم رقمية لمطاعم وكافيهات في مصر وفهمنا ما يحتاجه السوق المحلي.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">DoGether تصمم قوائم رقمية تعكس هوية مطعمك — بألوانك، خطوطك، وصورك — لا قوالب مملة متكررة. بنينا قوائم رقمية لمطاعم وكافيهات في مصر وفهمنا ما يحتاجه السوق المحلي.</p>
         </section>
 
         <section className="mb-14">
@@ -169,7 +169,7 @@ export default function DigitalMenuPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'أعمالنا | مشاريع ودراسات حالة | DoGether Tech',
+  title: 'أعمالنا | مشاريع ودراسات حالة | DoGether',
   description:
-    'دراسات حالة لمشاريع حقيقية نفّذتها DoGether Tech: مواقع، متاجر إلكترونية، أنظمة كاشير، ومنصات حجز لعملاء في مصر. تشيكن ون، الزعوي، فطير وعسل، شرم كايت سيرف وغيرها.',
+    'دراسات حالة لمشاريع حقيقية نفّذتها DoGether: مواقع، متاجر إلكترونية، أنظمة كاشير، ومنصات حجز لعملاء في مصر. تشيكن ون، الزعوي، فطير وعسل، شرم كايت سيرف وغيرها.',
   alternates: { canonical: 'https://dogethertech.com/work' },
   openGraph: {
-    title: 'أعمالنا | مشاريع ودراسات حالة | DoGether Tech',
-    description: 'مشاريع حقيقية نفّذتها DoGether Tech لعملاء في مصر',
+    title: 'أعمالنا | مشاريع ودراسات حالة | DoGether',
+    description: 'مشاريع حقيقية نفّذتها DoGether لعملاء في مصر',
     url: 'https://dogethertech.com/work',
   },
 }
@@ -108,7 +108,7 @@ const breadcrumbSchema = {
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'أعمال ومشاريع DoGether Tech',
+  name: 'أعمال ومشاريع DoGether',
   itemListElement: projects.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
@@ -117,7 +117,7 @@ const itemListSchema = {
       name: p.name,
       about: p.category,
       url: p.link,
-      creator: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business' },
+      creator: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business' },
     },
   })),
 }
@@ -130,7 +130,7 @@ export default function WorkPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
@@ -190,7 +190,7 @@ export default function WorkPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

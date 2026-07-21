@@ -141,7 +141,7 @@ const Footer = ({ lang }) => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 relative flex-shrink-0">
                   <Image
                     src={logoImg}
-                    alt="DoGether Tech Logo"
+                    alt="DoGether Logo"
                     className="w-full h-full object-contain rounded-xl"
                     sizes="56px"
                   />
@@ -156,8 +156,8 @@ const Footer = ({ lang }) => {
             </div>
             <p className="text-gray-400 mb-6 lg:mb-8 max-w-2xl text-sm">
               {lang === "en"
-                ? "Professional digital agency based in Fayoum, Egypt — serving businesses across all governorates. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
-                : "وكالة رقمية محترفة مقرها الفيوم، مصر — نخدم الأعمال في كل محافظات مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
+                ? "Professional digital agency based in Fayoum and Cairo, Egypt — serving businesses across all governorates. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
+                : "وكالة رقمية محترفة مقرها الفيوم والقاهرة، مصر — نخدم الأعمال في كل محافظات مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
             </p>
             <div>
               <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">
@@ -243,7 +243,7 @@ const Footer = ({ lang }) => {
                 <div className={isRTL ? "text-right" : "text-left"}>
                   <div className="text-xs text-gray-400">{t.location}</div>
                   <div className="text-sm sm:text-base">
-                    {lang === "en" ? "Fayoum, Egypt" : "الفيوم، مصر"}
+                    {lang === "en" ? "Fayoum & Cairo, Egypt" : "الفيوم والقاهرة، مصر"}
                   </div>
                 </div>
               </div>
@@ -282,7 +282,7 @@ const Footer = ({ lang }) => {
         <div className="border-t border-gray-800 pt-6 lg:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="text-gray-400 text-xs mb-4 sm:mb-0">
-              © {currentYear} DoGether Digital Solutions. {t.rights}
+              © {currentYear} DoGether. {t.rights}
             </div>
             <div className="flex items-center gap-1 text-gray-400 text-xs mb-4 sm:mb-0">
               <span>{t.made}</span>

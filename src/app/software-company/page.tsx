@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'شركة برمجة في مصر | DoGether Tech — حلول رقمية احترافية',
+  title: 'شركة برمجة في مصر | DoGether — حلول رقمية احترافية',
   description:
-    'DoGether Tech شركة برمجة احترافية في مصر. تصميم مواقع، تطبيقات جوال، متاجر إلكترونية، أنظمة POS وحلول برمجية مخصصة. نخدم القاهرة، الفيوم، الإسكندرية وجميع محافظات مصر.',
+    'DoGether شركة برمجة احترافية في مصر. تصميم مواقع، تطبيقات جوال، متاجر إلكترونية، أنظمة POS وحلول برمجية مخصصة. نخدم القاهرة، الفيوم، الإسكندرية وجميع محافظات مصر.',
   alternates: { canonical: 'https://dogethertech.com/software-company' },
   openGraph: {
-    title: 'شركة برمجة في مصر | DoGether Tech',
+    title: 'شركة برمجة في مصر | DoGether',
     description: 'حلول برمجية احترافية لجميع أحجام الأعمال في مصر',
     url: 'https://dogethertech.com/software-company',
   },
@@ -31,7 +31,7 @@ const faqSchema = {
       name: 'كم تكلفة تصميم موقع إلكتروني احترافي في مصر؟',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'تبدأ أسعار تصميم المواقع في DoGether Tech من 5,000 جنيه للمواقع البسيطة، وتصل إلى 20,000 جنيه أو أكثر للمواقع المتقدمة والمتاجر الإلكترونية. السعر يختلف حسب المتطلبات — تواصل معنا للحصول على عرض سعر مجاني.',
+        text: 'تبدأ أسعار تصميم المواقع في DoGether من 5,000 جنيه للمواقع البسيطة، وتصل إلى 20,000 جنيه أو أكثر للمواقع المتقدمة والمتاجر الإلكترونية. السعر يختلف حسب المتطلبات — تواصل معنا للحصول على عرض سعر مجاني.',
       },
     },
     {
@@ -135,7 +135,7 @@ export default function SoftwareCompanyHub() {
       {/* ── Header ── */}
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a
             href="https://wa.me/201062485133"
             className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
@@ -155,7 +155,7 @@ export default function SoftwareCompanyHub() {
           </nav>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-5 leading-tight">
             شركة برمجة في مصر
-            <span className="block text-[#1E6DB2] mt-2">DoGether Tech</span>
+            <span className="block text-[#1E6DB2] mt-2">DoGether</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             نحوّل أفكار الأعمال إلى منتجات رقمية ناجحة — مواقع ويب، تطبيقات جوال، متاجر إلكترونية،
@@ -259,7 +259,7 @@ export default function SoftwareCompanyHub() {
 
         {/* ── Why us ── */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">لماذا تختار DoGether Tech؟</h2>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">لماذا تختار DoGether؟</h2>
           <p className="text-slate-500 mb-8">تفاصيل حقيقية، مش عبارات عامة</p>
           <div className="grid md:grid-cols-2 gap-5">
             {[
@@ -336,7 +336,7 @@ export default function SoftwareCompanyHub() {
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
-          © 2025 DoGether Tech — جميع الحقوق محفوظة |{' '}
+          © 2025 DoGether — جميع الحقوق محفوظة |{' '}
           <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a>{' '}
           |{' '}
           <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a>

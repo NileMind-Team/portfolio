@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { articles } from './articles'
 
 export const metadata: Metadata = {
-  title: 'مدونة DoGether Tech | مقالات عن البرمجة وتصميم المواقع في مصر',
+  title: 'مدونة DoGether | مقالات عن البرمجة وتصميم المواقع في مصر',
   description:
-    'مقالات ونصائح عن تصميم المواقع، المتاجر الإلكترونية، تطبيقات الجوال، وأنظمة الكاشير في مصر. دليلك لاتخاذ قرارات رقمية صحيحة من DoGether Tech.',
+    'مقالات ونصائح عن تصميم المواقع، المتاجر الإلكترونية، تطبيقات الجوال، وأنظمة الكاشير في مصر. دليلك لاتخاذ قرارات رقمية صحيحة من DoGether.',
   alternates: { canonical: 'https://dogethertech.com/blog' },
   openGraph: {
-    title: 'مدونة DoGether Tech',
+    title: 'مدونة DoGether',
     description: 'مقالات ونصائح عن البرمجة وتصميم المواقع والتطبيقات في مصر',
     url: 'https://dogethertech.com/blog',
   },
@@ -30,7 +30,7 @@ export default function BlogIndexPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
@@ -42,7 +42,7 @@ export default function BlogIndexPage() {
             <span className="mx-2">›</span>
             <span className="text-slate-700">المدونة</span>
           </nav>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">مدونة DoGether Tech</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">مدونة DoGether</h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto">
             نصائح ومقالات تساعدك تتخذ قرارات رقمية صحيحة لمشروعك — بلغة بسيطة وبدون تعقيد
           </p>
@@ -73,7 +73,7 @@ export default function BlogIndexPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

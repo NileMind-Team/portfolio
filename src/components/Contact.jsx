@@ -62,7 +62,7 @@ const Contact = ({ lang }) => {
       hours: "Working Hours",
       support: "Dedicated Support",
       supportText: "Personal account manager",
-      location: "Based in Fayoum, Egypt • Serving all governorates • Available 24/7 - Everyday",
+      location: "Based in Fayoum & Cairo, Egypt • Serving all governorates • Available 24/7 - Everyday",
     },
     ar: {
       badge: "تواصل معنا",
@@ -97,7 +97,7 @@ const Contact = ({ lang }) => {
       hours: "ساعات العمل",
       support: "دعم مخصص",
       supportText: "مدير حساب شخصي",
-      location: "مقرنا في الفيوم، مصر • نخدم كل المحافظات • متوفرون 24/7 طوال أيام الأسبوع",
+      location: "مقرّانا في الفيوم والقاهرة، مصر • نخدم كل المحافظات • متوفرون 24/7 طوال أيام الأسبوع",
     },
   };
 
@@ -192,7 +192,7 @@ const Contact = ({ lang }) => {
     {
       icon: <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: t.facebook,
-      details: ["DoGether Tech", "Message us anytime"],
+      details: ["DoGether", "Message us anytime"],
       action: "https://www.facebook.com/Dogethertech",
       color: "from-blue-500 to-blue-600",
     },

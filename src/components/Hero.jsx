@@ -161,7 +161,7 @@ const Hero = ({ lang }) => {
                 <div className="p-4 sm:p-6">
                   <Image
                     src={heroImg}
-                    alt="DoGether Tech Software Solutions - شركة برمجة في مصر | Web Development, Mobile Apps, POS Systems Egypt"
+                    alt="DoGether Software Solutions - شركة برمجة في مصر | Web Development, Mobile Apps, POS Systems Egypt"
                     className="w-full h-auto rounded-lg sm:rounded-xl object-cover"
                     priority
                     sizes="(max-width: 768px) 100vw, 50vw"

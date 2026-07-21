@@ -155,8 +155,8 @@ export async function generateMetadata({
   const s = services[service]
   if (!c || !s) return {}
   const url = `https://dogethertech.com/software-company/${city}/${service}`
-  const title = `${s.metaService} في ${c.nameAr} | DoGether Tech`
-  const description = `${s.nameAr} في ${c.nameAr} مع DoGether Tech — ${s.intro}. خدمة احترافية لعملاء ${c.nameAr}. تواصل: 01062485133`
+  const title = `${s.metaService} في ${c.nameAr} | DoGether`
+  const description = `${s.nameAr} في ${c.nameAr} مع DoGether — ${s.intro}. خدمة احترافية لعملاء ${c.nameAr}. تواصل: 01062485133`
   return {
     title,
     description,
@@ -195,7 +195,7 @@ export default async function CityServicePage({
     description: `${s.what}`,
     provider: {
       '@type': 'Organization',
-      name: 'DoGether Tech',
+      name: 'DoGether',
       '@id': 'https://dogethertech.com/#business',
       url: 'https://dogethertech.com',
       telephone: '+201062485133',
@@ -224,7 +224,7 @@ export default async function CityServicePage({
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -254,7 +254,7 @@ export default async function CityServicePage({
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">{s.nameAr} لعملاء {c.nameAr}</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">{s.what}</p>
-          <p className="text-lg text-slate-700 leading-relaxed">{c.economy} توفّر DoGether Tech {s.nameAr} لأصحاب الأعمال في {c.nameAr} بجودة احترافية وأسعار تنافسية، مع تواصل يومي وتسليم في الموعد — نعمل عن بُعد بكفاءة كاملة مع عملاء {c.nameAr} وكل محافظات مصر.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">{c.economy} توفّر DoGether {s.nameAr} لأصحاب الأعمال في {c.nameAr} بجودة احترافية وأسعار تنافسية، مع تواصل يومي وتسليم في الموعد — نعمل عن بُعد بكفاءة كاملة مع عملاء {c.nameAr} وكل محافظات مصر.</p>
         </section>
 
         <section className="mb-14">
@@ -318,7 +318,7 @@ export default async function CityServicePage({
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

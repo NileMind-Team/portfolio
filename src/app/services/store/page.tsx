@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'إنشاء متجر إلكتروني في مصر | Paymob & Fawry | DoGether Tech',
+  title: 'إنشاء متجر إلكتروني في مصر | Paymob & Fawry | DoGether',
   description:
-    'DoGether Tech تبني متاجر إلكترونية احترافية في مصر مع بوابات دفع Paymob وFawry، إدارة مخزون، ولوحة تحكم كاملة. تواصل: 01062485133',
+    'DoGether تبني متاجر إلكترونية احترافية في مصر مع بوابات دفع Paymob وFawry، إدارة مخزون، ولوحة تحكم كاملة. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/store' },
   openGraph: {
-    title: 'إنشاء متجر إلكتروني في مصر | DoGether Tech',
+    title: 'إنشاء متجر إلكتروني في مصر | DoGether',
     description: 'متاجر إلكترونية متكاملة في مصر — Paymob، Fawry، إدارة مخزون، جاهزة للمبيعات',
     url: 'https://dogethertech.com/services/store',
   },
@@ -84,11 +84,11 @@ export default function StorePage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'E-commerce Development', name: 'إنشاء متجر إلكتروني', description: 'إنشاء متاجر إلكترونية متكاملة في مصر مع بوابات دفع Paymob وFawry، إدارة مخزون، ولوحة تحكم كاملة.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/store' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'E-commerce Development', name: 'إنشاء متجر إلكتروني', description: 'إنشاء متاجر إلكترونية متكاملة في مصر مع بوابات دفع Paymob وFawry، إدارة مخزون، ولوحة تحكم كاملة.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/store' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -117,7 +117,7 @@ export default function StorePage() {
       <main className="container mx-auto px-6 py-14 max-w-5xl">
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">متجر إلكتروني مصري حقيقي — لا قوالب جاهزة</h2>
-          <p className="text-lg text-slate-700 leading-relaxed mb-4">المتجر الإلكتروني الجاهز (Shopify، WooCommerce) يبدو سريعاً في البداية لكنه يفرض عليك رسوم شهرية متراكمة، قيوداً في التخصيص، وأداءً أبطأ. DoGether Tech تبني لك متجراً مخصصاً بكامل كوده تمتلكه أنت — بدون اشتراكات شهرية للمنصة.</p>
+          <p className="text-lg text-slate-700 leading-relaxed mb-4">المتجر الإلكتروني الجاهز (Shopify، WooCommerce) يبدو سريعاً في البداية لكنه يفرض عليك رسوم شهرية متراكمة، قيوداً في التخصيص، وأداءً أبطأ. DoGether تبني لك متجراً مخصصاً بكامل كوده تمتلكه أنت — بدون اشتراكات شهرية للمنصة.</p>
           <p className="text-lg text-slate-700 leading-relaxed">متجرنا مُحسَّن للسوق المصري من أول يوم: بوابات دفع محلية (Paymob وFawry)، واجهة عربية RTL سليمة، وسرعة تحميل تُبقي الزبون في الموقع بدلاً من المغادرة.</p>
         </section>
 
@@ -169,7 +169,7 @@ export default function StorePage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

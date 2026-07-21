@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'تطوير تطبيقات الجوال في مصر | Flutter iOS & Android | DoGether Tech',
+  title: 'تطوير تطبيقات الجوال في مصر | Flutter iOS & Android | DoGether',
   description:
-    'DoGether Tech تطور تطبيقات جوال احترافية بـ Flutter لنظامَي iOS وAndroid في مصر. تصميم UI/UX، نشر على المتاجر، صيانة مستمرة. تواصل: 01062485133',
+    'DoGether تطور تطبيقات جوال احترافية بـ Flutter لنظامَي iOS وAndroid في مصر. تصميم UI/UX، نشر على المتاجر، صيانة مستمرة. تواصل: 01062485133',
   alternates: {
     canonical: 'https://dogethertech.com/services/mobile-app',
     languages: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'تطوير تطبيقات الجوال في مصر | Flutter iOS & Android | DoGether Tech',
+    title: 'تطوير تطبيقات الجوال في مصر | Flutter iOS & Android | DoGether',
     description:
       'تطبيقات جوال Flutter لنظامَي iOS وAndroid — تصميم احترافي، أداء عالٍ، نشر سريع في مصر',
     url: 'https://dogethertech.com/services/mobile-app',
@@ -135,7 +135,7 @@ export default function MobileAppPage() {
               'تطوير تطبيقات جوال احترافية بـ Flutter لنظامَي iOS وAndroid في مصر — تصميم UI/UX، نشر على المتاجر، وصيانة مستمرة.',
             provider: {
               '@type': 'Organization',
-              name: 'DoGether Tech',
+              name: 'DoGether',
               '@id': 'https://dogethertech.com/#business',
               url: 'https://dogethertech.com',
               telephone: '+201062485133',
@@ -150,7 +150,7 @@ export default function MobileAppPage() {
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            DoGether Tech
+            DoGether
           </Link>
           <a
             href="https://wa.me/201062485133"
@@ -206,7 +206,7 @@ export default function MobileAppPage() {
             Flutter من Google هو إطار العمل الأسرع نمواً في تطوير تطبيقات الجوال. بكود واحد يعمل على iOS وAndroid، توفر وقتاً وميزانية دون أي تنازل على الجودة أو الأداء. استخدمناه في مشاريع حقيقية لعملائنا من قطاعات المطاعم والتجارة الإلكترونية والخدمات.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
-            تطبيقاتنا لا تشعرك بأنها &quot;هايبرد&quot; — الأداء يضاهي التطبيقات الأصلية، والتصميم يتكيف مع معايير كل نظام. هذا ما يميز DoGether Tech عن غيرها من شركات البرمجة في مصر.
+            تطبيقاتنا لا تشعرك بأنها &quot;هايبرد&quot; — الأداء يضاهي التطبيقات الأصلية، والتصميم يتكيف مع معايير كل نظام. هذا ما يميز DoGether عن غيرها من شركات البرمجة في مصر.
           </p>
         </section>
 
@@ -352,7 +352,7 @@ export default function MobileAppPage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
-          © 2025 DoGether Tech — جميع الحقوق محفوظة |{' '}
+          © 2025 DoGether — جميع الحقوق محفوظة |{' '}
           <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">
             dogethertech.com
           </a>{' '}

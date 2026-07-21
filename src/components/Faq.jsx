@@ -4,45 +4,53 @@ const Faq = ({ lang }) => {
   const content = {
     en: {
       heading: 'Frequently Asked Questions',
-      subtitle: 'Everything you need to know about DoGether Tech',
+      subtitle: 'Everything you need to know about DoGether',
       items: [
         {
-          q: 'What is DoGether Tech?',
-          a: 'DoGether Tech is a professional software company in Egypt specializing in web development, mobile apps, e-commerce stores, POS systems, and UI/UX design. Founded in 2025, we serve clients across Egypt and the Middle East.',
+          q: 'What is DoGether?',
+          a: 'DoGether is a professional software company in Egypt specializing in web development, mobile apps, e-commerce stores, POS systems, and UI/UX design. Founded in 2025, we serve clients across Egypt and the Middle East.',
         },
         {
           q: 'Is DoGether a software company in Fayoum?',
-          a: 'Yes. DoGether Tech is based in Fayoum, Egypt, and serves clients in Cairo, Alexandria, Port Said and all Egyptian governorates. Contact: +201062485133',
+          a: 'Yes. DoGether is headquartered in Fayoum and Cairo, Egypt, and serves clients in Giza, Alexandria, Port Said, Beni Suef and all Egyptian governorates. Contact: +201062485133',
         },
         {
-          q: 'What services does DoGether Tech offer?',
+          q: 'Is DoGether a software company in Cairo?',
+          a: 'Yes. DoGether is headquartered in both Fayoum and Cairo, Egypt, serving Greater Cairo and Giza with web development, e-commerce, mobile apps, and POS systems.',
+        },
+        {
+          q: 'What services does DoGether offer?',
           a: 'Web development, e-commerce stores, mobile apps (Android & iOS), POS and cashier systems, UI/UX design, and DevOps & cloud hosting.',
         },
         {
           q: 'How much does a website cost in Egypt?',
-          a: 'DoGether Tech builds professional websites at competitive prices starting from around 8,000 EGP depending on project requirements. Contact us for a free quote.',
+          a: 'DoGether builds professional websites at competitive prices starting from around 8,000 EGP depending on project requirements. Contact us for a free quote.',
         },
         {
           q: 'Do you work with clients remotely?',
           a: 'Yes, we work fully remotely with daily communication over WhatsApp and video calls, guaranteeing the same quality of follow-up — with in-person meetings when needed.',
         },
         {
-          q: 'How do I contact DoGether Tech?',
+          q: 'How do I contact DoGether?',
           a: 'Phone/WhatsApp +201062485133 | Facebook: facebook.com/Dogethertech | Website: dogethertech.com',
         },
       ],
     },
     ar: {
       heading: 'الأسئلة الشائعة',
-      subtitle: 'كل ما تحتاج معرفته عن DoGether Tech',
+      subtitle: 'كل ما تحتاج معرفته عن DoGether',
       items: [
         {
-          q: 'ما هي DoGether Tech؟',
-          a: 'DoGether Tech شركة برمجة محترفة في مصر متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2025 وتخدم عملاء في مصر والشرق الأوسط.',
+          q: 'ما هي DoGether؟',
+          a: 'DoGether شركة برمجة محترفة في مصر متخصصة في تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع POS، وتصميم UI/UX. تأسست عام 2025 وتخدم عملاء في مصر والشرق الأوسط.',
         },
         {
           q: 'هل DoGether شركة برمجة في الفيوم؟',
-          a: 'نعم، DoGether Tech شركة برمجة مقرها الفيوم، مصر، وتخدم عملاء في القاهرة والإسكندرية وبورسعيد وجميع محافظات مصر. للتواصل: +201062485133',
+          a: 'نعم، DoGether شركة برمجة مقرّاها في الفيوم والقاهرة، مصر، وتخدم عملاء في الجيزة والإسكندرية وبورسعيد وبني سويف وجميع محافظات مصر. للتواصل: +201062485133',
+        },
+        {
+          q: 'هل DoGether شركة برمجة في القاهرة؟',
+          a: 'نعم، DoGether لها مقر في القاهرة بجانب مقرها في الفيوم، وتخدم عملاء القاهرة الكبرى والجيزة بتصميم المواقع والمتاجر الإلكترونية وتطبيقات الجوال وأنظمة الكاشير POS.',
         },
         {
           q: 'ما هي خدمات شركة البرمجة DoGether؟',
@@ -50,14 +58,14 @@ const Faq = ({ lang }) => {
         },
         {
           q: 'ما هو سعر تصميم موقع إلكتروني في مصر؟',
-          a: 'تقدم DoGether Tech تصميم مواقع إلكترونية احترافية بأسعار تنافسية تبدأ من حوالي 8,000 جنيه مصري حسب متطلبات المشروع. تواصل للحصول على عرض سعر مجاني.',
+          a: 'تقدم DoGether تصميم مواقع إلكترونية احترافية بأسعار تنافسية تبدأ من حوالي 8,000 جنيه مصري حسب متطلبات المشروع. تواصل للحصول على عرض سعر مجاني.',
         },
         {
           q: 'هل تعملون مع العملاء عن بُعد؟',
           a: 'نعم، نعمل عن بُعد بالكامل بتواصل يومي عبر واتساب والاجتماعات المرئية، ونضمن نفس جودة المتابعة — مع إمكانية لقاءات عند الحاجة.',
         },
         {
-          q: 'كيف أتواصل مع شركة البرمجة DoGether Tech؟',
+          q: 'كيف أتواصل مع شركة البرمجة DoGether؟',
           a: 'هاتف/واتساب +201062485133 | فيسبوك: facebook.com/Dogethertech | الموقع: dogethertech.com',
         },
       ],

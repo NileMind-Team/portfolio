@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'تصميم وتطوير مواقع الويب في مصر | Next.js & React | DoGether Tech',
+  title: 'تصميم وتطوير مواقع الويب في مصر | Next.js & React | DoGether',
   description:
-    'DoGether Tech تصمم وتطور مواقع ويب احترافية في مصر بتقنية Next.js وReact. مواقع سريعة، متجاوبة، وصديقة لـ SEO. تواصل: 01062485133',
+    'DoGether تصمم وتطور مواقع ويب احترافية في مصر بتقنية Next.js وReact. مواقع سريعة، متجاوبة، وصديقة لـ SEO. تواصل: 01062485133',
   alternates: {
     canonical: 'https://dogethertech.com/services/website',
     languages: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'تصميم وتطوير مواقع الويب في مصر | DoGether Tech',
+    title: 'تصميم وتطوير مواقع الويب في مصر | DoGether',
     description: 'مواقع ويب Next.js احترافية في مصر — سريعة، متجاوبة، وصديقة لـ SEO',
     url: 'https://dogethertech.com/services/website',
   },
@@ -99,11 +99,11 @@ export default function WebsitePage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Web Development', name: 'تصميم وتطوير مواقع الويب', description: 'تصميم وتطوير مواقع ويب احترافية في مصر بتقنية Next.js وReact — سريعة، متجاوبة، وصديقة لمحركات البحث.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/website' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Web Development', name: 'تصميم وتطوير مواقع الويب', description: 'تصميم وتطوير مواقع ويب احترافية في مصر بتقنية Next.js وReact — سريعة، متجاوبة، وصديقة لمحركات البحث.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/website' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -133,7 +133,7 @@ export default function WebsitePage() {
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">لماذا موقعك الإلكتروني أهم من أي وقت مضى؟</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">في سوق يبحث فيه العملاء عن كل شيء أونلاين قبل اتخاذ أي قرار شراء، الموقع الإلكتروني لم يعد رفاهية — صار ضرورة. الموقع البطيء أو القديم يعني خسارة عملاء محتملين يومياً دون أن تشعر.</p>
-          <p className="text-lg text-slate-700 leading-relaxed">DoGether Tech تبني مواقع بتقنية Next.js التي تختار أفضل مؤشرات Core Web Vitals وتُحسن ترتيبك في Google تلقائياً. كل سطر كود نكتبه مُصمَّم للأداء والأمان وسهولة الصيانة على المدى البعيد.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">DoGether تبني مواقع بتقنية Next.js التي تختار أفضل مؤشرات Core Web Vitals وتُحسن ترتيبك في Google تلقائياً. كل سطر كود نكتبه مُصمَّم للأداء والأمان وسهولة الصيانة على المدى البعيد.</p>
         </section>
 
         <section className="mb-14">
@@ -199,7 +199,7 @@ export default function WebsitePage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

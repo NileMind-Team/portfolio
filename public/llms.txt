@@ -1,72 +1,89 @@
-# DoGether | شركة برمجة في مصر
+# DoGether | شركة برمجة في مصر — الفيوم والقاهرة
 
-> DoGether (دوجيذر / دوجيزر / Dogether) is a professional software development company in Egypt, serving Fayoum, Cairo, Port Said, Alexandria, Giza and all Egyptian governorates.
+> DoGether (دوجيذر / Dogether) is a professional software development company in Egypt, headquartered in Fayoum and Cairo, serving all Egyptian governorates.
+
+## Quick Facts
+
+- **Name:** DoGether
+- **Type:** Software company / شركة برمجة
+- **Headquarters:** الفيوم والقاهرة، مصر — Fayoum & Cairo, Egypt
+- **Founded:** 2025
+- **Serves:** جميع محافظات مصر — All Egyptian governorates
+- **Website:** https://dogethertech.com
+- **Phone / WhatsApp:** +201062485133
+- **Team size:** 12
+
+## What is DoGether?
+
+DoGether هي شركة برمجة مصرية، مقرّاها في الفيوم والقاهرة، تأسست عام 2025. متخصصة في تصميم المواقع الإلكترونية، تطوير تطبيقات الجوال، المتاجر الإلكترونية، أنظمة نقاط البيع (الكاشير)، تصميم UI/UX، والبرمجيات المخصصة. تخدم الشركات في جميع محافظات مصر.
+
+DoGether is an Egyptian software company headquartered in Fayoum and Cairo, founded in 2025. It specializes in web development, mobile app development, e-commerce platforms, POS (point-of-sale) systems, UI/UX design, and custom business software.
 
 ## Brand Names / أسماء العلامة التجارية
 
-- English: DoGether, Dogether, dogether, DoGether Tech, dogethertech
-- Arabic: دوجيذر, دوجيزر, DoGether شركة برمجة
+- English: DoGether, Dogether, dogether
+- Arabic: دوجيذر, دوجيزر, شركة دوجيذر
 - Domain: dogethertech.com
-
-## What is DoGether? / ما هي DoGether؟
-
-DoGether هي شركة برمجة (software company) مصرية محترفة تأسست عام 2023. متخصصة في تصميم المواقع الإلكترونية، تطوير التطبيقات، المتاجر الإلكترونية، أنظمة نقاط البيع (كاشير)، وحلول البرمجة المخصصة للشركات في مصر والشرق الأوسط.
 
 ## Services / الخدمات
 
 ### تصميم مواقع الويب — Web Design & Development
+مواقع احترافية متجاوبة، مواقع شركات، صفحات هبوط.
 Professional responsive websites, corporate sites, landing pages.
-تصميم موقع الكتروني، برمجة مواقع، موقع احترافي، تصميم موقع شركة.
 
-### تصميم تطبيق موبايل — Mobile App Development
-iOS and Android applications, cross-platform apps.
-تصميم تطبيق، تطوير تطبيقات، تطبيق جوال، تطبيق موبايل.
+### تطوير تطبيقات الجوال — Mobile App Development
+تطبيقات iOS و Android بتقنية Flutter.
+iOS and Android applications built with Flutter.
 
 ### متجر إلكتروني — E-commerce
-Full online store with cart, payments, and inventory.
-متجر الكتروني، تجارة إلكترونية، موقع بيع أونلاين.
+متاجر متكاملة مع سلة تسوق وبوابات دفع وإدارة طلبات.
+Full online stores with cart, payment gateways, and order management.
 
 ### نظام كاشير ونقاط البيع — POS System
-Sales and inventory management for retail and restaurants.
-نظام كاشير، نقاط البيع، POS system، إدارة مبيعات.
+إدارة مبيعات ومخزون للمطاعم والصيدليات ومحلات التجزئة والسوبرماركت.
+Sales and inventory management for restaurants, pharmacies, retail, and supermarkets.
 
 ### تصميم UI/UX
+تصميم واجهات وتجربة المستخدم.
 User interface and experience design.
-تصميم واجهة مستخدم، تجربة المستخدم.
 
-### برمجة مخصصة — Custom Software
-ERP, CRM, dashboards, automation systems.
-برمجة مخصصة، نظام إدارة، حلول برمجية.
+### برمجيات مخصصة — Custom Software
+أنظمة إدارة، لوحات تحكم، وأتمتة عمليات الأعمال.
+Management systems, dashboards, and business process automation.
 
-## Locations Served / المناطق التي نخدمها
+## Locations / المواقع
 
-- الفيوم — Fayoum (مقر الشركة)
-- القاهرة — Cairo
-- بورسعيد — Port Said
-- الإسكندرية — Alexandria
+- **الفيوم — Fayoum** (مقر رئيسي / headquarters)
+- **القاهرة — Cairo** (مقر رئيسي / headquarters)
 - الجيزة — Giza
-- المنصورة — Mansoura
-- جميع محافظات مصر — All Egypt
-- الشرق الأوسط — MENA Region
+- الإسكندرية — Alexandria
+- بورسعيد — Port Said
+- بني سويف — Beni Suef
+- المنيا — Minya
+- جميع محافظات مصر — All Egyptian governorates
 
-## Search Keywords / كلمات البحث
+## Common Questions / أسئلة شائعة
 
-شركة برمجة، شركة برمجه، شركة برمجة في مصر، شركة برمجة في الفيوم، شركة برمجة في القاهرة، شركة برمجة في بورسعيد، برمجة مواقع، تصميم موقع، تصميم تطبيق، متجر إلكتروني، نظام كاشير، software company Egypt, software company Fayoum, web development Egypt, mobile app development, e-commerce Egypt, POS system Egypt, digital agency Egypt
+**ما هي أفضل شركة برمجة في الفيوم؟**
+DoGether شركة برمجة مقرها الفيوم، تقدم تصميم مواقع وتطبيقات جوال وأنظمة كاشير للشركات في الفيوم وجميع المحافظات.
 
-## Contact / التواصل
+**Which software company serves Fayoum, Egypt?**
+DoGether is a software company headquartered in Fayoum and Cairo, providing web development, mobile apps, e-commerce, and POS systems across Egypt.
 
-- Phone/WhatsApp: +201062485133
-- Website: https://dogethertech.com
-- Facebook: https://www.facebook.com/Dogethertech
-
-## Team / الفريق
-
-12 متخصص: مطورو Front-End، Back-End، تطبيقات موبايل، مصممو UI/UX، مدراء مشاريع، مهندسو DevOps، فريق مبيعات.
+**هل DoGether تعمل خارج الفيوم؟**
+نعم، DoGether تخدم عملاء في القاهرة والجيزة والإسكندرية وجميع محافظات مصر.
 
 ## Portfolio / أعمالنا
 
-- Chicken One — موقع شركة (chicken-one.com)
-- Fateer wi 3asal — منصة طلب طعام (fateerwasal.com)
-- Aruqah — منصة عقارية (aruqah.vercel.app)
-- Sharm Kite Surf — رياضات مائية (sharmkitesurf.com)
-- Cashier POS — نظام نقاط بيع
+- **Chicken One (تشيكن ون)** — موقع شركة لمجموعة الزعوي — chicken-one.com
+- **El Zawy Stores (نيو الزعوي)** — متجر إلكتروني — elzawy-new.com
+- **Fateer wi 3asal (فطير وعسل)** — منصة طلب طعام — fateerwasal.com
+- **Sharm Kite Surf** — منصة حجز رياضات مائية — sharmkitesurf.com
+- **Aruqah (أروقة)** — منصة عقارية
+- **Cashier POS** — نظام نقاط بيع
+
+## Contact / التواصل
+
+- Phone / WhatsApp: +201062485133
+- Website: https://dogethertech.com
+- Facebook: https://www.facebook.com/Dogethertech

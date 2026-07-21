@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'نظام إدارة الأعمال والمخازن في مصر | DoGether Tech',
+  title: 'نظام إدارة الأعمال والمخازن في مصر | DoGether',
   description:
-    'DoGether Tech تطور أنظمة إدارة أعمال مخصصة في مصر: مخزون، موظفين، فواتير، وتقارير من لوحة تحكم واحدة. تواصل: 01062485133',
+    'DoGether تطور أنظمة إدارة أعمال مخصصة في مصر: مخزون، موظفين، فواتير، وتقارير من لوحة تحكم واحدة. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/management-system' },
   openGraph: {
-    title: 'نظام إدارة الأعمال والمخازن في مصر | DoGether Tech',
+    title: 'نظام إدارة الأعمال والمخازن في مصر | DoGether',
     description: 'أنظمة إدارة مخصصة: مخزون، موظفين، فواتير، تقارير — كل شيء من مكان واحد',
     url: 'https://dogethertech.com/services/management-system',
   },
@@ -22,7 +22,7 @@ const faqSchema = {
       name: 'ما الفرق بين نظام الإدارة المخصص ونظام ERP الجاهز؟',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'أنظمة ERP الجاهزة (SAP، Odoo) قوية لكنها معقدة وغالية ومصممة للشركات الكبيرة. نظام الإدارة المخصص من DoGether Tech يركز على ما تحتاجه بالضبط — بدون تعقيدات لا تستخدمها، وبتكلفة مناسبة لحجم مشروعك.',
+        text: 'أنظمة ERP الجاهزة (SAP، Odoo) قوية لكنها معقدة وغالية ومصممة للشركات الكبيرة. نظام الإدارة المخصص من DoGether يركز على ما تحتاجه بالضبط — بدون تعقيدات لا تستخدمها، وبتكلفة مناسبة لحجم مشروعك.',
       },
     },
     {
@@ -84,11 +84,11 @@ export default function ManagementSystemPage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Business Management System', name: 'نظام إدارة الأعمال والمخازن', description: 'تطوير أنظمة إدارة أعمال مخصصة في مصر: مخزون، موظفين، فواتير، وتقارير من لوحة تحكم واحدة.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/management-system' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'Business Management System', name: 'نظام إدارة الأعمال والمخازن', description: 'تطوير أنظمة إدارة أعمال مخصصة في مصر: مخزون، موظفين، فواتير، وتقارير من لوحة تحكم واحدة.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/management-system' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">ناقش مشروعك</a>
         </div>
       </header>
@@ -117,7 +117,7 @@ export default function ManagementSystemPage() {
       <main className="container mx-auto px-6 py-14 max-w-5xl">
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">إدارة أعمالك بالكامل من شاشة واحدة</h2>
-          <p className="text-lg text-slate-700 leading-relaxed mb-4">كثير من الشركات تدير أعمالها بمزيج من Excel وواتساب ودفاتر ورقية — وهذا يعني بيانات متفرقة، أخطاء متكررة، ووقت ضائع. نظام إدارة الأعمال من DoGether Tech يجمع كل خيوط عملك في لوحة تحكم واحدة تُعطيك رؤية كاملة وقرارات مبنية على بيانات حقيقية.</p>
+          <p className="text-lg text-slate-700 leading-relaxed mb-4">كثير من الشركات تدير أعمالها بمزيج من Excel وواتساب ودفاتر ورقية — وهذا يعني بيانات متفرقة، أخطاء متكررة، ووقت ضائع. نظام إدارة الأعمال من DoGether يجمع كل خيوط عملك في لوحة تحكم واحدة تُعطيك رؤية كاملة وقرارات مبنية على بيانات حقيقية.</p>
           <p className="text-lg text-slate-700 leading-relaxed">كل نظام نبنيه يختلف عن الآخر — لأن كل شركة لها طريقة عمل مختلفة. نبدأ بجلسة تحليل مفصلة نفهم فيها كيف تدير عملك الآن، ثم نبني لك النظام الذي يُحسّن ما يعمل ويُصلح ما لا يعمل.</p>
         </section>
 
@@ -169,7 +169,7 @@ export default function ManagementSystemPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

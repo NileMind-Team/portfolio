@@ -45,10 +45,10 @@ export default async function ArticlePage({
     datePublished: article.date,
     dateModified: article.date,
     inLanguage: 'ar',
-    author: { '@type': 'Organization', name: 'DoGether Tech', url: 'https://dogethertech.com' },
+    author: { '@type': 'Organization', name: 'DoGether', url: 'https://dogethertech.com' },
     publisher: {
       '@type': 'Organization',
-      name: 'DoGether Tech',
+      name: 'DoGether',
       '@id': 'https://dogethertech.com/#business',
       logo: { '@type': 'ImageObject', url: 'https://dogethertech.com/DoGehter-icon.png' },
     },
@@ -83,7 +83,7 @@ export default async function ArticlePage({
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
@@ -100,7 +100,7 @@ export default async function ArticlePage({
         <div className="text-4xl mb-4">{article.emoji}</div>
         <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 leading-tight">{article.title}</h1>
         <div className="flex items-center gap-3 text-sm text-slate-400 mb-8 pb-8 border-b border-slate-200">
-          <span>DoGether Tech</span>
+          <span>DoGether</span>
           <span>•</span>
           <span>{article.readingTime}</span>
         </div>
@@ -158,7 +158,7 @@ export default async function ArticlePage({
       </article>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

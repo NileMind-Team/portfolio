@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'متجر إلكتروني في الفيوم | ابدأ البيع أونلاين | DoGether Tech',
+  title: 'متجر إلكتروني في الفيوم | ابدأ البيع أونلاين | DoGether',
   description:
     'إنشاء متجر إلكتروني في الفيوم مع بوابات دفع مصرية وإدارة مخزون وتوصيل. ابدأ بيع منتجاتك أونلاين لعملاء الفيوم ومصر كلها. أسعار من 15,000 جنيه. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/software-company/fayoum/online-store' },
   openGraph: {
-    title: 'متجر إلكتروني في الفيوم | DoGether Tech',
+    title: 'متجر إلكتروني في الفيوم | DoGether',
     description: 'إنشاء متجر إلكتروني في الفيوم — بوابات دفع مصرية، إدارة مخزون، وتوصيل',
     url: 'https://dogethertech.com/software-company/fayoum/online-store',
   },
@@ -55,7 +55,7 @@ const serviceSchema = {
   serviceType: 'E-commerce Development',
   name: 'إنشاء متجر إلكتروني في الفيوم',
   description: 'إنشاء متاجر إلكترونية متكاملة لأصحاب الأعمال في محافظة الفيوم مع بوابات دفع مصرية.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'City', name: 'Fayoum' },
   url: 'https://dogethertech.com/software-company/fayoum/online-store',
 }
@@ -69,7 +69,7 @@ export default function FayoumOnlineStorePage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -102,7 +102,7 @@ export default function FayoumOnlineStorePage() {
             المحل التقليدي في الفيوم يخدم من يمرّ بالشارع فقط وفي ساعات العمل. المتجر الإلكتروني يبيع 24 ساعة، ويصل لعميل في القاهرة أو الإسكندرية بنفس سهولة عميل في الفيوم. كثير من منتجات الفيوم — من المنتجات الغذائية والحرف اليدوية إلى الملابس ومستحضرات التجميل — لها طلب خارج المحافظة لا تستطيع الوصول إليه بدون متجر أونلاين.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
-            في DoGether Tech نبني متجرك بكود تمتلكه أنت — بدون رسوم اشتراك شهرية للمنصة كما في الحلول الجاهزة — ومُهيّأ للسوق المصري من أول يوم: دفع محلي، واجهة عربية سليمة، وسرعة تحميل تحافظ على العميل. خبرتنا الحقيقية تشمل متاجر إلكترونية فعلية مثل متجر مجموعة الزعوي ومتجر مستحضرات تجميل ننفّذها بنفس الجودة لعملاء الفيوم.
+            في DoGether نبني متجرك بكود تمتلكه أنت — بدون رسوم اشتراك شهرية للمنصة كما في الحلول الجاهزة — ومُهيّأ للسوق المصري من أول يوم: دفع محلي، واجهة عربية سليمة، وسرعة تحميل تحافظ على العميل. خبرتنا الحقيقية تشمل متاجر إلكترونية فعلية مثل متجر مجموعة الزعوي ومتجر مستحضرات تجميل ننفّذها بنفس الجودة لعملاء الفيوم.
           </p>
         </section>
 
@@ -178,7 +178,7 @@ export default function FayoumOnlineStorePage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

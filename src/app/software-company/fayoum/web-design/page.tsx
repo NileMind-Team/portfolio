@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'تصميم مواقع في الفيوم | مواقع احترافية سريعة | DoGether Tech',
+  title: 'تصميم مواقع في الفيوم | مواقع احترافية سريعة | DoGether',
   description:
     'تصميم مواقع في الفيوم بأيدي شركة مقرها الفيوم. مواقع احترافية سريعة متجاوبة وصديقة لجوجل لأصحاب الأعمال. أسعار تبدأ من 8,000 جنيه. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/software-company/fayoum/web-design' },
   openGraph: {
-    title: 'تصميم مواقع في الفيوم | DoGether Tech',
+    title: 'تصميم مواقع في الفيوم | DoGether',
     description: 'تصميم مواقع احترافية في الفيوم — سريعة، متجاوبة، وصديقة لمحركات البحث',
     url: 'https://dogethertech.com/software-company/fayoum/web-design',
   },
@@ -55,7 +55,7 @@ const serviceSchema = {
   serviceType: 'Web Design',
   name: 'تصميم مواقع في الفيوم',
   description: 'تصميم وتطوير مواقع احترافية لأصحاب الأعمال في محافظة الفيوم.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'City', name: 'Fayoum' },
   url: 'https://dogethertech.com/software-company/fayoum/web-design',
 }
@@ -69,7 +69,7 @@ export default function FayoumWebDesignPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -102,7 +102,7 @@ export default function FayoumWebDesignPage() {
             العميل في الفيوم — زي أي مكان — بيبحث في جوجل قبل ما يشتري أو يزور محلاً. لو مالكش موقع، فأنت غير موجود بالنسبة له، والمنافس اللي عنده موقع بيكسبه. الموقع الإلكتروني بقى الواجهة الأولى لأي نشاط: مطعم، محل، عيادة، مكتب، أو مشروع سياحي حول قارون.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
-            في DoGether Tech، ومقرنا في الفيوم، نصمم مواقع لا تكتفي بأن تكون "موجودة" بل تعمل لصالحك: سريعة التحميل، واضحة، وتوجّه الزائر لاتخاذ خطوة — اتصال، طلب عرض سعر، أو زيارة. نبني بتقنية Next.js الحديثة التي تمنح موقعك سرعة وأماناً وترتيباً أفضل في نتائج البحث.
+            في DoGether، ومقرنا في الفيوم، نصمم مواقع لا تكتفي بأن تكون "موجودة" بل تعمل لصالحك: سريعة التحميل، واضحة، وتوجّه الزائر لاتخاذ خطوة — اتصال، طلب عرض سعر، أو زيارة. نبني بتقنية Next.js الحديثة التي تمنح موقعك سرعة وأماناً وترتيباً أفضل في نتائج البحث.
           </p>
         </section>
 
@@ -176,7 +176,7 @@ export default function FayoumWebDesignPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

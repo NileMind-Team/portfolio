@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'شركة برمجة في الفيوم | تصميم مواقع وتطبيقات | DoGether Tech',
+  title: 'شركة برمجة في الفيوم | تصميم مواقع وتطبيقات | DoGether',
   description:
-    'DoGether Tech شركة برمجة مقرها الفيوم — تصميم مواقع، متاجر إلكترونية، تطبيقات جوال، وأنظمة كاشير POS لأصحاب الأعمال في الفيوم. استشارة مجانية: 01062485133',
+    'DoGether شركة برمجة مقرها الفيوم — تصميم مواقع، متاجر إلكترونية، تطبيقات جوال، وأنظمة كاشير POS لأصحاب الأعمال في الفيوم. استشارة مجانية: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/software-company/fayoum' },
   openGraph: {
-    title: 'شركة برمجة في الفيوم | DoGether Tech',
+    title: 'شركة برمجة في الفيوم | DoGether',
     description:
       'شركة برمجة مقرها الفيوم — مواقع، متاجر إلكترونية، تطبيقات، وأنظمة كاشير لأصحاب الأعمال في الفيوم',
     url: 'https://dogethertech.com/software-company/fayoum',
@@ -28,7 +28,7 @@ const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   '@id': 'https://dogethertech.com/#business',
-  name: 'DoGether Tech',
+  name: 'DoGether',
   description: 'شركة برمجة وتصميم مواقع مقرها الفيوم، مصر',
   url: 'https://dogethertech.com/software-company/fayoum',
   telephone: '+201062485133',
@@ -76,8 +76,8 @@ const services = [
 
 const faqs = [
   {
-    q: 'هل DoGether Tech شركة برمجة موجودة فعلاً في الفيوم؟',
-    a: 'نعم، مقر DoGether Tech الرئيسي في محافظة الفيوم، ومنها نخدم عملاءنا في الفيوم وكل محافظات مصر. القرب الجغرافي من عملاء الفيوم يتيح لنا اجتماعات مباشرة وفهماً أعمق للسوق المحلي.',
+    q: 'هل DoGether شركة برمجة موجودة فعلاً في الفيوم؟',
+    a: 'نعم، مقر DoGether الرئيسي في محافظة الفيوم، ومنها نخدم عملاءنا في الفيوم وكل محافظات مصر. القرب الجغرافي من عملاء الفيوم يتيح لنا اجتماعات مباشرة وفهماً أعمق للسوق المحلي.',
   },
   {
     q: 'كم تكلفة تصميم موقع أو تطبيق لمشروع في الفيوم؟',
@@ -112,7 +112,7 @@ export default function FayoumPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
@@ -133,7 +133,7 @@ export default function FayoumPage() {
             شركة برمجة في الفيوم
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-8">
-            DoGether Tech — شركة برمجة مقرها الفيوم. نصمم مواقع، متاجر إلكترونية، تطبيقات، وأنظمة كاشير لأصحاب الأعمال في محافظتنا
+            DoGether — شركة برمجة مقرها الفيوم. نصمم مواقع، متاجر إلكترونية، تطبيقات، وأنظمة كاشير لأصحاب الأعمال في محافظتنا
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <a href="https://wa.me/201062485133" className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow">استشارة مجانية</a>
@@ -146,7 +146,7 @@ export default function FayoumPage() {
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">شركة البرمجة الأقرب لأصحاب الأعمال في الفيوم</h2>
           <p className="text-lg text-slate-700 leading-relaxed mb-4">
-            على عكس معظم شركات البرمجة التي تتركّز في القاهرة، فإن مقر DoGether Tech في قلب محافظة الفيوم. هذا يعني أننا نفهم السوق المحلي عن قرب: طبيعة المحلات في شارع الحرية، احتياجات مطاعم وكافيهات الفيوم، وتحديات المشاريع الزراعية والسياحية المحيطة ببحيرة قارون ووادي الريان. القرب الجغرافي يتيح اجتماعات مباشرة وتواصلاً أسرع بدون حواجز.
+            على عكس معظم شركات البرمجة التي تتركّز في القاهرة، فإن مقر DoGether في قلب محافظة الفيوم. هذا يعني أننا نفهم السوق المحلي عن قرب: طبيعة المحلات في شارع الحرية، احتياجات مطاعم وكافيهات الفيوم، وتحديات المشاريع الزراعية والسياحية المحيطة ببحيرة قارون ووادي الريان. القرب الجغرافي يتيح اجتماعات مباشرة وتواصلاً أسرع بدون حواجز.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
             نؤمن أن كل عمل تجاري في الفيوم — من محل صغير إلى شركة متوسطة — يستحق حضوراً رقمياً يضاهي منافسيه في العاصمة. سواء أردت موقعاً يعرّف بنشاطك، متجراً إلكترونياً يفتح لك أسواقاً جديدة، نظام كاشير ينظّم مبيعاتك، أو تطبيق جوال يقرّبك من عملائك — نحن هنا في الفيوم لتنفيذه بجودة احترافية وسعر مناسب.
@@ -216,7 +216,7 @@ export default function FayoumPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

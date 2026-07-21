@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'تطوير تطبيقات في الفيوم | تطبيقات iOS و Android | DoGether Tech',
+  title: 'تطوير تطبيقات في الفيوم | تطبيقات iOS و Android | DoGether',
   description:
     'تطوير تطبيقات جوال في الفيوم بتقنية Flutter لنظامَي iOS وAndroid. تطبيقات لمطاعم ومتاجر ومشاريع الفيوم بتصميم عصري وأداء عالٍ. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/software-company/fayoum/mobile-app' },
   openGraph: {
-    title: 'تطوير تطبيقات في الفيوم | DoGether Tech',
+    title: 'تطوير تطبيقات في الفيوم | DoGether',
     description: 'تطوير تطبيقات جوال Flutter في الفيوم لنظامَي iOS وAndroid',
     url: 'https://dogethertech.com/software-company/fayoum/mobile-app',
   },
@@ -55,7 +55,7 @@ const serviceSchema = {
   serviceType: 'Mobile App Development',
   name: 'تطوير تطبيقات في الفيوم',
   description: 'تطوير تطبيقات جوال بـ Flutter لأصحاب الأعمال في محافظة الفيوم.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'City', name: 'Fayoum' },
   url: 'https://dogethertech.com/software-company/fayoum/mobile-app',
 }
@@ -69,7 +69,7 @@ export default function FayoumMobileAppPage() {
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -159,7 +159,7 @@ export default function FayoumMobileAppPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

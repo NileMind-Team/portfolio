@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Mobile App Development in Egypt | Flutter iOS & Android | DoGether Tech',
+  title: 'Mobile App Development in Egypt | Flutter iOS & Android | DoGether',
   description:
     'Professional mobile app development in Egypt. We build high-performance Flutter apps for iOS and Android — custom UI/UX, app store publishing, and ongoing support. Contact: +20 106 248 5133',
   alternates: {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Mobile App Development in Egypt | DoGether Tech',
+    title: 'Mobile App Development in Egypt | DoGether',
     description: 'High-performance Flutter apps for iOS and Android built in Egypt.',
     url: 'https://dogethertech.com/en/services/mobile-app-development',
   },
@@ -62,7 +62,7 @@ const serviceSchema = {
   serviceType: 'Mobile App Development',
   name: 'Mobile App Development in Egypt',
   description: 'Professional Flutter mobile app development for iOS and Android in Egypt.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'Country', name: 'Egypt' },
   url: 'https://dogethertech.com/en/services/mobile-app-development',
 }
@@ -85,7 +85,7 @@ export default function EnMobileAppPage() {
 
       <header className="bg-gradient-to-r from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <div className="flex items-center gap-3">
             <Link href="/services/mobile-app" className="text-sm text-white/90 hover:text-white transition-colors">العربية</Link>
             <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">Get a Quote</a>
@@ -117,7 +117,7 @@ export default function EnMobileAppPage() {
             Flutter, by Google, is the fastest-growing framework for mobile app development. With a single codebase running on both iOS and Android, it saves time and budget without compromising quality or performance. We have used it in real projects across restaurants, e-commerce, and services.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
-            Our apps never feel &quot;hybrid&quot; — performance rivals native apps, and the design adapts to each platform&apos;s standards. This is what sets DoGether Tech apart from other software companies in Egypt.
+            Our apps never feel &quot;hybrid&quot; — performance rivals native apps, and the design adapts to each platform&apos;s standards. This is what sets DoGether apart from other software companies in Egypt.
           </p>
         </section>
 
@@ -159,7 +159,7 @@ export default function EnMobileAppPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — All rights reserved | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#1DC7E0]">+20 106 248 5133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — All rights reserved | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#1DC7E0]">+20 106 248 5133</a></p>
       </footer>
     </div>
   )

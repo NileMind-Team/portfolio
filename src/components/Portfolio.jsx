@@ -365,7 +365,7 @@ const Portfolio = ({ lang }) => {
                         <div className="relative w-full h-full transform group-hover:scale-110 transition-transform duration-300">
                           <Image
                             src={project.logo}
-                            alt={`${project.titleEn} - DoGether Tech شركة برمجة مصر`}
+                            alt={`${project.titleEn} - DoGether شركة برمجة مصر`}
                             fill
                             className="object-cover"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -375,7 +375,7 @@ const Portfolio = ({ lang }) => {
                         <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
                           <Image
                             src={project.logo}
-                            alt={`${project.titleEn} - DoGether Tech شركة برمجة مصر`}
+                            alt={`${project.titleEn} - DoGether شركة برمجة مصر`}
                             width={96}
                             height={96}
                             className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-full"

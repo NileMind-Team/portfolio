@@ -81,7 +81,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
               <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
                 <Image
                   src={logoImg}
-                  alt="DoGether Tech - شركة برمجة في مصر | Software Company Egypt"
+                  alt="DoGether - شركة برمجة في مصر | Software Company Egypt"
                   className="w-full h-full object-contain rounded-xl"
                   sizes="56px"
                 />

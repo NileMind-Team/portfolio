@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'خدمات DoGether Tech | برمجة مواقع، تطبيقات، متاجر إلكترونية في مصر',
+  title: 'خدمات DoGether | برمجة مواقع، تطبيقات، متاجر إلكترونية في مصر',
   description:
-    'DoGether Tech تقدم خدمات برمجة احترافية في مصر: تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة POS، تصميم UI/UX، وخدمات DevOps.',
+    'DoGether تقدم خدمات برمجة احترافية في مصر: تطوير مواقع الويب، تطبيقات الجوال، المتاجر الإلكترونية، أنظمة POS، تصميم UI/UX، وخدمات DevOps.',
   alternates: {
     canonical: 'https://dogethertech.com/services',
   },
   openGraph: {
-    title: 'خدمات DoGether Tech | برمجة مواقع، تطبيقات، متاجر إلكترونية في مصر',
+    title: 'خدمات DoGether | برمجة مواقع، تطبيقات، متاجر إلكترونية في مصر',
     description:
       'خدمات برمجة متكاملة في مصر: مواقع ويب، تطبيقات جوال، متاجر إلكترونية، POS، UI/UX، DevOps',
     url: 'https://dogethertech.com/services',
@@ -82,7 +82,7 @@ export default function ServicesPage() {
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            DoGether Tech
+            DoGether
           </Link>
           <a
             href="https://wa.me/201062485133"
@@ -111,7 +111,7 @@ export default function ServicesPage() {
             خدمات البرمجة وتطوير البرمجيات
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto">
-            DoGether Tech — حلول برمجية متكاملة للشركات والمشاريع في مصر
+            DoGether — حلول برمجية متكاملة للشركات والمشاريع في مصر
           </p>
         </div>
       </section>
@@ -162,7 +162,7 @@ export default function ServicesPage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
-          © 2025 DoGether Tech — جميع الحقوق محفوظة |{' '}
+          © 2025 DoGether — جميع الحقوق محفوظة |{' '}
           <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">
             dogethertech.com
           </a>{' '}

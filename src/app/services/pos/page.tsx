@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'نظام نقاط البيع POS والكاشير في مصر | DoGether Tech',
+  title: 'نظام نقاط البيع POS والكاشير في مصر | DoGether',
   description:
-    'DoGether Tech تطور أنظمة POS مخصصة للمطاعم والصيدليات ومحلات التجزئة في مصر. يعمل أونلاين وأوفلاين، مرتبط بالمخزون، وسهل الاستخدام. تواصل: 01062485133',
+    'DoGether تطور أنظمة POS مخصصة للمطاعم والصيدليات ومحلات التجزئة في مصر. يعمل أونلاين وأوفلاين، مرتبط بالمخزون، وسهل الاستخدام. تواصل: 01062485133',
   alternates: { canonical: 'https://dogethertech.com/services/pos' },
   openGraph: {
-    title: 'نظام نقاط البيع POS والكاشير في مصر | DoGether Tech',
+    title: 'نظام نقاط البيع POS والكاشير في مصر | DoGether',
     description: 'أنظمة POS مخصصة للمطاعم والصيدليات والتجزئة — أونلاين وأوفلاين، مرتبط بالمخزون',
     url: 'https://dogethertech.com/services/pos',
   },
@@ -22,7 +22,7 @@ const faqSchema = {
       name: 'ما الفرق بين نظام POS المخصص ونظام POS الجاهز؟',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'النظام الجاهز (مثل iSoft أو غيره) يأتي بوظائف ثابتة قد لا تناسب طبيعة عملك، ويفرض رسوم اشتراك شهرية دائمة. النظام المخصص من DoGether Tech يُبنى خصيصاً لطريقة عملك — سواء كنت مطعماً أو صيدلية أو سوبرماركت — وتمتلكه بالكامل بدون رسوم متكررة.',
+        text: 'النظام الجاهز (مثل iSoft أو غيره) يأتي بوظائف ثابتة قد لا تناسب طبيعة عملك، ويفرض رسوم اشتراك شهرية دائمة. النظام المخصص من DoGether يُبنى خصيصاً لطريقة عملك — سواء كنت مطعماً أو صيدلية أو سوبرماركت — وتمتلكه بالكامل بدون رسوم متكررة.',
       },
     },
     {
@@ -82,11 +82,11 @@ export default function POSPage() {
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'POS System Development', name: 'نظام نقاط البيع POS', description: 'تطوير أنظمة POS وكاشير مخصصة للمطاعم والصيدليات ومحلات التجزئة في مصر — تعمل أونلاين وأوفلاين ومرتبطة بالمخزون.', provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/pos' }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Service', serviceType: 'POS System Development', name: 'نظام نقاط البيع POS', description: 'تطوير أنظمة POS وكاشير مخصصة للمطاعم والصيدليات ومحلات التجزئة في مصر — تعمل أونلاين وأوفلاين ومرتبطة بالمخزون.', provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' }, areaServed: { '@type': 'Country', name: 'Egypt' }, url: 'https://dogethertech.com/services/pos' }) }} />
 
       <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
@@ -115,7 +115,7 @@ export default function POSPage() {
       <main className="container mx-auto px-6 py-14 max-w-5xl">
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">نظام POS مبني لطبيعة عملك — لا عكسه</h2>
-          <p className="text-lg text-slate-700 leading-relaxed mb-4">كثير من أصحاب المطاعم والمحلات يشترون أنظمة POS جاهزة لتجد نفسها محاصراً بوظائف لا تحتاجها وناقصاً وظائف أساسية لطبيعة عملك. DoGether Tech تبني نظام نقاط البيع من الصفر ليعكس طريقة عملك الفعلية بالضبط.</p>
+          <p className="text-lg text-slate-700 leading-relaxed mb-4">كثير من أصحاب المطاعم والمحلات يشترون أنظمة POS جاهزة لتجد نفسها محاصراً بوظائف لا تحتاجها وناقصاً وظائف أساسية لطبيعة عملك. DoGether تبني نظام نقاط البيع من الصفر ليعكس طريقة عملك الفعلية بالضبط.</p>
           <p className="text-lg text-slate-700 leading-relaxed">طورنا أنظمة POS لمطاعم تحتاج إدارة طاولات وطلبات توصيل، وصيدليات تحتاج تتبع تواريخ الأدوية، ومحلات تجزئة تحتاج مسح باركود سريع وتقارير يومية دقيقة.</p>
         </section>
 
@@ -174,7 +174,7 @@ export default function POSPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
       </footer>
     </div>
   )

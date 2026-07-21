@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Web Development in Egypt | Next.js Websites | DoGether Tech',
+  title: 'Web Development in Egypt | Next.js Websites | DoGether',
   description:
     'Professional web development in Egypt. We build fast, secure, SEO-friendly websites with Next.js and React — from corporate sites to full platforms. Contact: +20 106 248 5133',
   alternates: {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Web Development in Egypt | DoGether Tech',
+    title: 'Web Development in Egypt | DoGether',
     description: 'Fast, secure, SEO-friendly Next.js websites built in Egypt.',
     url: 'https://dogethertech.com/en/services/web-development',
   },
@@ -62,7 +62,7 @@ const serviceSchema = {
   serviceType: 'Web Development',
   name: 'Web Development in Egypt',
   description: 'Professional Next.js and React web development in Egypt.',
-  provider: { '@type': 'Organization', name: 'DoGether Tech', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
+  provider: { '@type': 'Organization', name: 'DoGether', '@id': 'https://dogethertech.com/#business', url: 'https://dogethertech.com', telephone: '+201062485133' },
   areaServed: { '@type': 'Country', name: 'Egypt' },
   url: 'https://dogethertech.com/en/services/web-development',
 }
@@ -85,7 +85,7 @@ export default function EnWebDevPage() {
 
       <header className="bg-gradient-to-r from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether Tech</Link>
+          <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <div className="flex items-center gap-3">
             <Link href="/services/website" className="text-sm text-white/90 hover:text-white transition-colors">العربية</Link>
             <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">Get a Quote</a>
@@ -117,7 +117,7 @@ export default function EnWebDevPage() {
             Customers search online before making any purchase decision. A slow or outdated website means losing potential customers every day without realizing it. Your website is now the first impression of your brand.
           </p>
           <p className="text-lg text-slate-700 leading-relaxed">
-            At DoGether Tech, we build websites with Next.js that pick the best Core Web Vitals and automatically improve your Google ranking. Every line of code we write is designed for performance, security, and long-term maintainability.
+            At DoGether, we build websites with Next.js that pick the best Core Web Vitals and automatically improve your Google ranking. Every line of code we write is designed for performance, security, and long-term maintainability.
           </p>
         </section>
 
@@ -159,7 +159,7 @@ export default function EnWebDevPage() {
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether Tech — All rights reserved | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#1DC7E0]">+20 106 248 5133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — All rights reserved | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#1DC7E0]">+20 106 248 5133</a></p>
       </footer>
     </div>
   )
