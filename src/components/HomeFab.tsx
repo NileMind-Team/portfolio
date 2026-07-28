@@ -14,7 +14,7 @@ export default function HomeFab({ label = 'الصفحة الرئيسية', side 
     <Link
       href="/"
       aria-label={label}
-      className={`fixed bottom-5 z-50 flex items-center gap-2 bg-[#1E6DB2] text-white px-5 py-3 rounded-full shadow-xl ring-2 ring-white/60 hover:bg-[#193F94] hover:scale-105 transition-all font-semibold text-sm ${
+      className={`fixed bottom-24 z-50 flex items-center gap-2 bg-[#107060] text-white px-5 py-3 rounded-full shadow-xl ring-2 ring-white/60 hover:bg-[#084941] hover:scale-105 transition-all font-semibold text-sm ${
         side === 'left' ? 'left-5' : 'right-5'
       }`}
     >

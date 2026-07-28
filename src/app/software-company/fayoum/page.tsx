@@ -110,23 +110,23 @@ export default function FayoumPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
-          <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
+          <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
 
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">شركة برمجة في مصر</Link>
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">شركة برمجة في مصر</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">الفيوم</span>
           </nav>
-          <div className="inline-block bg-[#1DC7E0]/10 text-[#1E6DB2] text-sm font-semibold px-4 py-1.5 rounded-full mb-5">
+          <div className="inline-block bg-[#2DBEA1]/10 text-[#107060] text-sm font-semibold px-4 py-1.5 rounded-full mb-5">
             📍 مقرنا الرئيسي
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">
@@ -136,8 +136,8 @@ export default function FayoumPage() {
             DoGether — شركة برمجة مقرها الفيوم. نصمم مواقع، متاجر إلكترونية، تطبيقات، وأنظمة كاشير لأصحاب الأعمال في محافظتنا
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow">استشارة مجانية</a>
-            <Link href="/software-company" className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">من نحن</Link>
+            <a href="https://wa.me/201062485133" className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow">استشارة مجانية</a>
+            <Link href="/software-company" className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">من نحن</Link>
           </div>
         </div>
       </section>
@@ -160,15 +160,15 @@ export default function FayoumPage() {
               <Link
                 key={s.href}
                 href={s.href}
-                className="group flex gap-4 p-6 bg-white border border-blue-100 rounded-2xl hover:border-[#1DC7E0] hover:shadow-lg transition-all"
+                className="group flex gap-4 p-6 bg-white border border-blue-100 rounded-2xl hover:border-[#2DBEA1] hover:shadow-lg transition-all"
               >
                 <span className="text-3xl flex-shrink-0">{s.icon}</span>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-[#1E6DB2] transition-colors">
+                  <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-[#107060] transition-colors">
                     {s.title}
                   </h3>
                   <p className="text-sm text-slate-500 leading-relaxed mb-2">{s.desc}</p>
-                  <span className="text-xs font-semibold text-[#1DC7E0]">اعرف المزيد ←</span>
+                  <span className="text-xs font-semibold text-[#2DBEA1]">اعرف المزيد ←</span>
                 </div>
               </Link>
             ))}
@@ -183,7 +183,7 @@ export default function FayoumPage() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
             {['مطاعم وكافيهات', 'محلات تجارية', 'صيدليات', 'مشاريع زراعية', 'أنشطة سياحية', 'مشاريع ناشئة'].map((sec) => (
               <div key={sec} className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-sm text-slate-700 font-medium">
-                <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+                <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0" />
                 {sec}
               </div>
             ))}
@@ -197,7 +197,7 @@ export default function FayoumPage() {
               <details key={i} className="border border-slate-200 rounded-xl overflow-hidden">
                 <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                   <span>{f.q}</span>
-                  <span className="text-[#1DC7E0] text-lg">+</span>
+                  <span className="text-[#2DBEA1] text-lg">+</span>
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">{f.a}</div>
               </details>
@@ -205,18 +205,18 @@ export default function FayoumPage() {
           </div>
         </section>
 
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">مشروعك في الفيوم يبدأ من هنا</h2>
           <p className="mb-8 text-blue-200 text-lg">تواصل معنا وسنقدم لك استشارة مجانية وعرض سعر خلال 24 ساعة</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
             <a href="mailto:dogethertech@gmail.com" className="border-2 border-white text-white px-7 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors">dogethertech@gmail.com</a>
           </div>
         </div>
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#2DBEA1]">01062485133</a></p>
       </footer>
     </div>
   )

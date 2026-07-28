@@ -147,14 +147,14 @@ export default function MobileAppPage() {
       />
 
       {/* Header */}
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             DoGether
           </Link>
           <a
             href="https://wa.me/201062485133"
-            className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
           >
             احصل على عرض سعر
           </a>
@@ -165,11 +165,11 @@ export default function MobileAppPage() {
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">شركة برمجة في مصر</Link>
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">شركة برمجة في مصر</Link>
             <span className="mx-2">›</span>
-            <Link href="/services" className="hover:text-[#1E6DB2] transition-colors">الخدمات</Link>
+            <Link href="/services" className="hover:text-[#107060] transition-colors">الخدمات</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">تطبيقات الجوال</span>
           </nav>
@@ -183,13 +183,13 @@ export default function MobileAppPage() {
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow"
+              className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow"
             >
               ابدأ مشروعك الآن
             </a>
             <Link
               href="/services"
-              className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors"
+              className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors"
             >
               تصفح كل الخدمات
             </Link>
@@ -230,9 +230,9 @@ export default function MobileAppPage() {
             {techStack.map((tech) => (
               <div
                 key={tech.name}
-                className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] transition-colors"
+                className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] transition-colors"
               >
-                <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0 mt-2" />
+                <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0 mt-2" />
                 <div>
                   <div className="font-bold text-slate-800 text-sm">{tech.name}</div>
                   <div className="text-xs text-slate-500 mt-0.5">{tech.desc}</div>
@@ -248,11 +248,11 @@ export default function MobileAppPage() {
           <div className="space-y-4">
             {timeline.map((step, i) => (
               <div key={i} className="flex gap-4 p-5 bg-white border border-slate-200 rounded-xl">
-                <div className="flex-shrink-0 w-10 h-10 bg-[#1E6DB2] text-white rounded-full flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-10 h-10 bg-[#107060] text-white rounded-full flex items-center justify-center font-bold">
                   {i + 1}
                 </div>
                 <div>
-                  <div className="text-xs text-[#1DC7E0] font-semibold mb-0.5">{step.week}</div>
+                  <div className="text-xs text-[#2DBEA1] font-semibold mb-0.5">{step.week}</div>
                   <div className="font-bold text-slate-800">{step.phase}</div>
                   <div className="text-sm text-slate-500 mt-1">{step.desc}</div>
                 </div>
@@ -285,7 +285,7 @@ export default function MobileAppPage() {
               >
                 <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                   <span>{faq.name}</span>
-                  <span className="text-[#1DC7E0] text-lg">+</span>
+                  <span className="text-[#2DBEA1] text-lg">+</span>
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">
                   {faq.acceptedAnswer.text}
@@ -301,25 +301,25 @@ export default function MobileAppPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <Link
               href="/services/website"
-              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm"
+              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm"
             >
               🌐 تصميم وتطوير مواقع الويب
             </Link>
             <Link
               href="/services/ecommerce"
-              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm"
+              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm"
             >
               🛒 إنشاء المتاجر الإلكترونية
             </Link>
             <Link
               href="/services/ui-ux"
-              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm"
+              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm"
             >
               🎨 تصميم UI/UX
             </Link>
             <Link
               href="/software-company"
-              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm"
+              className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm"
             >
               🏢 شركة برمجة في مصر — الصفحة الرئيسية
             </Link>
@@ -327,7 +327,7 @@ export default function MobileAppPage() {
         </section>
 
         {/* CTA */}
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">جاهز لبناء تطبيقك؟</h2>
           <p className="mb-8 text-blue-200 text-lg">
             تواصل معنا اليوم واحصل على استشارة مجانية وعرض سعر خلال 24 ساعة
@@ -335,7 +335,7 @@ export default function MobileAppPage() {
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
+              className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
             >
               واتساب: 01062485133
             </a>
@@ -353,11 +353,11 @@ export default function MobileAppPage() {
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
           © 2025 DoGether — جميع الحقوق محفوظة |{' '}
-          <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">
+          <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">
             dogethertech.com
           </a>{' '}
           | هاتف:{' '}
-          <a href="tel:+201062485133" className="text-[#1DC7E0]">
+          <a href="tel:+201062485133" className="text-[#2DBEA1]">
             01062485133
           </a>
         </p>

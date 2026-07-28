@@ -67,21 +67,21 @@ export default function FayoumOnlineStorePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
-          <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
+          <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
 
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">شركة برمجة في مصر</Link>
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">شركة برمجة في مصر</Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company/fayoum" className="hover:text-[#1E6DB2] transition-colors">الفيوم</Link>
+            <Link href="/software-company/fayoum" className="hover:text-[#107060] transition-colors">الفيوم</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">متجر إلكتروني</span>
           </nav>
@@ -89,8 +89,8 @@ export default function FayoumOnlineStorePage() {
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">متجر إلكتروني في الفيوم</h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-8">حوّل نشاطك في الفيوم إلى متجر يبيع أونلاين على مدار الساعة — لعملاء المحافظة ومصر كلها</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow">ابدأ متجرك الآن</a>
-            <Link href="/software-company/fayoum" className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">كل خدمات الفيوم</Link>
+            <a href="https://wa.me/201062485133" className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow">ابدأ متجرك الآن</a>
+            <Link href="/software-company/fayoum" className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">كل خدمات الفيوم</Link>
           </div>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function FayoumOnlineStorePage() {
             ].map((x) => (
               <div key={x.p} className="flex justify-between items-center p-4 bg-white border border-slate-200 rounded-xl">
                 <span className="text-slate-700 font-medium">{x.p}</span>
-                <span className="text-[#1E6DB2] font-bold">{x.price}</span>
+                <span className="text-[#107060] font-bold">{x.price}</span>
               </div>
             ))}
           </div>
@@ -149,7 +149,7 @@ export default function FayoumOnlineStorePage() {
               <details key={i} className="border border-slate-200 rounded-xl overflow-hidden">
                 <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                   <span>{f.q}</span>
-                  <span className="text-[#1DC7E0] text-lg">+</span>
+                  <span className="text-[#2DBEA1] text-lg">+</span>
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">{f.a}</div>
               </details>
@@ -160,25 +160,25 @@ export default function FayoumOnlineStorePage() {
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-slate-800 mb-4">خدمات أخرى في الفيوم</h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Link href="/software-company/fayoum/web-design" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🌐 تصميم مواقع في الفيوم</Link>
-            <Link href="/software-company/fayoum/pos" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🏪 برنامج كاشير في الفيوم</Link>
-            <Link href="/software-company/fayoum/mobile-app" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">📱 تطبيق جوال في الفيوم</Link>
-            <Link href="/services/store" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🛒 تفاصيل خدمة المتاجر الإلكترونية</Link>
+            <Link href="/software-company/fayoum/web-design" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🌐 تصميم مواقع في الفيوم</Link>
+            <Link href="/software-company/fayoum/pos" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🏪 برنامج كاشير في الفيوم</Link>
+            <Link href="/software-company/fayoum/mobile-app" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">📱 تطبيق جوال في الفيوم</Link>
+            <Link href="/services/store" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🛒 تفاصيل خدمة المتاجر الإلكترونية</Link>
           </div>
         </section>
 
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">حوّل نشاطك في الفيوم إلى متجر يبيع</h2>
           <p className="mb-8 text-blue-200 text-lg">استشارة مجانية وعرض سعر خلال 24 ساعة</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
             <a href="mailto:dogethertech@gmail.com" className="border-2 border-white text-white px-7 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors">dogethertech@gmail.com</a>
           </div>
         </div>
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#2DBEA1]">01062485133</a></p>
       </footer>
     </div>
   )

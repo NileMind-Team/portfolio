@@ -13,6 +13,64 @@ type City = {
 }
 
 const cityData: Record<string, City> = {
+  'south-sinai': {
+    nameAr: 'شرم الشيخ وجنوب سيناء',
+    para1:
+      'شرم الشيخ ودهب ونويبع من أهم وجهات الغوص والرياضات المائية في العالم، ويقصدها سنوياً ملايين الزوار من روسيا وألمانيا وإيطاليا وبولندا وبريطانيا. الفنادق ومراكز الغوص وشركات الرحلات هنا لا تنافس محلياً — بل تنافس على شاشة سائح يحجز من بلده قبل أن يسافر.',
+    para2:
+      'هذا يعني أن موقعك ليس كارت تعريف، بل هو نقطة البيع الأولى: إن لم يكن بلغة الزائر، ولم يعرض التوافر والسعر بوضوح، ولم يقبل الدفع ببطاقة دولية — فالحجز يذهب لمنافس أو لمنصة وسيطة تأخذ عمولتها من هامشك.',
+    para3:
+      'بنينا لـ Sharm Kite Surf منصة رياضات مائية في شرم الشيخ بنظام حجز أونلاين وعرض للأنشطة ودعم متعدد اللغات — نفس التحديات التي يواجهها أي مركز غوص أو منظم رحلات في المنطقة. نبني لعملاء جنوب سيناء أنظمة حجز تعمل بلغات زوارهم وتقبل الدفع الدولي وتدير طاقة القوارب والمجموعات.',
+    sectors: ['الفنادق والمنتجعات', 'مراكز الغوص والسنوركل', 'الرحلات والسفاري', 'المطاعم السياحية', 'الرياضات المائية', 'تأجير المعدات'],
+    faqs: [
+      { q: 'موقعي لازم يبقى بكام لغة في شرم؟', a: 'حسب سوقك: الإنجليزية أساسية، والروسية والألمانية والإيطالية والبولندية هي الأعلى طلباً في شرم ودهب. نبني الموقع بروابط منفصلة لكل لغة حتى يظهر في بحث السائح بلغته قبل سفره، لا بزر ترجمة آلي.' },
+      { q: 'هل يمكن استقبال حجوزات ودفع من الخارج؟', a: 'نعم، نربط الموقع ببوابة دفع تقبل البطاقات الدولية وندعم نظام العربون — يدفع السائح جزءاً لتأكيد الحجز والباقي عند الوصول، وهو الأنسب لمراكز الغوص والرحلات.' },
+      { q: 'أعتمد على منصات الحجز الوسيطة — لماذا أحتاج موقعاً؟', a: 'المنصات تجلب حجوزات لكنها تأخذ عمولة على كل واحدة وتحتفظ ببيانات العميل. موقعك الخاص يمنحك حجزاً مباشراً بلا عمولة، وقائمة عملاء تعيد التسويق لها كل موسم.' },
+    ],
+  },
+  'red-sea': {
+    nameAr: 'الغردقة والبحر الأحمر',
+    para1:
+      'البحر الأحمر — الغردقة ومرسى علم والقصير وسفاجا — يضم أكثر من 500 فندق على ساحل يمتد 40 كيلومتراً، برحلات دولية مباشرة على مدار العام من أوروبا. سوق ضخم من الفنادق ومراكز الغوص ومنظمي الرحلات يتنافس على نفس السائح.',
+    para2:
+      'المنافسة هنا رقمية بالكامل: السائح يقارن بين عشرات الخيارات وهو في بلده، ويقرر بناءً على وضوح الموقع وصور الأنشطة وسهولة الحجز. غياب موقع بلغته يعني خروجك من المقارنة قبل أن تبدأ.',
+    para3:
+      'خبرتنا في بناء منصة Sharm Kite Surf للرياضات المائية بنظام حجز متعدد اللغات تنطبق مباشرة على أعمال الغردقة ومرسى علم: جدولة رحلات الغوص واليخوت، إدارة طاقة القارب، وربط الحجز بالدفع الدولي.',
+    sectors: ['الفنادق والقرى السياحية', 'مراكز الغوص', 'رحلات اليخوت والسفاري', 'المطاعم والكافيهات السياحية', 'تأجير المعدات', 'شركات النقل السياحي'],
+    faqs: [
+      { q: 'كيف أدير طاقة القارب أو الرحلة في الحجز؟', a: 'نضبط لكل رحلة عدداً أقصى للمقاعد وتاريخاً ووقتاً، فيُغلق الحجز آلياً عند الاكتمال — بدل المتابعة اليدوية وأخطاء الحجز الزائد في الموسم.' },
+      { q: 'الموسم عندي متقلب — هل التكلفة ثابتة طول السنة؟', a: 'لا، نضبط الاستضافة لترتفع مواردها في موسم الذروة وتنخفض بعده، فتدفع حسب الاستخدام الفعلي بدل تكلفة ثابتة مرتفعة.' },
+      { q: 'هل يمكن ربط الموقع بمنصات الحجز العالمية؟', a: 'نعم، يمكن ربط التوافر والأسعار مع منصات الحجز حتى لا تتضارب الحجوزات بين موقعك والمنصات الوسيطة.' },
+    ],
+  },
+  'marsa-alam': {
+    nameAr: 'مرسى علم',
+    para1:
+      'مرسى علم من أسرع وجهات الغوص نمواً على البحر الأحمر، بمطار دولي ومنتجعات فاخرة تستقبل زواراً من أوروبا مباشرة. مراكز الغوص والمنتجعات هنا تنافس على سائح يحجز قبل سفره بأشهر، فموقعك بلغته هو نقطة البيع الأولى.',
+    para2:
+      'شواطئ مرسى علم ومحمياتها (سمك القرش، الدولفين، أبو دباب) تجذب غواصين محترفين يبحثون عن مراكز معتمدة برامجها واضحة وحجزها مباشر. غياب موقع احترافي متعدد اللغات يعني خسارة هذا السائح لمنافس أوضح.',
+    para3:
+      'بنينا منصة Sharm Kite Surf للرياضات المائية بنظام حجز متعدد اللغات — نفس ما يحتاجه أي مركز غوص أو منتجع في مرسى علم: عرض البرامج والمحميات، حجز مباشر بعربون دولي، وإدارة طاقة القوارب والرحلات اليومية.',
+    sectors: ['مراكز الغوص المعتمدة', 'المنتجعات والقرى', 'رحلات السفاري البحري', 'رحلات الدلفين والمحميات', 'تأجير معدات الغوص', 'النقل من المطار'],
+    faqs: [
+      { q: 'موقعي في مرسى علم لازم يبقى بكام لغة؟', a: 'الإنجليزية والألمانية والإيطالية أساسية لسوق مرسى علم، ويفضّل إضافة الروسية والتشيكية. كل لغة برابط مستقل لتظهر في بحث بلد الزائر قبل سفره.' },
+      { q: 'كيف أعرض المحميات والرحلات في الموقع؟', a: 'نبني صفحات للرحلات (سمك القرش، أبو دباب، السفاري) بالصور والأسعار والمدة وعدد الأماكن، مع حجز مباشر وعربون دولي لتأكيد المقعد.' },
+    ],
+  },
+  'dahab': {
+    nameAr: 'دهب',
+    para1:
+      'دهب وجهة الغوص الحرّة والرياح المفضّلة لدى الغواصين والرحّالة من أوروبا، بطابع مختلف عن شرم — أقل رسمية وأكثر اعتماداً على الحجز المباشر أونلاين. مراكز الغوص والكامبات والمقاهي هنا تصل لزوارها عبر الإنترنت أساساً.',
+    para2:
+      'الغواص الذي يقصد دهب (البلو هول، الكانيون) يبحث ويحجز بنفسه أونلاين بلا وسطاء غالباً، فموقعك السريع متعدد اللغات بصور حقيقية ونظام حجز مباشر هو قناة بيعك الأساسية لا الثانوية.',
+    para3:
+      'خبرتنا في بناء منصة Sharm Kite Surf للرياضات المائية والحجز متعدد اللغات تنطبق مباشرة على مراكز دهب: جدولة رحلات الغوص والكايت، إدارة الأماكن المتاحة، وحجز مباشر يخدم الرحّالة المستقل.',
+    sectors: ['مراكز الغوص والفري دايف', 'مراكز الكايت والويند سيرف', 'الكامبات والنُزل', 'المقاهي والمطاعم السياحية', 'رحلات السفاري والجبل', 'تأجير المعدات'],
+    faqs: [
+      { q: 'زوّار دهب يحجزون مباشرة — كيف يساعد الموقع؟', a: 'معظم زوار دهب رحّالة مستقلون يبحثون ويحجزون بأنفسهم، فموقع سريع متعدد اللغات بحجز مباشر وأسعار واضحة هو قناة بيعك الأساسية بلا عمولة وسطاء.' },
+      { q: 'أدير رحلات غوص وكايت معاً — يمكن تنظيمها؟', a: 'نعم، نظام حجز يعرض جدول كل نشاط وأماكنه المتاحة ويسمح بالحجز الفوري، مع إدارة الطاقة اليومية لكل رحلة.' },
+    ],
+  },
   cairo: {
     nameAr: 'القاهرة',
     para1:
@@ -321,14 +379,14 @@ export default async function CityPage({
       />
 
       {/* Header */}
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             DoGether
           </Link>
           <a
             href="https://wa.me/201062485133"
-            className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
           >
             تواصل معنا
           </a>
@@ -339,11 +397,11 @@ export default async function CityPage({
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">
+            <Link href="/" className="hover:text-[#107060] transition-colors">
               الرئيسية
             </Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">
               شركة برمجة في مصر
             </Link>
             <span className="mx-2">›</span>
@@ -374,7 +432,7 @@ export default async function CityPage({
               key={sector}
               className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-sm text-slate-700 font-medium"
             >
-              <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+              <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0" />
               {sector}
             </div>
           ))}
@@ -390,7 +448,7 @@ export default async function CityPage({
               key={service}
               className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200"
             >
-              <span className="w-2.5 h-2.5 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+              <span className="w-2.5 h-2.5 bg-[#2DBEA1] rounded-full flex-shrink-0" />
               <span className="text-slate-700 font-medium">{service}</span>
             </div>
           ))}
@@ -405,7 +463,7 @@ export default async function CityPage({
             <details key={i} className="border border-slate-200 rounded-xl overflow-hidden">
               <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                 <span>{f.q}</span>
-                <span className="text-[#1DC7E0] text-lg">+</span>
+                <span className="text-[#2DBEA1] text-lg">+</span>
               </summary>
               <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">{f.a}</div>
             </details>
@@ -415,14 +473,14 @@ export default async function CityPage({
         {/* Related services links */}
         <h2 className="text-2xl font-bold text-slate-800 mb-6">تعرّف على خدماتنا بالتفصيل</h2>
         <div className="grid sm:grid-cols-2 gap-4 mb-14">
-          <Link href="/services/website" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🌐 تصميم وتطوير المواقع</Link>
-          <Link href="/services/store" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🛒 المتاجر الإلكترونية</Link>
-          <Link href="/services/mobile-app" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">📱 تطوير تطبيقات الجوال</Link>
-          <Link href="/services/pos" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">🏪 أنظمة نقاط البيع POS</Link>
+          <Link href="/services/website" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🌐 تصميم وتطوير المواقع</Link>
+          <Link href="/services/store" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🛒 المتاجر الإلكترونية</Link>
+          <Link href="/services/mobile-app" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">📱 تطوير تطبيقات الجوال</Link>
+          <Link href="/services/pos" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🏪 أنظمة نقاط البيع POS</Link>
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">
             ابدأ مشروعك في {data.nameAr} اليوم
           </h2>
@@ -432,7 +490,7 @@ export default async function CityPage({
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
+              className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
             >
               واتساب: 01062485133
             </a>
@@ -450,11 +508,11 @@ export default async function CityPage({
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
           © 2025 DoGether — جميع الحقوق محفوظة |{' '}
-          <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">
+          <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">
             dogethertech.com
           </a>{' '}
           | هاتف:{' '}
-          <a href="tel:+201062485133" className="text-[#1DC7E0]">
+          <a href="tel:+201062485133" className="text-[#2DBEA1]">
             01062485133
           </a>
         </p>

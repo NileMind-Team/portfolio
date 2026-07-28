@@ -78,7 +78,7 @@ const Clients = ({ lang }) => {
           <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 lg:mb-8">
             {t.featuresTitle}
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {t.features.map((feature, index) => (
               <motion.div
                 key={index}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Facebook,
+  Instagram,
   ArrowUp,
   Heart,
   MapPin,
@@ -12,7 +13,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/logo-dark.png";
 
 const Footer = ({ lang }) => {
   const currentYear = new Date().getFullYear();
@@ -68,6 +69,7 @@ const Footer = ({ lang }) => {
 
   // Internal links to dedicated service pages (fixes orphan pages for indexing)
   const servicePages = [
+    { href: "/tourism-software", label: lang === "en" ? "Tourism Websites" : "حلول سياحية" },
     { href: "/services/website", label: lang === "en" ? "Web Design" : "تصميم المواقع" },
     { href: "/services/mobile-app", label: lang === "en" ? "Mobile Apps" : "تطبيقات الجوال" },
     { href: "/services/store", label: lang === "en" ? "Online Stores" : "المتاجر الإلكترونية" },
@@ -106,6 +108,11 @@ const Footer = ({ lang }) => {
       href: "https://wa.me/201062485133",
       label: "WhatsApp",
     },
+    {
+      icon: <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />,
+      href: "https://www.instagram.com/dogethertech",
+      label: "Instagram",
+    },
   ];
 
   const scrollToTop = () => {
@@ -114,7 +121,7 @@ const Footer = ({ lang }) => {
 
   return (
     <footer
-      className={`bg-gradient-to-b from-gray-900 to-gray-950 text-white pt-12 lg:pt-16 pb-6 lg:pb-8 relative ${
+      className={`bg-gradient-to-b from-gray-900 to-gray-950 text-white pt-10 sm:pt-12 lg:pt-16 pb-5 sm:pb-6 lg:pb-8 relative ${
         isRTL ? "rtl" : "ltr"
       }`}
       dir={isRTL ? "rtl" : "ltr"}
@@ -129,8 +136,8 @@ const Footer = ({ lang }) => {
       </motion.button>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8 lg:mb-12">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-x-4 gap-y-6 sm:gap-8 lg:gap-12 mb-6 sm:mb-8 lg:mb-12">
+          <div className="col-span-2 lg:col-span-2">
             <div
               className={`flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 mb-4 lg:mb-6`}
             >
@@ -138,12 +145,12 @@ const Footer = ({ lang }) => {
                 href="#home"
                 className={`flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 no-underline`}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 relative flex-shrink-0">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 relative flex-shrink-0">
                   <Image
                     src={logoImg}
                     alt="DoGether Logo"
-                    className="w-full h-full object-contain rounded-xl"
-                    sizes="56px"
+                    className="w-full h-full object-contain"
+                    sizes="48px"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -154,7 +161,7 @@ const Footer = ({ lang }) => {
                 </div>
               </a>
             </div>
-            <p className="text-gray-400 mb-6 lg:mb-8 max-w-2xl text-sm">
+            <p className="text-gray-400 mb-4 sm:mb-6 lg:mb-8 max-w-2xl text-sm">
               {lang === "en"
                 ? "Professional digital agency based in Fayoum and Cairo, Egypt — serving businesses across all governorates. We specialize in creating exceptional websites, e-commerce platforms, and custom software solutions that drive business growth."
                 : "وكالة رقمية محترفة مقرها الفيوم والقاهرة، مصر — نخدم الأعمال في كل محافظات مصر. نحن متخصصون في إنشاء مواقع ويب استثنائية ومنصات تجارة إلكترونية وحلول برمجية مخصصة تدفع نمو الأعمال."}
@@ -183,10 +190,10 @@ const Footer = ({ lang }) => {
 
           {/* Services column — internal links to dedicated service pages */}
           <div>
-            <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-6">
+            <h3 className="text-sm sm:text-lg font-bold mb-2 sm:mb-6">
               {servicesHeading}
             </h3>
-            <ul className="space-y-2 sm:space-y-3">
+            <ul className="space-y-1.5 sm:space-y-3">
               {servicePages.map((page) => (
                 <li key={page.href}>
                   <Link
@@ -207,10 +214,10 @@ const Footer = ({ lang }) => {
 
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-6">
+              <h3 className="text-sm sm:text-lg font-bold mb-2 sm:mb-6">
                 {category}
               </h3>
-              <ul className="space-y-2 sm:space-y-3">
+              <ul className="space-y-1.5 sm:space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <a
@@ -231,18 +238,18 @@ const Footer = ({ lang }) => {
           ))}
         </div>
 
-        <div className="border-t border-gray-800 pt-6 lg:pt-8 mb-6 lg:mb-8">
-          <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
+        <div className="border-t border-gray-800 pt-5 sm:pt-6 lg:pt-8 mb-5 sm:mb-6 lg:mb-8">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
             <div className="text-center">
               <div
-                className={`inline-flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 mb-3`}
+                className={`flex flex-col items-center gap-1.5 sm:inline-flex sm:flex-row ${isRTL ? "sm:space-x-reverse" : ""} sm:space-x-3 mb-2 sm:mb-3`}
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
+                <div className="w-7 h-7 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-primary-light" />
                 </div>
-                <div className={isRTL ? "text-right" : "text-left"}>
-                  <div className="text-xs text-gray-400">{t.location}</div>
-                  <div className="text-sm sm:text-base">
+                <div className={`text-center ${isRTL ? "sm:text-right" : "sm:text-left"}`}>
+                  <div className="text-[10px] sm:text-xs text-gray-400">{t.location}</div>
+                  <div className="text-[11px] sm:text-base">
                     {lang === "en" ? "Fayoum & Cairo, Egypt" : "الفيوم والقاهرة، مصر"}
                   </div>
                 </div>
@@ -250,41 +257,41 @@ const Footer = ({ lang }) => {
             </div>
             <div className="text-center">
               <div
-                className={`inline-flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 mb-3`}
+                className={`flex flex-col items-center gap-1.5 sm:inline-flex sm:flex-row ${isRTL ? "sm:space-x-reverse" : ""} sm:space-x-3 mb-2 sm:mb-3`}
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
+                <div className="w-7 h-7 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-primary-light" />
                 </div>
-                <div className={isRTL ? "text-right" : "text-left"}>
-                  <div className="text-xs text-gray-400">
+                <div className={`text-center ${isRTL ? "sm:text-right" : "sm:text-left"}`}>
+                  <div className="text-[10px] sm:text-xs text-gray-400">
                     {lang === "en" ? "Phone / WhatsApp" : "هاتف / واتساب"}
                   </div>
-                  <div className="text-sm sm:text-base">01062485133</div>
+                  <div className="text-[11px] sm:text-base">01062485133</div>
                 </div>
               </div>
             </div>
             <div className="text-center">
               <div
-                className={`inline-flex items-center ${isRTL ? "flex-row" : "flex-row"} ${isRTL ? "space-x-reverse" : ""} space-x-3 mb-3`}
+                className={`flex flex-col items-center gap-1.5 sm:inline-flex sm:flex-row ${isRTL ? "sm:space-x-reverse" : ""} sm:space-x-3 mb-2 sm:mb-3`}
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
+                <div className="w-7 h-7 sm:w-10 sm:h-10 bg-primary-dark/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MessageSquare className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-primary-light" />
                 </div>
-                <div className={isRTL ? "text-right" : "text-left"}>
-                  <div className="text-xs text-gray-400">{t.hours}</div>
-                  <div className="text-sm sm:text-base">24/7 - Everyday</div>
+                <div className={`text-center ${isRTL ? "sm:text-right" : "sm:text-left"}`}>
+                  <div className="text-[10px] sm:text-xs text-gray-400">{t.hours}</div>
+                  <div className="text-[11px] sm:text-base">24/7 - Everyday</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 lg:pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div className="text-gray-400 text-xs mb-4 sm:mb-0">
+        <div className="border-t border-gray-800 pt-5 sm:pt-6 lg:pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
+            <div className="text-gray-400 text-xs">
               © {currentYear} DoGether. {t.rights}
             </div>
-            <div className="flex items-center gap-1 text-gray-400 text-xs mb-4 sm:mb-0">
+            <div className="flex items-center gap-1 text-gray-400 text-xs">
               <span>{t.made}</span>
               <Heart className="w-3 h-3 text-red-500 mx-1" />
               <span>{t.by}</span>
@@ -303,7 +310,7 @@ const Footer = ({ lang }) => {
               </a>
             </div>
           </div>
-          <div className="text-center text-gray-500 text-xs mt-4">
+          <div className="text-center text-gray-500 text-xs mt-3 sm:mt-4">
             {t.established}
           </div>
         </div>

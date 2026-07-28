@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Poppins } from 'next/font/google'
+import SocialFab from '@/components/SocialFab'
 import './globals.css'
 
 const inter = Inter({
@@ -16,7 +17,7 @@ const poppins = Poppins({
 })
 
 export const viewport: Viewport = {
-  themeColor: '#0d47a1',
+  themeColor: '#0f172a',
 }
 
 export const metadata: Metadata = {
@@ -148,6 +149,7 @@ const localBusinessSchema = {
   // ⚠️ ضيف الروابط الجديدة هنا أول ما تعملها (LinkedIn / Clutch / GoodFirms / Instagram).
   sameAs: [
     'https://www.facebook.com/Dogethertech',
+    'https://www.instagram.com/dogethertech',
     'https://maps.google.com/?cid=14895545088197808630',
     'https://wa.me/201062485133',
   ],
@@ -214,6 +216,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ومش بيخفي أي أخطاء hydration حقيقية جوه المكوّنات. */}
       <body suppressHydrationWarning>
         {children}
+        <SocialFab />
       </body>
     </html>
   )

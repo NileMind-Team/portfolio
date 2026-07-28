@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoImg from "../assets/logo.png";
+import logoLight from "../assets/logo.png";
+import logoDark from "../assets/logo-dark.png";
 
 const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,12 +79,13 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
             className="flex-shrink-0"
           >
             <a href="#home" className="no-underline">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 relative">
                 <Image
-                  src={logoImg}
+                  src={darkMode ? logoDark : logoLight}
                   alt="DoGether - شركة برمجة في مصر | Software Company Egypt"
-                  className="w-full h-full object-contain rounded-xl"
-                  sizes="56px"
+                  className="w-full h-full object-contain"
+                  sizes="48px"
+                  priority
                 />
               </div>
             </a>

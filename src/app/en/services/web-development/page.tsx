@@ -83,12 +83,12 @@ export default function EnWebDevPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
-      <header className="bg-gradient-to-r from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-r from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <div className="flex items-center gap-3">
             <Link href="/services/website" className="text-sm text-white/90 hover:text-white transition-colors">العربية</Link>
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">Get a Quote</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">Get a Quote</a>
           </div>
         </div>
       </header>
@@ -96,7 +96,7 @@ export default function EnWebDevPage() {
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">Home</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">Web Development</span>
           </nav>
@@ -104,8 +104,8 @@ export default function EnWebDevPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">Web Development in Egypt</h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-8">Fast, responsive, SEO-friendly Next.js websites — built to turn visitors into customers</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow">Request Your Website</a>
-            <Link href="/services/website" className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">النسخة العربية</Link>
+            <a href="https://wa.me/201062485133" className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow">Request Your Website</a>
+            <Link href="/services/website" className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">النسخة العربية</Link>
           </div>
         </div>
       </section>
@@ -140,7 +140,7 @@ export default function EnWebDevPage() {
               <details key={i} className="border border-slate-200 rounded-xl overflow-hidden">
                 <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                   <span>{f.q}</span>
-                  <span className="text-[#1DC7E0] text-lg">+</span>
+                  <span className="text-[#2DBEA1] text-lg">+</span>
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">{f.a}</div>
               </details>
@@ -148,18 +148,18 @@ export default function EnWebDevPage() {
           </div>
         </section>
 
-        <div className="bg-gradient-to-r from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-r from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">Ready for a website that wins customers?</h2>
           <p className="mb-8 text-blue-200 text-lg">Contact us today for a free consultation and a quote within 24 hours</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">WhatsApp: +20 106 248 5133</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">WhatsApp: +20 106 248 5133</a>
             <a href="mailto:dogethertech@gmail.com" className="border-2 border-white text-white px-7 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors">dogethertech@gmail.com</a>
           </div>
         </div>
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether — All rights reserved | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#1DC7E0]">+20 106 248 5133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — All rights reserved | <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a> | Phone: <a href="tel:+201062485133" className="text-[#2DBEA1]">+20 106 248 5133</a></p>
       </footer>
     </div>
   )

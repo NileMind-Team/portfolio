@@ -1,6 +1,9 @@
 {
-  "nextIndex": 73,
-  "totalUrls": 174,
-  "lastRunDate": "2026-07-21",
-  "lastRunNote": "Ran 56-73. Requested indexing for 10 URLs; 6 already indexed and skipped. Quota exceeded at index 73 (minya/support)."
+  "method": "browser-gsc-url-inspection",
+  "nextIndex": 49,
+  "totalUrls": 211,
+  "urlsFile": "gsc-urls.txt",
+  "lastRunDate": "2026-07-28",
+  "lastRunNote": "10 URLs requested this run, indexes 39-48 (software-company/suez through software-company/south-sinai/support). All 10 requests confirmed with 'تم طلب الفهرسة'. Stopped at index 49 (software-company/red-sea/mobile-app) when Google returned the daily quota-exceeded message ('تم تجاوز الحصة'). nextIndex set to 49; resume from there next run once quota resets.",
+  "loopForever": true
 }

@@ -128,17 +128,17 @@ export default function WorkPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
-          <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
+          <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">تواصل معنا</a>
         </div>
       </header>
 
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">أعمالنا</span>
           </nav>
@@ -152,10 +152,10 @@ export default function WorkPage() {
       <main className="container mx-auto px-6 py-14 max-w-4xl">
         <div className="space-y-6">
           {projects.map((p) => (
-            <div key={p.name} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-[#1DC7E0] hover:shadow-lg transition-all">
+            <div key={p.name} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-[#2DBEA1] hover:shadow-lg transition-all">
               <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
                 <div>
-                  <span className="inline-block bg-[#1DC7E0]/10 text-[#1E6DB2] text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                  <span className="inline-block bg-[#2DBEA1]/10 text-[#107060] text-xs font-semibold px-3 py-1 rounded-full mb-2">
                     {p.category}
                   </span>
                   <h2 className="text-xl font-bold text-slate-800">{p.name}</h2>
@@ -165,32 +165,32 @@ export default function WorkPage() {
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#1E6DB2] text-white px-5 py-2 rounded-xl font-semibold text-sm hover:bg-[#193F94] transition-colors whitespace-nowrap"
+                  className="bg-[#107060] text-white px-5 py-2 rounded-xl font-semibold text-sm hover:bg-[#084941] transition-colors whitespace-nowrap"
                 >
                   زيارة المشروع ↗
                 </a>
               </div>
               <p className="text-slate-700 leading-relaxed mb-3">{p.description}</p>
               <div className="flex items-center gap-2 text-sm text-slate-600">
-                <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+                <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0" />
                 <span className="font-medium">النتيجة:</span> {p.result}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl mt-12">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl mt-12">
           <h2 className="text-2xl font-bold mb-3">مشروعك القادم يبدأ من هنا</h2>
           <p className="mb-8 text-blue-200 text-lg">تواصل معنا وسنقدم لك استشارة مجانية وعرض سعر خلال 24 ساعة</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
             <Link href="/software-company" className="border-2 border-white text-white px-7 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors">تعرّف علينا</Link>
           </div>
         </div>
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#2DBEA1]">01062485133</a></p>
       </footer>
     </div>
   )

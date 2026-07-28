@@ -5,7 +5,7 @@ const base = 'https://dogethertech.com'
 
 // Governorate pages served by the dynamic [city] route
 const cities = [
-  'cairo', 'giza', 'alexandria', 'beni-suef', 'minya', 'port-said',
+  'south-sinai', 'red-sea', 'marsa-alam', 'dahab', 'cairo', 'giza', 'alexandria', 'beni-suef', 'minya', 'port-said',
   'sharqia', 'dakahlia', 'gharbia', 'qalyubia', 'monufia',
   'aswan', 'luxor', 'ismailia', 'suez', 'damietta',
 ]
@@ -64,6 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${base}/software-company`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${base}/software-company/fayoum`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/tourism-software`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/services`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/work`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },

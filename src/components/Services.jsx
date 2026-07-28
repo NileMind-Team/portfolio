@@ -222,7 +222,7 @@ const Services = ({ lang }) => {
         </motion.div>
 
         {/* Main Services */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 lg:mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 lg:mb-16">
           {t.services.map((service, index) => (
             <motion.div
               key={index}

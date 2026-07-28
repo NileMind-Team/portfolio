@@ -79,14 +79,14 @@ export default function ServicesPage() {
   return (
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">
       {/* Header */}
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             DoGether
           </Link>
           <a
             href="https://wa.me/201062485133"
-            className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
           >
             تواصل معنا
           </a>
@@ -97,11 +97,11 @@ export default function ServicesPage() {
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">
+            <Link href="/" className="hover:text-[#107060] transition-colors">
               الرئيسية
             </Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">
               شركة برمجة في مصر
             </Link>
             <span className="mx-2">›</span>
@@ -123,11 +123,11 @@ export default function ServicesPage() {
             <Link
               key={service.slug}
               href={`/services/${service.slug}`}
-              className="group flex gap-4 p-6 bg-white border border-blue-100 rounded-2xl hover:border-[#1DC7E0] hover:shadow-lg transition-all"
+              className="group flex gap-4 p-6 bg-white border border-blue-100 rounded-2xl hover:border-[#2DBEA1] hover:shadow-lg transition-all"
             >
               <span className="text-3xl flex-shrink-0">{service.icon}</span>
               <div>
-                <h2 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-[#1E6DB2] transition-colors">
+                <h2 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-[#107060] transition-colors">
                   {service.nameAr}
                 </h2>
                 <p className="text-sm text-slate-500 leading-relaxed">{service.descAr}</p>
@@ -137,7 +137,7 @@ export default function ServicesPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">لا تعرف من أين تبدأ؟</h2>
           <p className="mb-8 text-blue-200 text-lg">
             تواصل معنا الآن واحصل على استشارة مجانية لتحديد أفضل حل لمشروعك
@@ -145,7 +145,7 @@ export default function ServicesPage() {
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
+              className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
             >
               واتساب: 01062485133
             </a>
@@ -163,11 +163,11 @@ export default function ServicesPage() {
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
           © 2025 DoGether — جميع الحقوق محفوظة |{' '}
-          <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">
+          <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">
             dogethertech.com
           </a>{' '}
           | هاتف:{' '}
-          <a href="tel:+201062485133" className="text-[#1DC7E0]">
+          <a href="tel:+201062485133" className="text-[#2DBEA1]">
             01062485133
           </a>
         </p>

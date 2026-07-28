@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { cityServiceAngles } from '@/data/cityServiceAngles'
 
 type Service = {
   nameAr: string
@@ -120,6 +121,10 @@ const services: Record<string, Service> = {
 
 // 16 governorates — unique economic context per city
 const cities: Record<string, City> = {
+  'south-sinai': { nameAr: 'شرم الشيخ وجنوب سيناء', economy: 'وجهة غوص ورياضات مائية عالمية يقصدها ملايين الزوار من روسيا وأوروبا سنوياً، بمئات الفنادق ومراكز الغوص ومنظمي الرحلات الذين يتنافسون على سائح يحجز من بلده قبل أن يسافر.', sectors: ['الفنادق والمنتجعات', 'مراكز الغوص', 'الرحلات والسفاري', 'المطاعم السياحية'] },
+  'red-sea': { nameAr: 'الغردقة والبحر الأحمر', economy: 'أكثر من 500 فندق على 40 كيلومتراً من الساحل مع رحلات دولية على مدار العام، ومعها مراكز غوص ورحلات يخوت ونقل سياحي في سوق تنافسه رقمي بالكامل.', sectors: ['الفنادق والقرى السياحية', 'مراكز الغوص', 'رحلات اليخوت', 'النقل السياحي'] },
+  'marsa-alam': { nameAr: 'مرسى علم', economy: 'وجهة غوص سريعة النمو بمطار دولي ومنتجعات فاخرة ومحميات بحرية شهيرة، تستقبل غواصين من أوروبا مباشرة عبر حجوزات تتم قبل السفر بأشهر.', sectors: ['مراكز الغوص', 'المنتجعات', 'رحلات السفاري البحري', 'رحلات المحميات'] },
+  'dahab': { nameAr: 'دهب', economy: 'وجهة غوص حر ورياح يقصدها الرحّالة المستقلون من أوروبا، تعتمد على الحجز المباشر أونلاين أكثر من الوسطاء، بمراكز غوص وكايت وكامبات ومقاهٍ سياحية.', sectors: ['مراكز الغوص', 'مراكز الكايت', 'الكامبات والنزل', 'المقاهي السياحية'] },
   cairo: { nameAr: 'القاهرة', economy: 'العاصمة وأكبر سوق تنافسي في مصر، تزخر بالشركات والمطاعم والعقارات والشركات الناشئة، حيث يصنع الحضور الرقمي القوي الفارق بين النجاح والاندثار.', sectors: ['الشركات والخدمات', 'المطاعم والكافيهات', 'العقارات', 'التجارة الإلكترونية'] },
   giza: { nameAr: 'الجيزة', economy: 'مركز صناعي وسياحي يجمع مصانع السادس من أكتوبر والقطاع السياحي حول الأهرامات، بآلاف الشركات الصغيرة والمتوسطة الباحثة عن التحول الرقمي.', sectors: ['مصانع أكتوبر', 'السياحة', 'التجارة والتوزيع', 'العقارات'] },
   alexandria: { nameAr: 'الإسكندرية', economy: 'ثاني أكبر مدن مصر وميناؤها الرئيسي، تزخر بفرص التجارة والاستيراد والتصدير والسياحة، وتحتاج شركاتها حضوراً رقمياً بمعايير عالمية.', sectors: ['الاستيراد والتصدير', 'السياحة', 'المطاعم البحرية', 'التجارة'] },
@@ -175,6 +180,11 @@ export default async function CityServicePage({
   const s = services[service]
   if (!c || !s) notFound()
 
+  // زاوية محتوى فريدة لهذه التركيبة (محافظة × خدمة) — تمنع تشابه الصفحات
+  const angle = cityServiceAngles[`${city}-${service}`]
+  // ادمج سؤال الزاوية مع أسئلة الخدمة (إن وُجد) لبناء FAQ فريد لكل محافظة
+  const pageFaqs = angle?.faq?.q ? [angle.faq, ...s.faqs] : s.faqs
+
   const canonical = `https://dogethertech.com/software-company/${city}/${service}`
 
   const breadcrumbSchema = {
@@ -207,7 +217,7 @@ export default async function CityServicePage({
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: s.faqs.map((f) => ({
+    mainEntity: pageFaqs.map((f) => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -222,21 +232,21 @@ export default async function CityServicePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
-          <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
+          <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors">احصل على عرض سعر</a>
         </div>
       </header>
 
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-4">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
-            <Link href="/software-company" className="hover:text-[#1E6DB2] transition-colors">شركة برمجة في مصر</Link>
+            <Link href="/software-company" className="hover:text-[#107060] transition-colors">شركة برمجة في مصر</Link>
             <span className="mx-2">›</span>
-            <Link href={`/software-company/${city}`} className="hover:text-[#1E6DB2] transition-colors">{c.nameAr}</Link>
+            <Link href={`/software-company/${city}`} className="hover:text-[#107060] transition-colors">{c.nameAr}</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">{s.metaService}</span>
           </nav>
@@ -244,8 +254,8 @@ export default async function CityServicePage({
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">{s.nameAr} في {c.nameAr}</h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-8">{s.intro} — خدمة احترافية لعملاء {c.nameAr}</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow">احصل على عرض سعر مجاني</a>
-            <Link href={`/software-company/${city}`} className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">كل خدماتنا في {c.nameAr}</Link>
+            <a href="https://wa.me/201062485133" className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow">احصل على عرض سعر مجاني</a>
+            <Link href={`/software-company/${city}`} className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors">كل خدماتنا في {c.nameAr}</Link>
           </div>
         </div>
       </section>
@@ -257,12 +267,19 @@ export default async function CityServicePage({
           <p className="text-lg text-slate-700 leading-relaxed">{c.economy} توفّر DoGether {s.nameAr} لأصحاب الأعمال في {c.nameAr} بجودة احترافية وأسعار تنافسية، مع تواصل يومي وتسليم في الموعد — نعمل عن بُعد بكفاءة كاملة مع عملاء {c.nameAr} وكل محافظات مصر.</p>
         </section>
 
+        {angle?.useCase && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-bold text-slate-800 mb-4">لماذا يحتاج عملك في {c.nameAr} هذه الخدمة تحديداً؟</h2>
+            <p className="text-lg text-slate-700 leading-relaxed bg-blue-50 border-r-4 border-[#2DBEA1] rounded-l-xl p-6">{angle.useCase}</p>
+          </section>
+        )}
+
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-6">ماذا تشمل الخدمة؟</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {s.features.map((f) => (
               <div key={f} className="flex items-center gap-2 p-4 bg-blue-50 rounded-xl border border-blue-100 text-slate-700 font-medium">
-                <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+                <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0" />
                 {f}
               </div>
             ))}
@@ -274,7 +291,7 @@ export default async function CityServicePage({
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
             {c.sectors.map((sec) => (
               <div key={sec} className="flex items-center gap-2 p-3 bg-white rounded-xl border border-slate-200 text-sm text-slate-700 font-medium">
-                <span className="w-2 h-2 bg-[#1DC7E0] rounded-full flex-shrink-0" />
+                <span className="w-2 h-2 bg-[#2DBEA1] rounded-full flex-shrink-0" />
                 {sec}
               </div>
             ))}
@@ -284,11 +301,11 @@ export default async function CityServicePage({
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-6">أسئلة شائعة</h2>
           <div className="space-y-4">
-            {s.faqs.map((f, i) => (
+            {pageFaqs.map((f, i) => (
               <details key={i} className="border border-slate-200 rounded-xl overflow-hidden">
                 <summary className="flex justify-between items-center p-5 cursor-pointer font-semibold text-slate-800 hover:bg-slate-50 transition-colors list-none">
                   <span>{f.q}</span>
-                  <span className="text-[#1DC7E0] text-lg">+</span>
+                  <span className="text-[#2DBEA1] text-lg">+</span>
                 </summary>
                 <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">{f.a}</div>
               </details>
@@ -300,25 +317,25 @@ export default async function CityServicePage({
           <h2 className="text-2xl font-bold text-slate-800 mb-6">خدمات أخرى في {c.nameAr}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {otherServices.map((k) => (
-              <Link key={k} href={`/software-company/${city}/${k}`} className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#1DC7E0] hover:shadow transition-all text-slate-700 font-medium text-sm">
+              <Link key={k} href={`/software-company/${city}/${k}`} className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">
                 {services[k].emoji} {services[k].nameAr} في {c.nameAr}
               </Link>
             ))}
           </div>
         </section>
 
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center shadow-xl">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center shadow-xl">
           <h2 className="text-2xl font-bold mb-3">{s.metaService} في {c.nameAr}؟ ابدأ اليوم</h2>
           <p className="mb-8 text-blue-200 text-lg">تواصل معنا لعرض سعر واستشارة مجانية خلال 24 ساعة</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a href="https://wa.me/201062485133" className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
+            <a href="https://wa.me/201062485133" className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow">واتساب: 01062485133</a>
             <a href="mailto:dogethertech@gmail.com" className="border-2 border-white text-white px-7 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors">dogethertech@gmail.com</a>
           </div>
         </div>
       </main>
 
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
-        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a></p>
+        <p className="text-slate-400">© 2025 DoGether — جميع الحقوق محفوظة | <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a> | هاتف: <a href="tel:+201062485133" className="text-[#2DBEA1]">01062485133</a></p>
       </footer>
     </div>
   )

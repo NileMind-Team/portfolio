@@ -133,12 +133,12 @@ export default function SoftwareCompanyHub() {
       />
 
       {/* ── Header ── */}
-      <header className="bg-gradient-to-l from-[#193F94] to-[#1DC7E0] text-white py-4 shadow-lg">
+      <header className="bg-gradient-to-l from-[#084941] to-[#2DBEA1] text-white py-4 shadow-lg">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold tracking-tight">DoGether</Link>
           <a
             href="https://wa.me/201062485133"
-            className="bg-white text-[#1E6DB2] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#107060] px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors"
           >
             تواصل معنا
           </a>
@@ -149,13 +149,13 @@ export default function SoftwareCompanyHub() {
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 border-b border-blue-100">
         <div className="container mx-auto px-6 text-center">
           <nav className="text-sm text-slate-500 mb-5">
-            <Link href="/" className="hover:text-[#1E6DB2] transition-colors">الرئيسية</Link>
+            <Link href="/" className="hover:text-[#107060] transition-colors">الرئيسية</Link>
             <span className="mx-2">›</span>
             <span className="text-slate-700">شركة برمجة في مصر</span>
           </nav>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-5 leading-tight">
             شركة برمجة في مصر
-            <span className="block text-[#1E6DB2] mt-2">DoGether</span>
+            <span className="block text-[#107060] mt-2">DoGether</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             نحوّل أفكار الأعمال إلى منتجات رقمية ناجحة — مواقع ويب، تطبيقات جوال، متاجر إلكترونية،
@@ -164,13 +164,13 @@ export default function SoftwareCompanyHub() {
           <div className="flex gap-4 justify-center mt-8 flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-[#1E6DB2] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#193F94] transition-colors shadow-lg"
+              className="bg-[#107060] text-white px-7 py-3 rounded-xl font-bold hover:bg-[#084941] transition-colors shadow-lg"
             >
               احصل على عرض سعر مجاني
             </a>
             <Link
               href="/"
-              className="border-2 border-[#1E6DB2] text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors"
+              className="border-2 border-[#107060] text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors"
             >
               شاهد أعمالنا
             </Link>
@@ -189,9 +189,9 @@ export default function SoftwareCompanyHub() {
               <Link
                 key={s.title}
                 href={s.href}
-                className="block p-5 bg-white rounded-xl border border-slate-200 hover:border-[#1DC7E0] hover:shadow-md transition-all group"
+                className="block p-5 bg-white rounded-xl border border-slate-200 hover:border-[#2DBEA1] hover:shadow-md transition-all group"
               >
-                <h3 className="font-bold text-slate-800 mb-2 group-hover:text-[#1E6DB2] transition-colors text-sm">
+                <h3 className="font-bold text-slate-800 mb-2 group-hover:text-[#107060] transition-colors text-sm">
                   {s.title}
                 </h3>
                 <p className="text-slate-500 text-xs leading-relaxed">{s.desc}</p>
@@ -199,7 +199,7 @@ export default function SoftwareCompanyHub() {
             ))}
           </div>
           <div className="mt-6 text-center">
-            <Link href="/services" className="text-[#1E6DB2] font-semibold hover:underline">
+            <Link href="/services" className="text-[#107060] font-semibold hover:underline">
               تعرف على كل خدماتنا بالتفصيل ←
             </Link>
           </div>
@@ -212,7 +212,7 @@ export default function SoftwareCompanyHub() {
           <div className="grid md:grid-cols-3 gap-6">
             {methodology.map((m) => (
               <div key={m.step} className="flex gap-4">
-                <div className="text-3xl font-black text-[#1DC7E0] opacity-60 leading-none">{m.step}</div>
+                <div className="text-3xl font-black text-[#2DBEA1] opacity-60 leading-none">{m.step}</div>
                 <div>
                   <h3 className="font-bold text-slate-800 mb-1">{m.title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed">{m.desc}</p>
@@ -229,7 +229,7 @@ export default function SoftwareCompanyHub() {
           <div className="grid md:grid-cols-3 gap-4">
             {technologies.map((t) => (
               <div key={t.cat} className="p-4 border border-slate-200 rounded-xl">
-                <div className="text-xs font-bold text-[#1E6DB2] uppercase tracking-wider mb-2">{t.cat}</div>
+                <div className="text-xs font-bold text-[#107060] uppercase tracking-wider mb-2">{t.cat}</div>
                 <div className="text-slate-700 text-sm">{t.list}</div>
               </div>
             ))}
@@ -247,11 +247,11 @@ export default function SoftwareCompanyHub() {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-4 bg-white rounded-xl border border-slate-200 hover:border-[#1DC7E0] hover:shadow-md transition-all"
+                className="block p-4 bg-white rounded-xl border border-slate-200 hover:border-[#2DBEA1] hover:shadow-md transition-all"
               >
                 <div className="font-bold text-slate-800 mb-1 text-sm">{p.name}</div>
                 <div className="text-slate-500 text-xs">{p.type}</div>
-                <div className="text-[#1DC7E0] text-xs mt-2">زيارة المشروع ←</div>
+                <div className="text-[#2DBEA1] text-xs mt-2">زيارة المشروع ←</div>
               </a>
             ))}
           </div>
@@ -271,7 +271,7 @@ export default function SoftwareCompanyHub() {
               { t: 'دعم حقيقي بعد الإطلاق', d: 'مش بنختفي بعد التسليم. دعم فني مستمر وتحديثات دورية.' },
             ].map((w) => (
               <div key={w.t} className="flex gap-4 p-5 border border-slate-200 rounded-xl">
-                <div className="w-2.5 h-2.5 bg-[#1DC7E0] rounded-full flex-shrink-0 mt-1.5" />
+                <div className="w-2.5 h-2.5 bg-[#2DBEA1] rounded-full flex-shrink-0 mt-1.5" />
                 <div>
                   <div className="font-bold text-slate-800 mb-1">{w.t}</div>
                   <div className="text-slate-500 text-sm leading-relaxed">{w.d}</div>
@@ -292,7 +292,7 @@ export default function SoftwareCompanyHub() {
               <Link
                 key={c.slug}
                 href={`/software-company/${c.slug}`}
-                className="block text-center py-3 px-4 bg-white rounded-xl border border-blue-200 text-slate-700 font-medium hover:border-[#1E6DB2] hover:text-[#1E6DB2] transition-all text-sm"
+                className="block text-center py-3 px-4 bg-white rounded-xl border border-blue-200 text-slate-700 font-medium hover:border-[#107060] hover:text-[#107060] transition-all text-sm"
               >
                 {c.name}
               </Link>
@@ -314,13 +314,13 @@ export default function SoftwareCompanyHub() {
         </section>
 
         {/* ── CTA ── */}
-        <div className="bg-gradient-to-l from-[#193F94] to-[#1E6DB2] rounded-2xl p-10 text-white text-center">
+        <div className="bg-gradient-to-l from-[#084941] to-[#107060] rounded-2xl p-10 text-white text-center">
           <h2 className="text-2xl font-bold mb-3">ابدأ مشروعك اليوم</h2>
           <p className="mb-8 text-blue-200 text-lg">استشارة مجانية وعرض سعر خلال 24 ساعة</p>
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="https://wa.me/201062485133"
-              className="bg-white text-[#1E6DB2] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
+              className="bg-white text-[#107060] px-7 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow"
             >
               واتساب: 01062485133
             </a>
@@ -337,9 +337,9 @@ export default function SoftwareCompanyHub() {
       <footer className="bg-slate-900 text-white py-6 text-center text-sm mt-8">
         <p className="text-slate-400">
           © 2025 DoGether — جميع الحقوق محفوظة |{' '}
-          <a href="https://dogethertech.com" className="text-[#1DC7E0] hover:underline">dogethertech.com</a>{' '}
+          <a href="https://dogethertech.com" className="text-[#2DBEA1] hover:underline">dogethertech.com</a>{' '}
           |{' '}
-          <a href="tel:+201062485133" className="text-[#1DC7E0]">01062485133</a>
+          <a href="tel:+201062485133" className="text-[#2DBEA1]">01062485133</a>
         </p>
       </footer>
     </div>

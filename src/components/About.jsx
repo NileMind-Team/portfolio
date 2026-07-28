@@ -416,26 +416,26 @@ const About = ({ lang }) => {
           <h3 className="text-2xl sm:text-3xl font-bold mb-6 lg:mb-8 text-center">
             {t.teamTitle}
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {t.team.map((member, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-dark-card rounded-xl p-3 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
+                className="bg-white dark:bg-dark-card rounded-xl p-2.5 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-full flex-shrink-0 flex items-center justify-center">
-                    <div className="text-lg sm:text-xl font-bold text-primary-dark dark:text-primary-light">
+                <div className="flex flex-col items-center text-center gap-1.5 sm:flex-row sm:items-center sm:text-start sm:gap-4">
+                  <div className="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-full flex-shrink-0 flex items-center justify-center">
+                    <div className="text-sm sm:text-xl font-bold text-primary-dark dark:text-primary-light">
                       {getInitials(member.name)}
                     </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-base sm:text-lg truncate">
+                  <div className="flex-1 min-w-0 w-full">
+                    <h4 className="font-bold text-xs sm:text-lg leading-tight sm:truncate">
                       {member.name}
                     </h4>
-                    <p className="text-primary-dark dark:text-primary-light font-medium text-sm sm:text-base">
+                    <p className="text-primary-dark dark:text-primary-light font-medium text-[11px] sm:text-base leading-tight">
                       {member.role}
                     </p>
-                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 gap-2 sm:gap-4">
+                    <div className="hidden sm:flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 gap-2 sm:gap-4">
                       <span className="flex items-center whitespace-nowrap">
                         <Clock className="w-3 h-3 ml-1" />
                         {member.experience}
