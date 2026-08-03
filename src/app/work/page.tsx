@@ -94,6 +94,26 @@ const projects: Project[] = [
     duration: '4 أسابيع',
     link: 'https://sharmkitesurf.com',
   },
+  {
+    name: 'TriPyramids — سافر واكتشف مصر',
+    client: 'TriPyramids',
+    category: 'منصة سفر وسياحة',
+    description:
+      'منصة سفر عصرية تساعد الزوار على اكتشاف وتجهيز تجارب سياحية مميزة في مصر من خلال تجربة رقمية متجاوبة.',
+    result: 'عرض واضح للتجارب السياحية وتجربة استخدام سلسة على الموبايل',
+    duration: 'مباشر',
+    link: 'https://tripyramids.online/',
+  },
+  {
+    name: 'أمجاد — استثمار حقيقي وعقارات ذكية',
+    client: 'Amjad Estate',
+    category: 'منصة عقارية',
+    description:
+      'تجربة عقارية راقية لعرض العقارات والفرص الاستثمارية من خلال واجهة بصرية حديثة ومتجاوبة.',
+    result: 'عرض احترافي للعقارات وتجربة تصفح مهيأة للتحويل',
+    duration: 'مباشر',
+    link: 'https://amjad-estate.space/',
+  },
 ]
 
 const breadcrumbSchema = {
@@ -149,10 +169,10 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <main className="container mx-auto px-6 py-14 max-w-4xl">
-        <div className="space-y-6">
+      <main className="container mx-auto px-6 py-14 max-w-5xl">
+        <div className="grid gap-5 md:grid-cols-2">
           {projects.map((p) => (
-            <div key={p.name} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-[#2DBEA1] hover:shadow-lg transition-all">
+            <div key={p.name} className="p-5 sm:p-6 bg-white border border-slate-200 rounded-2xl hover:-translate-y-1 hover:border-[#2DBEA1] hover:shadow-xl transition-all duration-300">
               <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
                 <div>
                   <span className="inline-block bg-[#2DBEA1]/10 text-[#107060] text-xs font-semibold px-3 py-1 rounded-full mb-2">

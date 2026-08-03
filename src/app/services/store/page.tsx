@@ -57,6 +57,14 @@ const faqSchema = {
         text: 'نعم تماماً. ٧٠٪+ من مبيعات المتاجر الإلكترونية في مصر تأتي من الجوال، لذلك نضمن تجربة شراء سلسة ومريحة على كل أحجام الشاشات دون الحاجة لتطبيق منفصل.',
       },
     },
+    {
+      '@type': 'Question',
+      name: 'هل يمكن بناء متجر يبيع للخليج والخارج؟',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'نعم. نبني متاجر تدعم البطاقات الدولية (Visa/Mastercard) وبوابات عالمية كـ Stripe وPayPal و2Checkout، مع عرض الأسعار بعدة عملات وواجهة عربية وإنجليزية — مناسبة لبيع عملاء الخليج (السعودية، الإمارات، الكويت) والخارج. نعمل مع عملاء الخليج عن بُعد بالكامل.',
+      },
+    },
   ],
 }
 
@@ -134,6 +142,12 @@ export default function StorePage() {
         </section>
 
         <section className="mb-14">
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">تبيع للخليج أو الخارج؟</h2>
+          <p className="text-lg text-slate-700 leading-relaxed mb-4">بجانب البوابات المصرية، نبني متاجر جاهزة للبيع خارج مصر: بطاقات دولية (Visa وMastercard)، بوابات عالمية كـ Stripe وPayPal و2Checkout، عرض الأسعار بعدة عملات، وواجهة عربية وإنجليزية معاً — بحيث يشتري عميلك في السعودية أو الإمارات أو الكويت بنفس سهولة العميل المحلي.</p>
+          <p className="text-lg text-slate-700 leading-relaxed">نعمل مع عملاء الخليج والخارج عن بُعد بالكامل، بتواصل يومي وتسليم أونلاين. <Link href="/gulf-software" className="text-[#107060] font-semibold hover:underline">اعرف المزيد عن خدماتنا لعملاء الخليج ←</Link></p>
+        </section>
+
+        <section className="mb-14">
           <h2 className="text-2xl font-bold text-slate-800 mb-6">أسئلة شائعة عن المتاجر الإلكترونية</h2>
           <div className="space-y-4">
             {faqSchema.mainEntity.map((faq, i) => (
@@ -155,6 +169,7 @@ export default function StorePage() {
             <Link href="/services/pos" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🏪 أنظمة نقاط البيع POS</Link>
             <Link href="/services/management-system" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">📊 أنظمة إدارة الأعمال</Link>
             <Link href="/software-company" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🏢 شركة برمجة في مصر</Link>
+            <Link href="/gulf-software" className="p-4 bg-white border border-slate-200 rounded-xl hover:border-[#2DBEA1] hover:shadow transition-all text-slate-700 font-medium text-sm">🌍 خدمات لعملاء الخليج</Link>
           </div>
         </section>
 

@@ -1,9 +1,7 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from "framer-motion";
 import { Zap, CheckCircle, TrendingUp, Sparkles } from "lucide-react";
-import heroImg from "../assets/hero.jpeg";
 
 const Hero = ({ lang }) => {
   const content = {
@@ -21,6 +19,8 @@ const Hero = ({ lang }) => {
       stat2: "Projects",
       stat3: "Growth",
       stat4: "Satisfaction",
+      ctaQuote: "Start Your Project",
+      ctaWhatsapp: "Chat on WhatsApp",
     },
     ar: {
       badge: "🚀 وكالة رقمية رائدة",
@@ -35,6 +35,8 @@ const Hero = ({ lang }) => {
       stat2: "مشاريع",
       stat3: "نمو",
       stat4: "رضا",
+      ctaQuote: "ابدأ مشروعك",
+      ctaWhatsapp: "تواصل عبر واتساب",
     },
   };
 
@@ -44,7 +46,7 @@ const Hero = ({ lang }) => {
   return (
     <section
       id="home"
-      className={`pt-28 pb-16 md:pt-36 md:pb-24 lg:pt-28 lg:pb-28 relative overflow-hidden ${
+      className={`pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-24 lg:pb-20 relative overflow-hidden ${
         isRTL ? "rtl" : "ltr"
       }`}
       dir={isRTL ? "rtl" : "ltr"}
@@ -62,11 +64,12 @@ const Hero = ({ lang }) => {
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
+            className="text-center"
           >
             <div
               className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-light/10 to-primary-dark/10 text-primary-dark dark:text-primary-light font-medium mb-4 border border-primary-light/20 dark:border-primary-light/30 ${
@@ -77,14 +80,14 @@ const Hero = ({ lang }) => {
               {t.badge}
             </div>
 
-            <h1 className="text-4xl xs:text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 lg:mb-6 leading-tight">
+            <h1 className="text-4xl xs:text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold mb-4 lg:mb-5 leading-tight">
               {t.title}
               <span className="block bg-gradient-to-r from-primary-light via-primary to-primary-dark bg-clip-text text-transparent mt-2">
                 {t.titleHighlight}
               </span>
             </h1>
 
-            <p className="text-gray-600 dark:text-gray-300 text-lg sm:text-xl lg:text-2xl mb-8 lg:mb-12 max-w-xl leading-relaxed">
+            <p className="mx-auto max-w-3xl text-gray-600 dark:text-gray-300 text-lg sm:text-xl lg:text-xl mb-6 leading-relaxed">
               {t.desc1}{" "}
               <span className="text-primary-dark dark:text-primary-light font-semibold">
                 {t.descSpan1}
@@ -96,108 +99,122 @@ const Hero = ({ lang }) => {
               {t.descEnd}
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 dark:border-dark-light">
-              {[
-                {
-                  icon: <Zap className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "24h",
-                  label: t.stat1,
-                },
-                {
-                  icon: <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "7+",
-                  label: t.stat2,
-                },
-                {
-                  icon: <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "100%",
-                  label: t.stat3,
-                },
-                {
-                  icon: <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />,
-                  value: "98%",
-                  label: t.stat4,
-                },
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-lg mb-2">
-                    <div className="text-primary-dark dark:text-primary-light">
-                      {stat.icon}
-                    </div>
-                  </div>
-                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-white">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+            <div className="flex flex-wrap justify-center gap-3 mb-8 lg:mb-8">
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary-light to-primary-dark px-6 py-3 font-bold text-white shadow-lg transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-offset-2 dark:focus:ring-offset-dark"
+              >
+                {t.ctaQuote}
+              </a>
+              <a
+                href="https://wa.me/201062485133"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.ctaWhatsapp} - DoGether`}
+                className="inline-flex items-center justify-center rounded-xl border-2 border-primary-dark px-6 py-3 font-bold text-primary-dark transition-colors hover:bg-primary-dark hover:text-white dark:border-primary-light dark:text-primary-light dark:hover:bg-primary-light dark:hover:text-dark"
+              >
+                {t.ctaWhatsapp}
+              </a>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? -30 : 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative mt-8 lg:mt-0"
-          >
-            <div className="relative bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl sm:rounded-3xl p-1 sm:p-2 shadow-2xl">
-              <div className="bg-white dark:bg-dark-card rounded-xl sm:rounded-2xl p-1 sm:p-2 overflow-hidden">
-                <div className="bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="text-white/90 text-xs sm:text-sm md:text-base text-center flex-1 px-2 font-mono">
-                    dashboard.DoGether.com
-                  </div>
-                  <div
-                    className={`flex items-center gap-2 sm:gap-3 shrink-0 ${
-                      isRTL ? "order-1" : ""
-                    }`}
+            <motion.div
+              initial={{ opacity: 0, y: 22, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.42 }}
+              className="group relative mx-auto max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-[#10283a] via-[#0d2030] to-[#091722] p-4 text-white shadow-2xl shadow-primary-dark/20 sm:p-5"
+            >
+              <motion.div
+                animate={{ x: [0, 45, 0], y: [0, -24, 0], scale: [1, 1.15, 1] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary-light/20 blur-3xl"
+              />
+              <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,.35)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.35)_1px,transparent_1px)] [background-size:32px_32px]" />
+
+              <div className="relative z-10 mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-semibold text-white/60 sm:text-sm">
+                  <TrendingUp className="h-4 w-4 text-primary-light" />
+                  <span>{isRTL ? "مؤشرات الأداء" : "Performance overview"}</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-full border border-primary-light/15 bg-primary-light/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-light">
+                  <motion.span animate={{ opacity: [0.35, 1, 0.35], scale: [0.8, 1.2, 0.8] }} transition={{ duration: 1.8, repeat: Infinity }} className="h-1.5 w-1.5 rounded-full bg-primary-light shadow-[0_0_8px_#2DBEA1]" />
+                  Live
+                </div>
+              </div>
+
+              <div className="relative z-10 grid grid-cols-4 divide-x divide-x-reverse divide-white/10 rounded-2xl border border-white/[0.08] bg-white/[0.04] px-1 py-3 backdrop-blur-sm sm:px-3">
+                {[
+                  { icon: <Zap className="h-4 w-4" />, value: "24h", label: t.stat1 },
+                  { icon: <CheckCircle className="h-4 w-4" />, value: "7+", label: t.stat2 },
+                  { icon: <TrendingUp className="h-4 w-4" />, value: "100%", label: t.stat3 },
+                  { icon: <Sparkles className="h-4 w-4" />, value: "98%", label: t.stat4 },
+                ].map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 + index * 0.1, duration: 0.45 }}
+                    whileHover={{ y: -3 }}
+                    className="flex min-w-0 flex-col items-center px-1 text-center sm:px-2"
                   >
-                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-red-500 shadow-lg shadow-red-500/50"></div>
-                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-yellow-500 shadow-lg shadow-yellow-500/50"></div>
-                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></div>
-                  </div>
-                </div>
-                <div className="p-4 sm:p-6">
-                  <Image
-                    src={heroImg}
-                    alt="DoGether Software Solutions - شركة برمجة في مصر | Web Development, Mobile Apps, POS Systems Egypt"
-                    className="w-full h-auto rounded-lg sm:rounded-xl object-cover"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    <motion.span
+                      animate={{ rotate: index === 3 ? [0, 12, -12, 0] : 0, scale: [1, 1.08, 1] }}
+                      transition={{ duration: 3, repeat: Infinity, delay: index * 0.35 }}
+                      className="mb-1.5 text-primary-light"
+                    >
+                      {stat.icon}
+                    </motion.span>
+                    <strong className="text-lg font-black tracking-tight sm:text-2xl">{stat.value}</strong>
+                    <span className="max-w-full truncate text-[10px] text-white/50 sm:text-xs">{stat.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="relative z-10 mt-3 h-28 overflow-hidden rounded-xl sm:h-36" aria-hidden="true">
+                <svg viewBox="0 0 600 150" preserveAspectRatio="none" className="h-full w-full overflow-visible">
+                  <defs>
+                    <linearGradient id="heroChartFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2DBEA1" stopOpacity="0.38" />
+                      <stop offset="100%" stopColor="#2DBEA1" stopOpacity="0" />
+                    </linearGradient>
+                    <filter id="heroChartGlow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                  </defs>
+                  {[30, 70, 110, 148].map((y) => <line key={y} x1="0" y1={y} x2="600" y2={y} stroke="rgba(255,255,255,.07)" strokeWidth="1" />)}
+                  <motion.path
+                    d="M0 126 C45 122, 68 109, 105 113 S164 91, 205 96 S266 66, 310 76 S372 48, 415 57 S470 28, 510 39 S566 17, 600 12 L600 150 L0 150 Z"
+                    fill="url(#heroChartFill)"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 1.15 }}
                   />
-                </div>
-              </div>
-            </div>
-
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className={`absolute -top-3 ${
-                isRTL ? "-right-3 xs:-right-4" : "-left-3 xs:-left-4"
-              } w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 bg-gradient-to-r from-primary-light to-primary rounded-xl sm:rounded-2xl shadow-xl hidden xs:block ${
-                isRTL ? "rotate-12" : "-rotate-12"
-              }`}
-            >
-              <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm xs:text-base">
-                POS
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-              className={`absolute -bottom-3 ${
-                isRTL ? "-left-3 xs:-left-4" : "-right-3 xs:-right-4"
-              } w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-primary-dark to-primary-darker rounded-xl sm:rounded-2xl shadow-xl hidden xs:block ${
-                isRTL ? "-rotate-12" : "rotate-12"
-              }`}
-            >
-              <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-sm xs:text-base">
-                Web
+                  <motion.path
+                    d="M0 126 C45 122, 68 109, 105 113 S164 91, 205 96 S266 66, 310 76 S372 48, 415 57 S470 28, 510 39 S566 17, 600 12"
+                    fill="none" stroke="#2DBEA1" strokeWidth="4" strokeLinecap="round" vectorEffect="non-scaling-stroke" filter="url(#heroChartGlow)"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.8, delay: 0.9, ease: "easeInOut" }}
+                  />
+                  {[[105,113],[205,96],[310,76],[415,57],[510,39],[600,12]].map(([cx, cy], index) => (
+                    <motion.circle key={cx} cx={cx} cy={cy} r="5" fill="#0d2030" stroke="#5DE4CA" strokeWidth="3"
+                      initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: [0, 1.45, 1] }} transition={{ delay: 1.35 + index * 0.16, duration: 0.45 }} />
+                  ))}
+                  <motion.circle
+                    r="7" fill="#ffffff" stroke="#2DBEA1" strokeWidth="4" filter="url(#heroChartGlow)"
+                    animate={{ cx: [0,105,205,310,415,510,600], cy: [126,113,96,76,57,39,12], opacity: [0,1,1,1,1,1,0] }}
+                    transition={{ duration: 5.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut", delay: 2.6 }}
+                  />
+                </svg>
+                <motion.div
+                  animate={{ x: ["-120%", "620%"] }}
+                  transition={{ duration: 5.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut", delay: 2.6 }}
+                  className="pointer-events-none absolute bottom-0 top-0 w-16 bg-gradient-to-r from-transparent via-primary-light/10 to-transparent blur-lg"
+                />
               </div>
             </motion.div>
           </motion.div>
+
         </div>
       </div>
     </section>

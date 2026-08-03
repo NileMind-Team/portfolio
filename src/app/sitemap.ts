@@ -19,26 +19,23 @@ const services = [
 // Fayoum service+location pages (static)
 const fayoumServices = ['web-design', 'online-store', 'pos', 'mobile-app']
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date()
+const gulfCountries = ['saudi-arabia', 'uae', 'kuwait', 'qatar', 'oman', 'bahrain']
 
+export default function sitemap(): MetadataRoute.Sitemap {
   const cityPages = cities.map((city) => ({
     url: `${base}/software-company/${city}`,
-    lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
 
   const servicePages = services.map((s) => ({
     url: `${base}/services/${s}`,
-    lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))
 
   const fayoumServicePages = fayoumServices.map((s) => ({
     url: `${base}/software-company/fayoum/${s}`,
-    lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.75,
   }))
@@ -47,7 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const serviceCityPages = cities.flatMap((city) =>
     services.map((s) => ({
       url: `${base}/software-company/${city}/${s}`,
-      lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }))
@@ -60,18 +56,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
+  const gulfCountryPages = gulfCountries.map((country) => ({
+    url: `${base}/gulf-software/${country}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }))
+
   return [
-    { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${base}/software-company`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${base}/software-company/fayoum`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${base}/tourism-software`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
-    { url: `${base}/services`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${base}/work`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/en/services/mobile-app-development`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/en/services/web-development`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: base, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${base}/software-company`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/software-company/fayoum`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/tourism-software`, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/restaurant-software`, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/real-estate-software`, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/clinic-software`, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/gulf-software`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/services`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/work`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/blog`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${base}/en/services/mobile-app-development`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/en/services/web-development`, changeFrequency: 'monthly', priority: 0.7 },
     ...servicePages,
     ...fayoumServicePages,
+    ...gulfCountryPages,
     ...serviceCityPages,
     ...cityPages,
     ...blogPages,

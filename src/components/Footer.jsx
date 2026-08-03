@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import logoImg from "../assets/logo-dark.png";
 
 const Footer = ({ lang }) => {
+  const [showAllServices, setShowAllServices] = useState(false);
   const currentYear = new Date().getFullYear();
 
   const content = {
@@ -70,6 +71,10 @@ const Footer = ({ lang }) => {
   // Internal links to dedicated service pages (fixes orphan pages for indexing)
   const servicePages = [
     { href: "/tourism-software", label: lang === "en" ? "Tourism Websites" : "حلول سياحية" },
+    { href: "/restaurant-software", label: lang === "en" ? "Restaurant Solutions" : "حلول المطاعم" },
+    { href: "/real-estate-software", label: lang === "en" ? "Real Estate Solutions" : "حلول العقارات" },
+    { href: "/clinic-software", label: lang === "en" ? "Clinic Solutions" : "حلول العيادات" },
+    { href: "/gulf-software", label: lang === "en" ? "Gulf Clients" : "خدمات الخليج" },
     { href: "/services/website", label: lang === "en" ? "Web Design" : "تصميم المواقع" },
     { href: "/services/mobile-app", label: lang === "en" ? "Mobile Apps" : "تطبيقات الجوال" },
     { href: "/services/store", label: lang === "en" ? "Online Stores" : "المتاجر الإلكترونية" },
@@ -154,7 +159,7 @@ const Footer = ({ lang }) => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <div className="text-xl sm:text-2xl font-bold">DoGether</div>
+                  <div className="text-xl sm:text-2xl font-bold">DoGether Tech</div>
                   <div className="text-primary-light text-xs sm:text-sm">
                     Digital Solutions
                   </div>
@@ -195,7 +200,7 @@ const Footer = ({ lang }) => {
             </h3>
             <ul className="space-y-1.5 sm:space-y-3">
               {servicePages.map((page) => (
-                <li key={page.href}>
+                <li key={page.href} className={!showAllServices && servicePages.indexOf(page) >= 4 ? "hidden sm:block" : "block"}>
                   <Link
                     href={page.href}
                     className="text-gray-400 hover:text-primary-light transition-colors flex items-center group text-sm"
@@ -210,6 +215,9 @@ const Footer = ({ lang }) => {
                 </li>
               ))}
             </ul>
+            <button type="button" onClick={() => setShowAllServices((current) => !current)} className="mt-3 text-xs font-semibold text-primary-light hover:text-white sm:hidden">
+              {showAllServices ? (lang === "en" ? "Show less" : "عرض أقل") : (lang === "en" ? "Show more" : "عرض المزيد")}
+            </button>
           </div>
 
           {Object.entries(footerLinks).map(([category, links]) => (
@@ -289,7 +297,7 @@ const Footer = ({ lang }) => {
         <div className="border-t border-gray-800 pt-5 sm:pt-6 lg:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
             <div className="text-gray-400 text-xs">
-              © {currentYear} DoGether. {t.rights}
+              © {currentYear} DoGether Tech. {t.rights}
             </div>
             <div className="flex items-center gap-1 text-gray-400 text-xs">
               <span>{t.made}</span>

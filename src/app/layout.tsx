@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import SocialFab from '@/components/SocialFab'
+import Analytics from '@/components/Analytics'
 import './globals.css'
 
 const inter = Inter({
@@ -22,11 +23,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://dogethertech.com'),
-  title: 'DoGether | شركة برمجة - Software Company Egypt',
-  description: 'DoGether — أفضل شركة برمجة في مصر. تصميم مواقع احترافية، تطبيقات جوال، متاجر إلكترونية، أنظمة POS وكاشير، تصميم UI/UX. نخدم الفيوم، القاهرة وجميع محافظات مصر. تواصل: 01062485133',
+  title: 'DoGether Tech | تصميم مواقع وشركة برمجة في مصر - Software Company Egypt',
+  description: 'DoGether — تصميم مواقع احترافية وشركة برمجة في مصر. تصميم موقع إلكتروني، تطبيقات جوال، متاجر إلكترونية، أنظمة POS وكاشير، تصميم UI/UX. نخدم الفيوم، القاهرة وجميع محافظات مصر. تواصل: 01062485133',
   keywords: [
-    'DoGether', 'شركة برمجة في مصر', 'software company Egypt',
-    'تصميم مواقع', 'تطوير تطبيقات', 'متجر إلكتروني', 'نظام نقاط البيع POS',
+    'DoGether', 'تصميم مواقع', 'تصميم موقع', 'تصميم موقع إلكتروني في مصر',
+    'شركة تصميم مواقع', 'شركة برمجة في مصر', 'software company Egypt',
+    'تطوير تطبيقات', 'متجر إلكتروني', 'نظام نقاط البيع POS',
   ].join(', '),
   authors: [{ name: 'DoGether', url: 'https://dogethertech.com' }],
   creator: 'DoGether',
@@ -45,8 +47,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://dogethertech.com/',
-    title: 'DoGether | شركة برمجة',
-    description: 'DoGether شركة برمجة محترفة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
+    title: 'DoGether Tech | تصميم مواقع وشركة برمجة في مصر',
+    description: 'DoGether لتصميم المواقع والبرمجة في مصر. تصميم موقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
     siteName: 'DoGether',
     locale: 'ar_EG',
     images: [{
@@ -58,8 +60,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DoGether | شركة برمجة',
-    description: 'شركة برمجة في مصر. مواقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
+    title: 'DoGether Tech | تصميم مواقع وشركة برمجة في مصر',
+    description: 'تصميم مواقع وبرمجة في مصر. تصميم موقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -67,8 +69,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/DoGehter-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/DoGehter-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/DoGehter-icon.png?v=5', sizes: '512x512', type: 'image/png' },
+      { url: '/DoGehter-32x32.png?v=5', sizes: '32x32', type: 'image/png' },
+      { url: '/DoGehter-16x16.png?v=5', sizes: '16x16', type: 'image/png' },
     ],
     apple: '/DoGehter-icon.png',
   },
@@ -217,6 +220,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning>
         {children}
         <SocialFab />
+        <Analytics />
       </body>
     </html>
   )

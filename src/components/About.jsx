@@ -1,6 +1,7 @@
 'use client'
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Target,
   Users,
@@ -12,9 +13,11 @@ import {
   TrendingUp,
   Lightbulb,
   MapPin,
+  ChevronDown,
 } from "lucide-react";
 
 const About = ({ lang }) => {
+  const [showAllTeam, setShowAllTeam] = useState(false);
   const content = {
     en: {
       badge: "About DoGether",
@@ -56,6 +59,8 @@ const About = ({ lang }) => {
         },
       ],
       teamTitle: "Meet Our Team",
+      showMoreTeam: "Show more",
+      showLessTeam: "Show less",
       team: [
         {
           name: "Mohand Ashraf",
@@ -224,6 +229,8 @@ const About = ({ lang }) => {
         },
       ],
       teamTitle: "فريق العمل",
+      showMoreTeam: "عرض المزيد",
+      showLessTeam: "عرض أقل",
       team: [
         {
           name: "مهند أشرف",
@@ -416,10 +423,11 @@ const About = ({ lang }) => {
           <h3 className="text-2xl sm:text-3xl font-bold mb-6 lg:mb-8 text-center">
             {t.teamTitle}
           </h3>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-            {t.team.map((member, index) => (
-              <div
-                key={index}
+          <motion.div layout className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+            {t.team.slice(0, 4).map((member, index) => (
+              <motion.div
+                layout
+                key={member.name}
                 className="bg-white dark:bg-dark-card rounded-xl p-2.5 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
               >
                 <div className="flex flex-col items-center text-center gap-1.5 sm:flex-row sm:items-center sm:text-start sm:gap-4">
@@ -447,9 +455,56 @@ const About = ({ lang }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+            <AnimatePresence initial={false}>
+              {showAllTeam && t.team.slice(4).map((member, index) => (
+                <motion.div
+                  layout
+                  key={member.name}
+                  initial={{ opacity: 0, y: -14, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                  transition={{ duration: 0.3, delay: index * 0.035 }}
+                  className="bg-white dark:bg-dark-card rounded-xl p-2.5 sm:p-4 border border-gray-100 dark:border-dark-light hover:border-primary-light/20 dark:hover:border-primary-light/30 transition-colors"
+                >
+                  <div className="flex flex-col items-center text-center gap-1.5 sm:flex-row sm:items-center sm:text-start sm:gap-4">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-light/10 to-primary-dark/10 dark:from-primary-light/20 dark:to-primary-dark/20 rounded-full flex-shrink-0 flex items-center justify-center">
+                      <div className="text-sm sm:text-xl font-bold text-primary-dark dark:text-primary-light">
+                        {getInitials(member.name)}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0 w-full">
+                      <h4 className="font-bold text-xs sm:text-lg leading-tight sm:truncate">{member.name}</h4>
+                      <p className="text-primary-dark dark:text-primary-light font-medium text-[11px] sm:text-base leading-tight">{member.role}</p>
+                      <div className="hidden sm:flex items-center text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-2 gap-2 sm:gap-4">
+                        <span className="flex items-center whitespace-nowrap"><Clock className="w-3 h-3 ml-1" />{member.experience}</span>
+                        <span className="flex items-center whitespace-nowrap"><Award className="w-3 h-3 ml-1" />{member.expertise}</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {t.team.length > 4 && (
+            <div className="mt-6 flex justify-center">
+              <motion.button
+                type="button"
+                onClick={() => setShowAllTeam((current) => !current)}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                aria-expanded={showAllTeam}
+                className="inline-flex items-center gap-2 rounded-full border border-primary-light/25 bg-primary-light/10 px-6 py-2.5 text-sm font-bold text-primary-dark transition-colors hover:bg-primary-light/20 dark:text-primary-light"
+              >
+                {showAllTeam ? t.showLessTeam : t.showMoreTeam}
+                <motion.span animate={{ rotate: showAllTeam ? 180 : 0 }} transition={{ duration: 0.25 }}>
+                  <ChevronDown className="h-4 w-4" />
+                </motion.span>
+              </motion.button>
+            </div>
+          )}
         </motion.div>
 
         {/* Mission & Vision */}

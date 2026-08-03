@@ -224,7 +224,7 @@ export default async function CityServicePage({
     })),
   }
 
-  const otherServices = serviceKeys.filter((k) => k !== service).slice(0, 4)
+  const otherServices = serviceKeys.filter((k) => k !== service)
 
   return (
     <div dir="rtl" lang="ar" className="min-h-screen bg-white font-sans">

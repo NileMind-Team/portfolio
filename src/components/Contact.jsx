@@ -7,10 +7,13 @@ import {
   Phone,
   MapPin,
   CheckCircle,
+  Shield,
   MessageSquare,
   Clock,
   User,
   Facebook,
+  Instagram,
+  Music2,
 } from "lucide-react";
 
 const Contact = ({ lang }) => {
@@ -36,6 +39,8 @@ const Contact = ({ lang }) => {
       call: "Call Us",
       whatsapp: "WhatsApp",
       facebook: "Facebook",
+      instagram: "Instagram",
+      tiktok: "TikTok",
       formTitle: "Send us a message",
       formSubtitle:
         "Fill out the form below and we'll get back to you as soon as possible.",
@@ -73,6 +78,8 @@ const Contact = ({ lang }) => {
       call: "اتصل بنا",
       whatsapp: "واتساب",
       facebook: "فيسبوك",
+      instagram: "إنستجرام",
+      tiktok: "تيك توك",
       formTitle: "أرسل لنا رسالة",
       formSubtitle: "املأ النموذج أدناه وسنعود إليك في أقرب وقت ممكن.",
       name: "الاسم الكامل *",
@@ -103,6 +110,7 @@ const Contact = ({ lang }) => {
 
   const t = content[lang];
   const isRTL = lang === "ar";
+  const fieldClass = "w-full rounded-xl border border-gray-200 bg-gray-50/80 px-4 py-3 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 hover:border-primary-light/40 focus:border-primary-light focus:bg-white focus:ring-4 focus:ring-primary-light/10 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-gray-500 dark:hover:border-primary-light/40 dark:focus:bg-white/[0.07] sm:text-base";
 
   const serviceOptions = [
     {
@@ -196,6 +204,20 @@ const Contact = ({ lang }) => {
       action: "https://www.facebook.com/Dogethertech",
       color: "from-blue-500 to-blue-600",
     },
+    {
+      icon: <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />,
+      title: t.instagram,
+      details: ["@dogethertech", "Follow our latest work"],
+      action: "https://www.instagram.com/dogethertech",
+      color: "from-pink-500 via-fuchsia-500 to-orange-400",
+    },
+    {
+      icon: <Music2 className="w-5 h-5 sm:w-6 sm:h-6" />,
+      title: t.tiktok,
+      details: ["@dogethertech", "Short tech content"],
+      action: "https://www.tiktok.com/@dogethertech",
+      color: "from-gray-950 via-gray-800 to-cyan-500",
+    },
   ];
 
   return (
@@ -227,7 +249,7 @@ const Contact = ({ lang }) => {
         </motion.div>
 
         {/* Contact Methods */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto mb-12 lg:mb-16">
+        <div className="mx-auto mb-12 grid max-w-6xl grid-cols-2 gap-3 sm:gap-4 lg:mb-16 lg:grid-cols-5">
           {contactMethods.map((method, index) => (
             <motion.div
               key={index}
@@ -236,31 +258,31 @@ const Contact = ({ lang }) => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.03 }}
-              className="group"
+              className={`group ${index === contactMethods.length - 1 ? "col-span-2 w-[48%] justify-self-center lg:col-span-1 lg:w-full" : ""}`}
             >
               <a
                 href={method.action}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block bg-white/10 backdrop-blur-sm rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8 text-center hover:bg-white/15 transition-all duration-300 border border-white/10 hover:border-white/20"
+                className="block h-full rounded-2xl border border-white/10 bg-white/10 p-3 text-center backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/15 sm:p-4 lg:p-5"
               >
                 <div
-                  className={`w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-r ${method.color} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                  className={`mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r ${method.color} shadow-lg transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12 lg:h-14 lg:w-14`}
                 >
                   <div className="text-white">{method.icon}</div>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 group-hover:text-primary-light transition-colors">
+                <h3 className="mb-2 text-sm font-bold text-white transition-colors group-hover:text-primary-light sm:text-base lg:text-lg">
                   {method.title}
                 </h3>
                 {method.details.map((detail, i) => (
                   <p
                     key={i}
-                    className="text-primary-light/90 mb-1 text-sm sm:text-base"
+                    className="mb-1 break-words text-[11px] leading-tight text-primary-light/90 sm:text-xs lg:text-sm"
                   >
                     {detail}
                   </p>
                 ))}
-                <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-white/60 group-hover:text-white/80">
+                <div className="mt-2 text-[10px] text-white/60 group-hover:text-white/80 sm:text-xs">
                   {isRTL ? "انقر للاتصال ←" : "Click to connect →"}
                 </div>
               </a>
@@ -275,77 +297,90 @@ const Contact = ({ lang }) => {
           viewport={{ once: true }}
           className="max-w-5xl mx-auto"
         >
-          <div className="bg-white dark:bg-dark-card rounded-xl lg:rounded-2xl shadow-2xl overflow-hidden">
-            <div className="lg:flex">
-              {/* Sidebar - Width Increased */}
-              <div className="lg:w-5/12 bg-gradient-to-b from-primary to-primary-dark p-6 sm:p-8 text-white">
-                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
+          <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-white/95 p-2 shadow-2xl shadow-black/20 backdrop-blur-xl dark:bg-[#0c1929]/95 sm:p-3">
+            <div className="grid gap-2 sm:gap-3 lg:grid-cols-[0.82fr_1.18fr]">
+              {/* Trust panel */}
+              <div className="relative order-2 overflow-hidden rounded-[1.5rem] bg-gradient-to-br from-[#0e786b] via-primary-dark to-primary-darker p-5 text-white sm:p-7 lg:order-1 lg:p-8">
+                <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary-light/20 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-20 -left-12 h-44 w-44 rounded-full bg-white/10 blur-3xl" />
+                <div className="relative z-10 mb-5 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/15 bg-white/10 backdrop-blur-sm">
+                    <Shield className="h-5 w-5 text-primary-light" />
+                  </div>
+                  <h3 className="text-xl font-bold sm:text-2xl">
                   {t.whyChoose}
-                </h3>
-                <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                  </h3>
+                </div>
+                <ul className="relative z-10 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
                   {t.features.map((item, index) => (
-                    <li key={index} className="flex items-center">
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: isRTL ? 12 : -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.06 }}
+                      className="flex items-center rounded-xl border border-white/10 bg-white/[0.07] px-3 py-2.5 backdrop-blur-sm"
+                    >
                       <CheckCircle
-                        className={`w-4 h-4 sm:w-5 sm:h-5 text-primary-light ${
+                        className={`w-4 h-4 text-primary-light ${
                           isRTL ? "ml-3" : "mr-3"
                         } flex-shrink-0`}
                       />
-                      <span className="text-sm sm:text-base">{item}</span>
-                    </li>
+                      <span className="text-sm text-white/90">{item}</span>
+                    </motion.li>
                   ))}
                 </ul>
-                <div className="space-y-3 sm:space-y-4">
+                <div className="relative z-10 mt-5 grid grid-cols-2 gap-2 border-t border-white/10 pt-5">
                   <div
-                    className={`flex items-center ${isRTL ? "space-x-reverse" : ""} space-x-3`}
+                    className="rounded-xl bg-black/10 p-3"
                   >
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
-                    <div>
-                      <div className="font-bold text-sm sm:text-base">
+                    <Clock className="mb-2 h-4 w-4 text-primary-light" />
+                    <div className="font-bold text-xs sm:text-sm">
                         {t.hours}
-                      </div>
-                      <div className="text-sm text-primary-light">
+                    </div>
+                      <div className="mt-0.5 text-xs text-primary-light">
                         24/7 - Everyday
                       </div>
-                    </div>
                   </div>
                   <div
-                    className={`flex items-center ${isRTL ? "space-x-reverse" : ""} space-x-3`}
+                    className="rounded-xl bg-black/10 p-3"
                   >
-                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary-light" />
-                    <div>
-                      <div className="font-bold text-sm sm:text-base">
+                    <User className="mb-2 h-4 w-4 text-primary-light" />
+                    <div className="font-bold text-xs sm:text-sm">
                         {t.support}
-                      </div>
-                      <div className="text-sm text-primary-light">
+                    </div>
+                      <div className="mt-0.5 text-xs text-primary-light">
                         {t.supportText}
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Form - Width Adjusted */}
-              <div className="lg:w-7/12 p-6 sm:p-8 lg:p-12">
-                <h3 className="text-xl sm:text-2xl font-bold mb-2">
-                  {t.formTitle}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
-                  {t.formSubtitle}
-                </p>
+              {/* Form */}
+              <div className="order-1 rounded-[1.5rem] bg-white p-5 dark:bg-[#111f31] sm:p-7 lg:order-2 lg:p-9">
+                <div className="mb-6 flex items-start gap-3">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-light/10 text-primary-dark dark:text-primary-light">
+                    <MessageSquare className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">{t.formTitle}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">{t.formSubtitle}</p>
+                  </div>
+                </div>
 
                 <form
                   onSubmit={handleSubmit}
-                  className="space-y-4 sm:space-y-6"
+                  className="space-y-4 sm:space-y-5"
                 >
-                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-6">
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300 sm:mb-2 sm:text-base">
                         {t.name}
                       </label>
                       <input
                         type="text"
                         required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.name}
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
@@ -356,13 +391,12 @@ const Contact = ({ lang }) => {
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300 sm:mb-2 sm:text-base">
                         {t.email}
                       </label>
                       <input
                         type="email"
-                        required
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.email}
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
@@ -371,12 +405,12 @@ const Contact = ({ lang }) => {
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300 sm:mb-2 sm:text-base">
                         {t.phone}
                       </label>
                       <input
                         type="tel"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.phone}
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
@@ -385,12 +419,12 @@ const Contact = ({ lang }) => {
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
+                      <label className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300 sm:mb-2 sm:text-base">
                         {t.company}
                       </label>
                       <input
                         type="text"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.company}
                         onChange={(e) =>
                           setFormData({ ...formData, company: e.target.value })
@@ -400,14 +434,14 @@ const Contact = ({ lang }) => {
                     </div>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-6">
                     <div>
                       <label htmlFor="service-select" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium text-sm sm:text-base">
                         {t.service}
                       </label>
                       <select
                         id="service-select"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.service}
                         onChange={(e) =>
                           setFormData({ ...formData, service: e.target.value })
@@ -427,7 +461,7 @@ const Contact = ({ lang }) => {
                       </label>
                       <select
                         id="budget-select"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 text-sm sm:text-base"
+                        className={fieldClass}
                         value={formData.budget}
                         onChange={(e) =>
                           setFormData({ ...formData, budget: e.target.value })
@@ -449,7 +483,7 @@ const Contact = ({ lang }) => {
                     </label>
                     <textarea
                       rows={3}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-dark-light rounded-lg focus:ring-2 focus:ring-primary-light focus:border-transparent transition-all hover:border-gray-400 dark:hover:border-gray-600 resize-none text-sm sm:text-base"
+                      className={`${fieldClass} min-h-28 resize-none`}
                       value={formData.message}
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
@@ -486,7 +520,7 @@ const Contact = ({ lang }) => {
                     <button
                       type="submit"
                       disabled={status === "loading" || status === "success"}
-                      className="w-full bg-gradient-to-r from-primary to-primary-dark text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
+                      className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-dark px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 disabled:cursor-not-allowed disabled:opacity-70 sm:px-6 sm:text-base"
                     >
                       {status === "loading" ? (
                         <>

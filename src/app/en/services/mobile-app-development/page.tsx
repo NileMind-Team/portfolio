@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Mobile App Development in Egypt | Flutter iOS & Android | DoGether',
+  title: 'Mobile App Development Company in Egypt | iOS & Android | DoGether',
   description:
-    'Professional mobile app development in Egypt. We build high-performance Flutter apps for iOS and Android — custom UI/UX, app store publishing, and ongoing support. Contact: +20 106 248 5133',
+    'Hire an Egypt-based mobile app development company for high-performance iOS and Android apps. Custom UI/UX, store publishing, ongoing support, and a free project estimate.',
   alternates: {
     canonical: 'https://dogethertech.com/en/services/mobile-app-development',
     languages: {
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Mobile App Development in Egypt | DoGether',
-    description: 'High-performance Flutter apps for iOS and Android built in Egypt.',
+    title: 'Mobile App Development Company in Egypt | DoGether',
+    description: 'Custom iOS and Android app development, from UI/UX to store launch and ongoing support.',
     url: 'https://dogethertech.com/en/services/mobile-app-development',
   },
 }

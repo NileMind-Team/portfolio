@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     languages: {
       ar: 'https://dogethertech.com/services/website',
       en: 'https://dogethertech.com/en/services/web-development',
+      'x-default': 'https://dogethertech.com/en/services/web-development',
     },
   },
   openGraph: {

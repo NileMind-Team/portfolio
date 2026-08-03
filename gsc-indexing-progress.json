@@ -1,9 +1,9 @@
 {
   "method": "browser-gsc-url-inspection",
-  "nextIndex": 49,
+  "nextIndex": 68,
   "totalUrls": 211,
   "urlsFile": "gsc-urls.txt",
-  "lastRunDate": "2026-07-28",
-  "lastRunNote": "10 URLs requested this run, indexes 39-48 (software-company/suez through software-company/south-sinai/support). All 10 requests confirmed with 'تم طلب الفهرسة'. Stopped at index 49 (software-company/red-sea/mobile-app) when Google returned the daily quota-exceeded message ('تم تجاوز الحصة'). nextIndex set to 49; resume from there next run once quota resets.",
+  "lastRunDate": "2026-08-01",
+  "lastRunNote": "10 URLs requested this run, indexes 58-67 (software-company/marsa-alam/website through software-company/dahab/store). All 10 confirmed with 'تم طلب الفهرسة' (one duplicate request also fired on marsa-alam/pos by accident, harmless). Stopped at index 68 (software-company/dahab/pos) when Google returned 'تم تجاوز الحصة' (daily quota exceeded) after clicking request-indexing. nextIndex set to 68; resume from there next run once quota resets. Technique notes: (1) click the URL-inspection combobox in the top bar (ref via find, look for the element with role 'textbox' AND role 'combobox' overlapping - clicking once dismisses any open confirmation dialog, click again to actually focus the field - verify focus by screenshot showing the autocomplete history dropdown before typing); (2) after typing the URL and pressing Return, wait ~4s and take a screenshot (first screenshot attempt after navigation often times out on CDP capture - just retry the screenshot call, it succeeds); (3) use read_page with filter=interactive to get the CURRENT 'طلب الفهرسة' button ref (avoid the find tool here since it returns stale duplicate refs from prior SPA panels still in the DOM); (4) click that ref, wait ~4-7s, screenshot to see either the green 'تم طلب الفهرسة' confirmation or the red 'تم تجاوز الحصة' quota-exceeded dialog.",
   "loopForever": true
 }

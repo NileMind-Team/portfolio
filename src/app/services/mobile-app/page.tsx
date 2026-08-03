@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     languages: {
       ar: 'https://dogethertech.com/services/mobile-app',
       en: 'https://dogethertech.com/en/services/mobile-app-development',
+      'x-default': 'https://dogethertech.com/en/services/mobile-app-development',
     },
   },
   openGraph: {
