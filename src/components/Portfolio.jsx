@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
 import logo1 from "../assets/logo2.png";
@@ -227,6 +227,388 @@ const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, vi
               <a href="/work" className="ms-1 inline-flex h-10 items-center rounded-full border border-primary/20 px-4 text-xs font-semibold text-primary-dark transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light">
                 {viewAllLabel}
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const clamp01 = (value) => Math.min(1, Math.max(0, value));
+
+const getSegmentProgress = (progress, total) => {
+  if (total <= 1) return 0;
+  const scaled = clamp01(progress) * (total - 1);
+  const segment = Math.min(total - 2, Math.floor(scaled));
+  return clamp01(scaled - segment);
+};
+
+const getProjectSource = (project) => project?.preview || project?.logo;
+
+const ProjectScreenLayer = ({ project, progress, index, total, ready, reduceMotion }) => {
+  const distance = useTransform(progress, (value) => value * Math.max(1, total - 1) - index);
+  const opacity = useTransform(distance, (value) => {
+    if (!ready) return 0;
+    if (total <= 1) return index === 0 ? 1 : 0;
+    if (value <= -0.62 || value >= 0.62) return 0;
+    if (value < -0.38) return (value + 0.62) / 0.24;
+    if (value <= 0.38) return 1;
+    return 1 - (value - 0.38) / 0.24;
+  });
+  const scale = useTransform(distance, (value) => {
+    if (reduceMotion) return 1;
+    if (value < 0) return 1.03 - clamp01((value + 0.62) / 0.62) * 0.03;
+    return 1 - clamp01(value / 0.62) * 0.03;
+  });
+
+  return (
+    <motion.div aria-hidden={index !== 0} className="absolute inset-0" style={{ opacity, scale }}>
+      <Image
+        src={getProjectSource(project)}
+        alt={`${project.titleEn} project screenshot`}
+        fill
+        priority={index < 2}
+        sizes="(max-width: 767px) 93vw, (max-width: 1199px) 58vw, 760px"
+        className="object-cover object-top"
+      />
+    </motion.div>
+  );
+};
+
+const ScrollInfoItem = ({ progress, total, order, reduceMotion, className = "", children }) => {
+  const localProgress = useTransform(progress, (value) => getSegmentProgress(value, total));
+  const opacity = useTransform(localProgress, (value) => {
+    if (reduceMotion || total <= 1) return 1;
+    if (value <= 0.18) return 1;
+    if (value < 0.44) return 1 - (value - 0.18) / 0.26;
+    const start = 0.55 + order * 0.014;
+    if (value <= start) return 0;
+    return clamp01((value - start) / 0.16);
+  });
+  const y = useTransform(localProgress, (value) => {
+    if (reduceMotion || total <= 1) return 0;
+    if (value <= 0.18) return 0;
+    if (value < 0.44) return -26 * clamp01((value - 0.18) / 0.26);
+    const start = 0.55 + order * 0.014;
+    if (value <= start) return 18;
+    return 18 * (1 - clamp01((value - start) / 0.16));
+  });
+  const filter = useTransform(localProgress, (value) => {
+    if (reduceMotion || total <= 1) return "blur(0px)";
+    if (value <= 0.18) return "blur(0px)";
+    if (value < 0.44) return `blur(${4 * clamp01((value - 0.18) / 0.26)}px)`;
+    const start = 0.55 + order * 0.014;
+    if (value <= start) return "blur(4px)";
+    return `blur(${4 * (1 - clamp01((value - start) / 0.16))}px)`;
+  });
+
+  return <motion.div className={className} style={{ opacity, y, filter }}>{children}</motion.div>;
+};
+
+const CinematicProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
+  const trackRef = useRef(null);
+  const scrollTimerRef = useRef(null);
+  const touchStartRef = useRef(null);
+  const activeIndexRef = useRef(activeIndex);
+  const scrollingRef = useRef(false);
+  const [loadedScreens, setLoadedScreens] = useState(() => new Set());
+  const [failedScreens, setFailedScreens] = useState(() => new Set());
+  const [viewport, setViewport] = useState("desktop");
+  const [isIdle, setIsIdle] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const total = projects.length;
+  const preloadKey = projects.map((project) => {
+    const source = getProjectSource(project);
+    return typeof source === "string" ? source : source?.src || project.id;
+  }).join("|");
+  const allScreensResolved = total > 0 && projects.every((project) => loadedScreens.has(project.id) || failedScreens.has(project.id));
+
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ["start start", "end end"] });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 105, damping: 28, mass: 0.34 });
+  const effectiveProgress = useMotionValue(0);
+  const segmentProgress = useTransform(effectiveProgress, (value) => getSegmentProgress(value, total));
+  const depth = useTransform(segmentProgress, (value) => Math.sin(Math.PI * value));
+
+  const movement = viewport === "mobile"
+    ? { y: 52, rotateY: 10, rotateX: 6.5, rotateZ: 0.8, scale: 0.07 }
+    : viewport === "tablet"
+      ? { y: 76, rotateY: 17, rotateX: 9, rotateZ: 1.1, scale: 0.075 }
+      : { y: 96, rotateY: 20, rotateX: 10.5, rotateZ: 1.5, scale: 0.08 };
+
+  const phaseAngle = (value, amount) => {
+    if (value <= 0.44) return amount * Math.sin((value / 0.44) * Math.PI / 2);
+    if (value < 0.56) return amount - ((value - 0.44) / 0.12) * amount * 2;
+    return -amount * (1 - (value - 0.56) / 0.44);
+  };
+  const deviceY = useTransform(segmentProgress, (value) => reduceMotion ? 0 : Math.sin(Math.PI * value) * movement.y);
+  const deviceScale = useTransform(depth, (value) => reduceMotion ? 1 : 1 - value * movement.scale);
+  const deviceRotateY = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateY));
+  const deviceRotateX = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateX));
+  const deviceRotateZ = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateZ));
+  const shadowScale = useTransform(depth, [0, 1], [1, 1.16]);
+  const shadowOpacity = useTransform(depth, [0, 1], [0.56, 0.34]);
+  const reflectionX = useTransform(segmentProgress, [0.28, 0.7], ["-170%", "260%"]);
+  const reflectionOpacity = useTransform(segmentProgress, (value) => reduceMotion ? 0 : Math.max(0, 0.16 - Math.abs(value - 0.5) * 0.8));
+  const overallProgress = useTransform(effectiveProgress, (value) => total <= 1 ? 1 : (1 / total) + value * (1 - 1 / total));
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const pointerRotateX = useSpring(pointerY, { stiffness: 180, damping: 26 });
+  const pointerRotateY = useSpring(pointerX, { stiffness: 180, damping: 26 });
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    setLoadedScreens(new Set());
+    setFailedScreens(new Set());
+    effectiveProgress.set(0);
+  }, [preloadKey, effectiveProgress]);
+
+  useEffect(() => {
+    const updateViewport = () => {
+      const width = window.innerWidth;
+      setViewport(width < 768 ? "mobile" : width < 1200 ? "tablet" : "desktop");
+    };
+    updateViewport();
+    window.addEventListener("resize", updateViewport, { passive: true });
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
+
+  useEffect(() => () => {
+    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (!allScreensResolved || total === 0) return;
+    const currentProgress = smoothProgress.get();
+    effectiveProgress.set(currentProgress);
+    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(currentProgress * Math.max(1, total - 1) + 0.5)));
+    activeIndexRef.current = nextIndex;
+    setActiveIndex(nextIndex);
+  }, [allScreensResolved, effectiveProgress, setActiveIndex, smoothProgress, total]);
+
+  useMotionValueEvent(smoothProgress, "change", (value) => {
+    if (!allScreensResolved || total === 0) return;
+    effectiveProgress.set(value);
+    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(value * Math.max(1, total - 1) + 0.5)));
+    if (nextIndex !== activeIndexRef.current) {
+      activeIndexRef.current = nextIndex;
+      setActiveIndex(nextIndex);
+    }
+    if (!scrollingRef.current) {
+      scrollingRef.current = true;
+      setIsIdle(false);
+    }
+    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = window.setTimeout(() => {
+      scrollingRef.current = false;
+      setIsIdle(depth.get() < 0.075);
+    }, 190);
+  });
+
+  const safeIndex = Math.min(Math.max(activeIndex, 0), Math.max(0, total - 1));
+  const project = projects[safeIndex];
+  if (!project) return null;
+
+  const resolvedProjectFor = (projectIndex) => {
+    const candidate = projects[projectIndex];
+    if (!failedScreens.has(candidate.id)) return candidate;
+    for (let index = projectIndex - 1; index >= 0; index -= 1) {
+      if (loadedScreens.has(projects[index].id)) return projects[index];
+    }
+    return { ...candidate, preview: null };
+  };
+
+  const goToProject = (requestedIndex) => {
+    if (!allScreensResolved || !trackRef.current || total <= 1) return;
+    const nextIndex = Math.min(total - 1, Math.max(0, requestedIndex));
+    const trackTop = window.scrollY + trackRef.current.getBoundingClientRect().top;
+    const scrollRange = Math.max(0, trackRef.current.offsetHeight - window.innerHeight);
+    window.scrollTo({
+      top: trackTop + scrollRange * (nextIndex / (total - 1)),
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
+  const onPointerMove = (event) => {
+    if (event.pointerType === "touch" || reduceMotion || viewport !== "desktop" || scrollingRef.current || depth.get() > 0.075) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    pointerX.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 4.5);
+    pointerY.set(-((event.clientY - bounds.top) / bounds.height - 0.5) * 3.2);
+  };
+  const resetPointerTilt = () => { pointerX.set(0); pointerY.set(0); };
+  const onPointerDown = (event) => {
+    if (event.pointerType !== "touch") return;
+    touchStartRef.current = { x: event.clientX, y: event.clientY };
+  };
+  const onPointerUp = (event) => {
+    if (event.pointerType !== "touch" || !touchStartRef.current) return;
+    const deltaX = event.clientX - touchStartRef.current.x;
+    const deltaY = event.clientY - touchStartRef.current.y;
+    touchStartRef.current = null;
+    if (Math.abs(deltaX) < 58 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+    goToProject(safeIndex + (deltaX < 0 ? 1 : -1));
+  };
+
+  const category = project.category === "website"
+    ? (lang === "en" ? "Website" : "موقع إلكتروني")
+    : project.category === "pos"
+      ? (lang === "en" ? "POS System" : "نظام نقاط بيع")
+      : (lang === "en" ? "Custom Software" : "برنامج مخصص");
+  const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
+  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
+  const trackHeights = {
+    "--portfolio-track-mobile": `${Math.max(170, 120 + total * 54)}svh`,
+    "--portfolio-track-tablet": `${Math.max(160, 100 + total * 40)}vh`,
+    "--portfolio-track-desktop": `${Math.max(180, 100 + total * 50)}vh`,
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      className="relative h-[var(--portfolio-track-mobile)] md:h-[var(--portfolio-track-tablet)] lg:h-[var(--portfolio-track-desktop)]"
+      style={trackHeights}
+    >
+      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+        {projects.map((preloadProject) => (
+          <div key={`cinematic-preload-${preloadProject.id}`} className="relative h-[675px] w-[1200px]">
+            <Image
+              src={getProjectSource(preloadProject)}
+              alt=""
+              fill
+              priority
+              sizes="1200px"
+              className="object-cover object-top"
+              onLoad={async (event) => {
+                try { await event.currentTarget.decode(); } catch { /* The decoded browser cache is still usable. */ }
+                setLoadedScreens((current) => {
+                  if (current.has(preloadProject.id)) return current;
+                  const next = new Set(current);
+                  next.add(preloadProject.id);
+                  return next;
+                });
+              }}
+              onError={() => setFailedScreens((current) => new Set(current).add(preloadProject.id))}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="sticky top-16 flex min-h-[calc(100svh-4rem)] items-center overflow-hidden py-3 md:top-20 md:min-h-[calc(100vh-5rem)] md:py-6">
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-3 lg:grid-cols-[minmax(0,1.7fr)_minmax(330px,1fr)] lg:gap-12">
+          <div className="pointer-events-none absolute left-[8%] top-[10%] h-[64%] w-[58%] rounded-full bg-primary/10 blur-[90px] dark:bg-primary/9" />
+
+          <div className="relative z-10 mx-auto w-[min(93vw,850px)] [perspective:1400px] md:w-full">
+            <motion.div
+              animate={isIdle && !reduceMotion ? { y: [0, -3, 0] } : { y: 0 }}
+              transition={isIdle && !reduceMotion ? { duration: 5.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
+            >
+              <motion.div
+                style={{ y: deviceY, scale: deviceScale, rotateX: deviceRotateX, rotateY: deviceRotateY, rotateZ: deviceRotateZ, transformStyle: "preserve-3d", willChange: "transform" }}
+              >
+                <motion.div
+                  onPointerMove={onPointerMove}
+                  onPointerLeave={resetPointerTilt}
+                  onPointerDown={onPointerDown}
+                  onPointerUp={onPointerUp}
+                  onPointerCancel={() => { touchStartRef.current = null; }}
+                  style={{ rotateX: pointerRotateX, rotateY: pointerRotateY, transformStyle: "preserve-3d", touchAction: "pan-y" }}
+                  className="relative select-none"
+                >
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${visitLabel}: ${lang === "en" ? project.titleEn : project.titleAr}`}
+                    className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark"
+                  >
+                    <div className="relative mx-auto w-[91%] rounded-t-[1.25rem] border border-white/30 bg-[linear-gradient(135deg,#d7dce1_0%,#707982_9%,#20262d_46%,#929aa1_90%,#e4e8eb_100%)] p-[2px] shadow-[0_22px_58px_-22px_rgba(0,0,0,0.78),0_0_36px_rgba(20,184,166,0.06)] sm:rounded-t-[1.7rem] sm:p-[3px]">
+                      <div className="relative rounded-t-[1.12rem] bg-[#07090c] p-[5px] sm:rounded-t-[1.52rem] sm:p-[9px]">
+                        <div className="absolute left-1/2 top-[3px] z-30 flex h-[7px] w-[38px] -translate-x-1/2 items-center justify-center rounded-b-md bg-[#06080a] sm:h-[11px] sm:w-[58px]">
+                          <span className="h-1 w-1 rounded-full bg-slate-700 shadow-[0_0_3px_rgba(96,165,250,0.55)] sm:h-1.5 sm:w-1.5" />
+                        </div>
+                        <div className="relative aspect-[16/9] overflow-hidden rounded-[0.55rem] bg-[#0b1420] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:rounded-[0.85rem]">
+                          <div className={`absolute inset-0 bg-gradient-to-br ${projects[0]?.color || "from-slate-900 to-slate-800"}`}>
+                            <div className="absolute inset-0 flex items-center justify-center p-12 opacity-65">
+                              <Image src={projects[0]?.logo || logo} alt="" width={220} height={220} className="max-h-[58%] w-auto object-contain drop-shadow-2xl" />
+                            </div>
+                          </div>
+                          {projects.map((screenProject, index) => (
+                            <ProjectScreenLayer
+                              key={`screen-${screenProject.id}`}
+                              project={resolvedProjectFor(index)}
+                              progress={effectiveProgress}
+                              index={index}
+                              total={total}
+                              ready={loadedScreens.has(screenProject.id) || failedScreens.has(screenProject.id)}
+                              reduceMotion={reduceMotion}
+                            />
+                          ))}
+                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.12)_0%,transparent_19%,transparent_72%,rgba(255,255,255,0.035)_100%)]" />
+                          <motion.div style={{ x: reflectionX, opacity: reflectionOpacity }} className="pointer-events-none absolute inset-y-[-20%] w-[16%] -skew-x-12 bg-gradient-to-r from-transparent via-white/65 to-transparent blur-xl" />
+                        </div>
+                      </div>
+                      <motion.div style={{ x: reflectionX, opacity: reflectionOpacity }} className="pointer-events-none absolute inset-y-0 w-[8%] bg-gradient-to-r from-transparent via-white/75 to-transparent blur-md" />
+                    </div>
+
+                    <div className="relative z-20 mx-auto -mt-px h-3 w-[76%] rounded-b-[50%] bg-[linear-gradient(180deg,#14181c_0%,#69717a_48%,#161a1f_100%)] shadow-[0_2px_5px_rgba(0,0,0,0.8)] sm:h-4">
+                      <div className="absolute inset-x-[4%] top-0 h-px bg-white/45" />
+                    </div>
+                    <div className="relative z-10 mx-auto -mt-2 h-[clamp(54px,7.2vw,94px)] w-full overflow-hidden bg-[linear-gradient(160deg,#e1e5e8_0%,#a2a9af_20%,#68717a_56%,#c7ccd0_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(15,23,42,0.42)] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)] dark:bg-[linear-gradient(160deg,#aeb5bb_0%,#68717a_18%,#343c44_58%,#808991_100%)]">
+                      <div className="absolute left-[15%] right-[15%] top-[12%] h-[42%] rounded-[0.28rem] border border-black/30 bg-[repeating-linear-gradient(90deg,rgba(6,9,12,0.92)_0,rgba(6,9,12,0.92)_5.2%,rgba(80,88,96,0.28)_5.3%,rgba(80,88,96,0.28)_6.2%),repeating-linear-gradient(0deg,rgba(0,0,0,0.5)_0,rgba(0,0,0,0.5)_25%,transparent_26%,transparent_33%)] opacity-85 shadow-[0_2px_5px_rgba(0,0,0,0.35)]" />
+                      <div className="absolute bottom-[8%] left-1/2 h-[31%] w-[31%] -translate-x-1/2 rounded-[0.35rem] border border-slate-500/45 bg-white/5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.26)]" />
+                      <div className="absolute inset-x-[4%] top-0 h-px bg-white/75" />
+                    </div>
+                    <div className="relative mx-auto h-[clamp(7px,1.2vw,15px)] w-full rounded-b-[45%] bg-[linear-gradient(180deg,#7c858e_0%,#d5d9dc_24%,#7a838c_62%,#30373e_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.88)]">
+                      <div className="absolute left-1/2 top-0 h-[42%] w-[13%] -translate-x-1/2 rounded-b-full border-x border-b border-slate-600/40 bg-slate-500/25" />
+                    </div>
+                  </a>
+                  <motion.div style={{ scaleX: shadowScale, opacity: shadowOpacity }} className="pointer-events-none mx-auto -mt-1 h-8 w-[82%] rounded-[50%] bg-black/80 blur-2xl sm:h-12" />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          <div className="relative z-20 mx-auto w-full max-w-xl px-1 text-center md:px-0 lg:text-start" dir={lang === "ar" ? "rtl" : "ltr"}>
+            <div className="min-h-[240px] lg:min-h-[390px]">
+              <div className="mb-2 flex items-center justify-center gap-3 md:mb-4 lg:justify-start">
+                <ScrollInfoItem progress={effectiveProgress} total={total} order={0} reduceMotion={reduceMotion}>
+                  <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-dark dark:text-primary-light sm:text-xs">{category}</span>
+                </ScrollInfoItem>
+                <ScrollInfoItem progress={effectiveProgress} total={total} order={1} reduceMotion={reduceMotion}>
+                  <span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(safeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+                </ScrollInfoItem>
+              </div>
+              <ScrollInfoItem progress={effectiveProgress} total={total} order={2} reduceMotion={reduceMotion} className="mb-2 md:mb-4">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3>
+              </ScrollInfoItem>
+              <ScrollInfoItem progress={effectiveProgress} total={total} order={3} reduceMotion={reduceMotion} className="mb-2 md:mb-4">
+                <p className="line-clamp-2 text-xs leading-5 text-gray-600 dark:text-gray-300 sm:text-sm sm:leading-6 md:line-clamp-none lg:text-base lg:leading-7">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p>
+              </ScrollInfoItem>
+              {caseStudy && (
+                <ScrollInfoItem progress={effectiveProgress} total={total} order={4} reduceMotion={reduceMotion} className="mb-3 md:mb-5">
+                  <p className="line-clamp-2 border-s-2 border-primary/45 ps-3 text-[11px] leading-5 text-gray-500 dark:text-gray-400 sm:text-xs md:line-clamp-none lg:text-sm lg:leading-6">{caseStudy}</p>
+                </ScrollInfoItem>
+              )}
+              <ScrollInfoItem progress={effectiveProgress} total={total} order={5} reduceMotion={reduceMotion} className="mb-3 md:mb-6">
+                <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 lg:justify-start">
+                  {technologies.slice(0, 4).map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/70 px-2.5 py-1 text-[10px] font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300 sm:text-xs">{technology}</span>)}
+                </div>
+              </ScrollInfoItem>
+              <ScrollInfoItem progress={effectiveProgress} total={total} order={6} reduceMotion={reduceMotion}>
+                <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark sm:text-sm">{visitLabel}<ExternalLink size={15} /></a>
+              </ScrollInfoItem>
+            </div>
+
+            <ScrollInfoItem progress={effectiveProgress} total={total} order={7} reduceMotion={reduceMotion} className="ml-20 mt-2 md:ml-0 md:mt-5">
+              <div className="h-1 overflow-hidden rounded-full bg-primary/15"><motion.div className="h-full origin-left rounded-full bg-gradient-to-r from-primary to-primary-light" style={{ scaleX: overallProgress }} /></div>
+            </ScrollInfoItem>
+            <div className="ml-20 mt-3 flex flex-wrap items-center justify-center gap-2 md:ml-0 md:mt-4 lg:justify-start">
+              <button type="button" disabled={!allScreensResolved || safeIndex === 0} onClick={() => goToProject(safeIndex - 1)} aria-label={lang === "en" ? "Previous project" : "المشروع السابق"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-35 dark:text-primary-light"><ChevronLeft size={19} /></button>
+              <button type="button" disabled={!allScreensResolved || safeIndex === total - 1} onClick={() => goToProject(safeIndex + 1)} aria-label={lang === "en" ? "Next project" : "المشروع التالي"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-35 dark:text-primary-light"><ChevronRight size={19} /></button>
+              <a href="/work" className="ms-1 inline-flex min-h-11 items-center rounded-full border border-primary/20 px-4 text-[11px] font-semibold text-primary-dark transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light sm:text-xs">{viewAllLabel}</a>
             </div>
           </div>
         </div>
@@ -621,7 +1003,7 @@ const Portfolio = ({ lang }) => {
           </div>
         </div>
 
-        <DeviceProjectShowcase
+        <CinematicProjectShowcase
           projects={showcaseProjects}
           activeIndex={activeProject}
           setActiveIndex={setActiveProject}
