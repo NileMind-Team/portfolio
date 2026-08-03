@@ -25,7 +25,6 @@ const Footer = ({ lang }) => {
       quick: "Quick",
       about: "About Us",
       portfolio: "Portfolio",
-      testimonials: "Testimonials",
       contact: "Contact",
       home: "Home",
       story: "Our Story",
@@ -47,7 +46,6 @@ const Footer = ({ lang }) => {
       quick: "روابط سريعة",
       about: "من نحن",
       portfolio: "أعمالنا",
-      testimonials: "شهادات العملاء",
       contact: "اتصل بنا",
       home: "الرئيسية",
       story: "قصتنا",
@@ -90,7 +88,6 @@ const Footer = ({ lang }) => {
     [t.company]: [
       { label: t.about, href: "#about" },
       { label: t.portfolio, href: "#portfolio" },
-      { label: t.testimonials, href: "#testimonials" },
       { label: t.contact, href: "#contact" },
     ],
     [t.quick]: [

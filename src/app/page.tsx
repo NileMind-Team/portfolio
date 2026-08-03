@@ -10,7 +10,6 @@ import Contact from '@/components/Contact'
 import Faq from '@/components/Faq'
 import Footer from '@/components/Footer'
 import Clients from '@/components/Clients'
-import Testimonials from '@/components/Testimonials'
 
 export default function Home() {
   const [lang, setLang] = useState<'en' | 'ar'>('ar')
@@ -42,7 +41,6 @@ export default function Home() {
         <Clients lang={lang} />
         <Services lang={lang} />
         <Portfolio lang={lang} />
-        <Testimonials lang={lang} />
         <About lang={lang} />
         <Faq lang={lang} />
         <Contact lang={lang} />

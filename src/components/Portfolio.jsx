@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
@@ -14,15 +14,40 @@ import sharmLogo from "../assets/sharm-kitesurf.png";
 import tripyramidsHero from "../../public/tripyramids-hero.jpg";
 import amjadEstateHero from "../../public/amjad-estate-hero.jpg";
 
-const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel }) => {
+const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
   const trackRef = useRef(null);
+  const scrollTimerRef = useRef(null);
+  const [loadedScreens, setLoadedScreens] = useState(() => new Set());
+  const [isScrolling, setIsScrolling] = useState(false);
   const reduceMotion = useReducedMotion();
   const tiltX = useSpring(useMotionValue(0), { stiffness: 170, damping: 24 });
   const tiltY = useSpring(useMotionValue(0), { stiffness: 170, damping: 24 });
   const { scrollYProgress } = useScroll({ target: trackRef, offset: ["start start", "end end"] });
 
+  const preloadKey = projects
+    .map((project) => {
+      const source = project.preview || project.logo;
+      return typeof source === "string" ? source : source?.src || "";
+    })
+    .join("|");
+  const screensReady = projects.length > 0 && loadedScreens.size === projects.length;
+
+  useEffect(() => {
+    setLoadedScreens(new Set());
+  }, [preloadKey]);
+
+  useEffect(
+    () => () => {
+      if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
+    },
+    [],
+  );
+
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+    if (typeof window === "undefined" || window.innerWidth < 768 || !screensReady) return;
+    setIsScrolling(true);
+    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = window.setTimeout(() => setIsScrolling(false), 180);
     const nextIndex = Math.min(projects.length - 1, Math.floor(progress * projects.length));
     if (nextIndex !== activeIndex) setActiveIndex(nextIndex);
   });
@@ -31,6 +56,7 @@ const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, vi
   if (!project) return null;
 
   const goToProject = (index) => {
+    if (!screensReady) return;
     const nextIndex = (index + projects.length) % projects.length;
     setActiveIndex(nextIndex);
 
@@ -40,7 +66,7 @@ const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, vi
     const targetProgress = (nextIndex + 0.15) / projects.length;
     window.scrollTo({
       top: trackTop + scrollRange * targetProgress,
-      behavior: reduceMotion ? "auto" : "smooth",
+      behavior: "auto",
     });
   };
   const previousProject = () => goToProject(activeIndex - 1);
@@ -54,10 +80,44 @@ const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, vi
   const resetTilt = () => { tiltX.set(0); tiltY.set(0); };
   const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
   const category = project.category === "website" ? (lang === "en" ? "Website" : "موقع إلكتروني") : project.category === "pos" ? (lang === "en" ? "POS System" : "نظام نقاط بيع") : (lang === "en" ? "Custom Software" : "برنامج مخصص");
+  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
   const progress = `${((activeIndex + 1) / projects.length) * 100}%`;
+  const textDirection = lang === "ar" ? 22 : -22;
+  const textContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: reduceMotion ? 0 : 0.035, delayChildren: reduceMotion ? 0 : 0.24 } },
+    exit: { opacity: 0, transition: { duration: reduceMotion ? 0.1 : 0.16, staggerChildren: reduceMotion ? 0 : 0.015, staggerDirection: -1 } },
+  };
+  const textItem = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 14, x: reduceMotion ? 0 : textDirection },
+    visible: { opacity: 1, y: 0, x: 0, transition: { duration: reduceMotion ? 0.14 : 0.28, ease: [0.22, 1, 0.36, 1] } },
+    exit: { opacity: 0, y: reduceMotion ? 0 : -8, x: reduceMotion ? 0 : -textDirection * 0.45, transition: { duration: reduceMotion ? 0.1 : 0.16 } },
+  };
 
   return (
-    <div ref={trackRef} className="relative md:h-[var(--project-track)]" style={{ "--project-track": `${Math.max(360, projects.length * 62)}vh` }}>
+    <div ref={trackRef} className="relative md:h-[var(--project-track)]" style={{ "--project-track": `${Math.max(160, 80 + projects.length * 40)}vh` }}>
+      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+        {projects.map((preloadProject) => (
+          <div key={`preload-${preloadProject.id}`} className="relative h-[675px] w-[1200px]">
+            <Image
+              src={preloadProject.preview || preloadProject.logo}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 768px) 94vw, 60vw"
+              className="object-cover object-top"
+              onLoad={() =>
+                setLoadedScreens((current) => {
+                  if (current.has(preloadProject.id)) return current;
+                  const next = new Set(current);
+                  next.add(preloadProject.id);
+                  return next;
+                })
+              }
+            />
+          </div>
+        ))}
+      </div>
       <div className="mx-auto grid min-h-0 max-w-7xl items-center gap-10 py-12 md:sticky md:top-20 md:min-h-[calc(100vh-5rem)] md:grid-cols-[minmax(0,3fr)_minmax(300px,2fr)] md:py-10 lg:gap-16">
         <motion.div
           initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 70, scale: 0.88, rotateX: 7, rotateY: -6 }}
@@ -67,68 +127,106 @@ const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, vi
           className="relative order-1 mx-auto w-full max-w-4xl [perspective:1400px]"
         >
           <motion.div
-            onPointerMove={onPointerMove}
-            onPointerLeave={resetTilt}
-            style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" }}
-            whileHover={reduceMotion ? undefined : { scale: 1.012 }}
-            animate={reduceMotion ? undefined : { x: activeIndex % 2 ? 2 : -2, y: [0, -3, 0], rotateZ: activeIndex % 2 ? 0.2 : -0.2 }}
-            transition={{
-              x: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
-              rotateZ: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
-              y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-            }}
+            animate={
+              reduceMotion
+                ? { opacity: 1 }
+                : {
+                    rotateX: activeIndex % 2 === 0 ? 2 : -2,
+                    rotateY: activeIndex % 2 === 0 ? -5 : 5,
+                    x: activeIndex % 2 === 0 ? -4 : 4,
+                    y: activeIndex % 2 === 0 ? -2 : 3,
+                    scale: activeIndex % 2 === 0 ? 1 : 0.992,
+                  }
+            }
+            transition={{ type: "spring", stiffness: 88, damping: 18, mass: 0.72 }}
             className="relative mx-auto w-[96%] focus-within:outline-none sm:w-[94%]"
           >
-            <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${visitLabel}: ${project.titleEn}`} className="group block rounded-[1.8rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">
-              <div className="relative rounded-t-[1.7rem] border-[9px] border-slate-950 bg-slate-950 p-1 shadow-[0_34px_80px_-28px_rgba(0,0,0,0.65)] transition-shadow duration-500 group-hover:shadow-[0_38px_88px_-24px_rgba(0,0,0,0.78)] sm:border-[12px]">
-                <div className="absolute left-1/2 top-[-7px] z-30 flex h-2.5 w-10 -translate-x-1/2 items-center justify-center rounded-b-full bg-slate-950">
-                  <span className="h-1.5 w-1.5 rounded-full bg-slate-700 ring-1 ring-slate-500/40" />
-                </div>
-                <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-slate-900">
-                  <AnimatePresence mode="wait">
-                    <motion.div key={project.id} initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.975 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }} transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: [0.22, 1, 0.36, 1] }} className={`absolute inset-0 bg-gradient-to-br ${project.color}`}>
-                      {project.preview ? (
-                        <Image src={project.preview} alt={`${project.titleEn} project screenshot`} fill priority={activeIndex === 0} className="object-cover object-top" sizes="(max-width: 768px) 94vw, 60vw" />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center p-8">
-                          <Image src={project.logo} alt={`${project.titleEn} project artwork`} width={240} height={240} priority={activeIndex === 0} className="max-h-[72%] w-auto object-contain drop-shadow-2xl" />
-                        </div>
-                      )}
-                      <motion.div key={`reflection-${project.id}`} initial={{ x: "-140%", opacity: 0 }} animate={{ x: "190%", opacity: [0, 0.16, 0] }} transition={{ duration: reduceMotion ? 0 : 1.2, delay: 0.12, ease: "easeInOut" }} className="pointer-events-none absolute inset-y-0 w-1/4 -skew-x-12 bg-gradient-to-r from-transparent via-white to-transparent blur-xl" />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
-              <div className="relative mx-auto h-5 w-[108%] -translate-x-[4%] rounded-b-2xl bg-gradient-to-b from-slate-300 via-slate-400 to-slate-600 shadow-[0_24px_40px_-16px_rgba(0,0,0,0.65)] dark:from-slate-500 dark:via-slate-600 dark:to-slate-800 sm:h-7">
-                <div className="absolute left-1/2 top-0 h-1.5 w-20 -translate-x-1/2 rounded-b-xl bg-slate-500/60 sm:w-28" />
-                <div className="absolute inset-x-[12%] -bottom-1 h-1 rounded-full bg-black/30 blur-[2px]" />
-              </div>
-              <div className="mx-auto mt-4 h-5 w-[76%] rounded-[50%] bg-black/35 blur-xl transition-all duration-500 group-hover:w-[82%] group-hover:bg-black/45" />
-            </a>
+            <motion.div
+              animate={reduceMotion || isScrolling ? { y: 0 } : { y: [0, -3.5, 0] }}
+              transition={reduceMotion || isScrolling ? { duration: 0.2 } : { duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <motion.div
+                onPointerMove={onPointerMove}
+                onPointerLeave={resetTilt}
+                style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" }}
+                whileHover={reduceMotion ? undefined : { scale: 1.012 }}
+              >
+                <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${visitLabel}: ${project.titleEn}`} className="group block rounded-[1.8rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">
+                  <div className="relative rounded-t-[1.7rem] border-[9px] border-slate-950 bg-slate-950 p-1 shadow-[0_36px_84px_-30px_rgba(0,0,0,0.72)] transition-shadow duration-500 group-hover:shadow-[0_42px_96px_-26px_rgba(0,0,0,0.82)] sm:border-[12px]">
+                    <div className="absolute left-1/2 top-[-7px] z-30 flex h-2.5 w-10 -translate-x-1/2 items-center justify-center rounded-b-full bg-slate-950">
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-700 ring-1 ring-slate-500/40" />
+                    </div>
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-slate-900">
+                      <AnimatePresence initial={false} mode="sync">
+                        <motion.div
+                          key={project.id}
+                          initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.018 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.982 }}
+                          transition={{ duration: reduceMotion ? 0.18 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+                          className={`absolute inset-0 bg-gradient-to-br ${project.color}`}
+                        >
+                          <div className="absolute inset-0 flex items-center justify-center bg-inherit p-10">
+                            <Image src={project.logo} alt="" width={220} height={220} className="max-h-[62%] w-auto object-contain opacity-85 drop-shadow-2xl" />
+                          </div>
+                          {project.preview && (
+                            <Image src={project.preview} alt={`${project.titleEn} project screenshot`} fill className="object-cover object-top" sizes="(max-width: 768px) 94vw, 60vw" />
+                          )}
+                          <motion.div
+                            key={`reflection-${project.id}`}
+                            initial={{ x: "-160%", opacity: 0 }}
+                            animate={{ x: "210%", opacity: [0, 0.12, 0] }}
+                            transition={{ duration: reduceMotion ? 0 : 1.35, delay: 0.1, ease: "easeInOut" }}
+                            className="pointer-events-none absolute inset-y-0 w-[18%] -skew-x-12 bg-gradient-to-r from-transparent via-white/80 to-transparent blur-xl"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                  <div className="relative mx-auto h-2.5 w-[90%] rounded-t-md bg-gradient-to-b from-slate-700 via-slate-500 to-slate-800 shadow-inner">
+                    <div className="absolute inset-x-[8%] top-0 h-px bg-white/35" />
+                  </div>
+                  <div className="relative mx-auto h-6 w-[108%] -translate-x-[4%] overflow-hidden rounded-b-[1.15rem] bg-[linear-gradient(180deg,#f8fafc_0%,#cbd5e1_16%,#94a3b8_68%,#475569_100%)] shadow-[0_25px_45px_-18px_rgba(0,0,0,0.72)] dark:bg-[linear-gradient(180deg,#cbd5e1_0%,#64748b_20%,#334155_72%,#0f172a_100%)] sm:h-8">
+                    <div className="absolute inset-x-[3%] top-0 h-px bg-white/90" />
+                    <div className="absolute left-1/2 top-0 h-2 w-24 -translate-x-1/2 rounded-b-xl border-x border-b border-slate-500/50 bg-slate-400/35 sm:w-32" />
+                    <div className="absolute inset-x-[8%] bottom-0 h-px bg-slate-950/45" />
+                  </div>
+                  <div className="mx-auto mt-4 h-7 w-[82%] rounded-[50%] bg-black/45 blur-2xl transition-all duration-500 group-hover:w-[86%] group-hover:bg-black/55" />
+                </a>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </motion.div>
 
         <div className="order-2 px-2 text-center md:text-start" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <AnimatePresence mode="wait">
-            <motion.div key={`project-copy-${project.id}`} initial={{ opacity: 0, x: reduceMotion ? 0 : (lang === "ar" ? 24 : -24) }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: reduceMotion ? 0 : (lang === "ar" ? -16 : 16) }} transition={{ duration: reduceMotion ? 0.2 : 0.5, ease: [0.22, 1, 0.36, 1], staggerChildren: 0.06 }}>
-              <div className="mb-4 flex items-center justify-center gap-3 md:justify-start">
+          <AnimatePresence initial={false} mode="sync">
+            <motion.div key={`project-copy-${project.id}`} variants={textContainer} initial="hidden" animate="visible" exit="exit">
+              <motion.div variants={textItem} className="mb-4 flex items-center justify-center gap-3 md:justify-start">
                 <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-dark dark:text-primary-light">{category}</span>
                 <span dir="ltr" className="font-mono text-sm text-gray-500">{String(activeIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
-              </div>
-              <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3>
-              <p className="mb-6 text-sm leading-7 text-gray-600 dark:text-gray-300 sm:text-base">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p>
-              <div className="mb-7 flex flex-wrap justify-center gap-2 md:justify-start">
+              </motion.div>
+              <motion.h3 variants={textItem} className="mb-4 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</motion.h3>
+              <motion.p variants={textItem} className="mb-4 text-sm leading-7 text-gray-600 dark:text-gray-300 sm:text-base">{lang === "en" ? project.descriptionEn : project.descriptionAr}</motion.p>
+              {caseStudy && (
+                <motion.p variants={textItem} className="mb-5 border-s-2 border-primary/45 ps-3 text-xs leading-6 text-gray-500 dark:text-gray-400 sm:text-sm">
+                  {caseStudy}
+                </motion.p>
+              )}
+              <motion.div variants={textItem} className="mb-7 flex flex-wrap justify-center gap-2 md:justify-start">
                 {technologies.map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">{technology}</span>)}
-              </div>
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></a>
+              </motion.div>
+              <motion.a variants={textItem} href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></motion.a>
             </motion.div>
           </AnimatePresence>
 
           <div className="mt-8">
             <div className="h-1 overflow-hidden rounded-full bg-primary/15"><motion.div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-light" animate={{ width: progress }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} /></div>
-            <div className="mt-4 flex items-center justify-center gap-3 md:justify-start">
-              <button type="button" onClick={previousProject} aria-label="Previous project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light"><ChevronLeft size={18} /></button>
-              <button type="button" onClick={nextProject} aria-label="Next project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light"><ChevronRight size={18} /></button>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+              <button type="button" disabled={!screensReady} onClick={previousProject} aria-label="Previous project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-wait disabled:opacity-40 dark:text-primary-light"><ChevronLeft size={18} /></button>
+              <button type="button" disabled={!screensReady} onClick={nextProject} aria-label="Next project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-wait disabled:opacity-40 dark:text-primary-light"><ChevronRight size={18} /></button>
+              <a href="/work" className="ms-1 inline-flex h-10 items-center rounded-full border border-primary/20 px-4 text-xs font-semibold text-primary-dark transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light">
+                {viewAllLabel}
+              </a>
             </div>
           </div>
         </div>
@@ -154,6 +252,7 @@ const Portfolio = ({ lang }) => {
         custom: "Custom Software",
       },
       visit: "Visit Website",
+      viewAll: "View All Projects",
       stats: [
         { value: "7", label: "Completed Projects" },
         { value: "7+", label: "Happy Clients" },
@@ -173,6 +272,7 @@ const Portfolio = ({ lang }) => {
         custom: "برمجيات مخصصة",
       },
       visit: "زيارة الموقع",
+      viewAll: "عرض كل المشاريع",
       stats: [
         { value: "٧", label: "مشروع مكتمل" },
         { value: "٧+", label: "عميل سعيد" },
@@ -213,6 +313,8 @@ const Portfolio = ({ lang }) => {
       titleAr: "نيو - الزعوي",
       descriptionEn:
         "Complete e-commerce platform with product management and shopping cart",
+      caseStudyEn: "We delivered a complete storefront with catalog management, cart, secure checkout and an admin-ready workflow.",
+      caseStudyAr: "نفّذنا متجرًا متكاملًا لإدارة المنتجات والسلة والدفع الآمن مع تجربة جاهزة للإدارة والتوسع.",
       descriptionAr:
         "منصة تجارة إلكترونية متكاملة مع إدارة المنتجات وسلة التسوق",
       logo: logo1,
@@ -264,6 +366,8 @@ const Portfolio = ({ lang }) => {
       titleAr: "نظام كاشير نقاط البيع",
       descriptionEn:
         "Modern Point of Sale system with intuitive interface and real-time inventory management",
+      caseStudyEn: "The system brings checkout, live stock tracking and sales insights together in one clear operational dashboard.",
+      caseStudyAr: "جمعنا الكاشير والمخزون اللحظي وتحليلات المبيعات في لوحة تشغيل واحدة واضحة وسريعة.",
       descriptionAr: "نظام نقاط بيع حديث بواجهة بديهية وإدارة مخزون فورية",
       logo: heroImage,
       preview: heroImage,
@@ -355,6 +459,8 @@ const Portfolio = ({ lang }) => {
       titleAr: "شرم كايت سيرف",
       descriptionEn:
         "Water sports & kite surfing platform in Sharm El Sheikh with online booking and activity showcase",
+      caseStudyEn: "We built a multilingual booking experience that helps international tourists discover activities and reserve before they travel.",
+      caseStudyAr: "بنينا تجربة حجز متعددة اللغات تساعد السائح على اكتشاف الأنشطة والحجز المباشر قبل السفر.",
       descriptionAr:
         "منصة رياضات مائية وركوب الطائرة الورقية في شرم الشيخ مع حجز عبر الإنترنت وعرض الأنشطة",
       logo: sharmLogo,
@@ -385,6 +491,8 @@ const Portfolio = ({ lang }) => {
       titleEn: "TriPyramids",
       titleAr: "TriPyramids",
       descriptionEn: "Modern travel platform for discovering and planning Egypt experiences",
+      caseStudyEn: "A focused travel experience that presents Egyptian activities clearly and makes trip discovery simple on every device.",
+      caseStudyAr: "تجربة سفر مركزة تعرض الأنشطة المصرية بوضوح وتجعل اكتشاف الرحلات سهلًا على كل الأجهزة.",
       descriptionAr: "منصة سفر عصرية لاكتشاف وتجهيز التجارب السياحية في مصر",
       logo: logo2,
       preview: tripyramidsHero,
@@ -404,6 +512,8 @@ const Portfolio = ({ lang }) => {
       titleEn: "Amjad Estate",
       titleAr: "Amjad Estate",
       descriptionEn: "Premium real-estate website for showcasing properties and investment opportunities",
+      caseStudyEn: "We shaped a premium, conversion-focused property experience that highlights listings and investment opportunities without visual noise.",
+      caseStudyAr: "صممنا تجربة عقارية راقية تركز على التحويل وتعرض العقارات والفرص الاستثمارية بدون تشتيت بصري.",
       descriptionAr: "موقع عقاري راقٍ لعرض العقارات والفرص الاستثمارية",
       logo: logo3,
       preview: amjadEstateHero,
@@ -440,6 +550,11 @@ const Portfolio = ({ lang }) => {
 
   const filteredProjects =
     filter === "all" ? projects : projects.filter((p) => p.category === filter);
+  const featuredProjectIds = [7, 8, 9, 2, 4];
+  const showcaseProjects =
+    filter === "all"
+      ? featuredProjectIds.map((id) => projects.find((project) => project.id === id)).filter(Boolean)
+      : filteredProjects.filter((project) => project.preview).slice(0, 5);
 
   return (
     <section
@@ -507,11 +622,12 @@ const Portfolio = ({ lang }) => {
         </div>
 
         <DeviceProjectShowcase
-          projects={filteredProjects}
+          projects={showcaseProjects}
           activeIndex={activeProject}
           setActiveIndex={setActiveProject}
           lang={lang}
           visitLabel={t.visit}
+          viewAllLabel={t.viewAll}
         />
 
         {false && (<div className="hidden">
