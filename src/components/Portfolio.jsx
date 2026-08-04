@@ -422,8 +422,8 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
    * band that reserved 346px, leaving a large empty gap above and below it. Shrinking the stage is
    * what actually removes the space; the scene height then follows it down.
    */
-  const sceneHeight = viewport === "mobile" ? "68svh" : viewport === "tablet" ? "76vh" : "72vh";
-  const copyOffset = viewport === "mobile" ? "30svh" : viewport === "tablet" ? "46vh" : "0px";
+  const sceneHeight = viewport === "mobile" ? "71svh" : viewport === "tablet" ? "76vh" : "72vh";
+  const copyOffset = viewport === "mobile" ? "33svh" : viewport === "tablet" ? "46vh" : "0px";
   const showStill = renderFailed || !renderReady;
   /* Matches the world-space offset the renderer settles on: offsetX / frameWidth. */
   const settleShare = viewport === "mobile" ? 0 : viewport === "tablet" ? 16.7 : 21.8;
@@ -433,7 +433,7 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
    * less world, so the device fills more of the stage there and the still has to be scaled up by
    * the same ratio, or the fallback shows a noticeably smaller laptop than the live render.
    */
-  const stillScale = viewport === "mobile" ? 219.2 : viewport === "tablet" ? 132.6 : 100;
+  const stillScale = viewport === "mobile" ? 190 : viewport === "tablet" ? 132.6 : 100;
 
   const navigation = (compact) => (
     <div className={`flex items-center ${compact ? "gap-2" : "flex-col gap-3"}`}>
@@ -510,7 +510,7 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
           <TurnInterlude projects={projects} travel={travel} stageOpacity={stageOpacity} lang={lang} />
           <motion.div
             style={{ opacity: stageOpacity }}
-            className="absolute inset-x-0 top-0 mx-auto h-[31svh] w-full max-w-7xl md:bottom-0 md:h-auto"
+            className="absolute inset-x-0 top-[2svh] mx-auto h-[34svh] w-full max-w-7xl md:top-0 md:bottom-0 md:h-auto"
           >
             <div aria-hidden={!showStill} className={`absolute inset-0 overflow-hidden transition-opacity duration-700 ${showStill ? "opacity-100" : "opacity-0"}`}>
               <LaptopStill project={activeProject} label={activeProject.titleEn} offset={laptopOffset} scale={stillScale} />

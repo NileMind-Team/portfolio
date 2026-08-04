@@ -398,7 +398,7 @@ const Laptop = ({ projects, motion, layout, reduceMotion, onReady }) => {
     const settledSide = Math.round(travel) % 2 === 0 ? 1 : -1;
     const startX = layout.offsetX * facing;
     const positionX = reduceMotion ? layout.offsetX * settledSide : startX - 2 * startX * local;
-    const positionY = lift * layout.arc + breathe * 0.006 - (1 - entry) * 0.3 + exit * 0.55;
+    const positionY = (layout.centerY || 0) + lift * layout.arc + breathe * 0.006 - (1 - entry) * 0.3 + exit * 0.55;
     const positionZ = -lift * layout.depth;
 
     group.position.set(positionX, positionY, positionZ);
@@ -596,7 +596,18 @@ const LAYOUTS = {
    * it, so there is no column to alternate around: it stays centred through the whole journey and
    * only turns. Any non-zero offset here just reads as the laptop drifting off-centre.
    */
-  mobile: { frameWidth: 1.3, offsetX: 0, arc: 0.045, depth: 0.24, pitch: 11, fov: 21 },
+  /*
+   * frameWidth is how much world the camera frames, so raising it makes the device smaller inside
+   * the same box. At 1.3 the laptop filled 77% of the stage width, and since its height scales with
+   * that it ended up nearly touching both edges of a short mobile stage — it read as glued to the
+   * header at the top and cropped at the bottom. 1.5 buys clearance at both ends without spending
+   * any of the vertical space the journey just reclaimed.
+   *
+   * centerY lifts the device inside the frame. The model is centred on its bounding box, but an
+   * open laptop carries its visual mass low and the camera pitch drops it further, so on the short
+   * mobile stage it measured 49px of clearance above and only 17px below. The nudge evens that up.
+   */
+  mobile: { frameWidth: 1.5, offsetX: 0, arc: 0.045, depth: 0.24, pitch: 11, fov: 21, centerY: 0.07 },
 };
 
 const PortfolioLaptop3D = ({ projects, motion, viewport, reduceMotion, active, onReady, onUnavailable }) => {
