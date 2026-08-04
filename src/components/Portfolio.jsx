@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
@@ -13,6 +14,15 @@ import heroImage from "../assets/hero.jpeg";
 import sharmLogo from "../assets/sharm-kitesurf.png";
 import tripyramidsHero from "../../public/tripyramids-hero.jpg";
 import amjadEstateHero from "../../public/amjad-estate-hero.jpg";
+
+const PortfolioLaptop3D = dynamic(() => import("./PortfolioLaptop3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative aspect-[1.42] w-full">
+      <img src="/models/laptop-poster.png" alt="" aria-hidden="true" className="h-full w-full object-contain" />
+    </div>
+  ),
+});
 
 const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
   const trackRef = useRef(null);
@@ -920,7 +930,7 @@ const NormalFlowProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang
   );
 };
 
-const getFeaturedBrandLogo = (project) => ([7, 2].includes(project.id) ? project.logo : null);
+const getFeaturedBrandLogo = (project) => ([7, 8, 9, 2, 4].includes(project.id) ? project.logo : null);
 
 const getScreenTheme = (projectId) => {
   const themes = {
@@ -1002,7 +1012,7 @@ const TravelingScreenLayer = ({ project, index, travelProgress, reduceMotion, lo
   );
 };
 
-const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, loadedLogos, failedLogos }) => {
+const LegacyTravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, loadedLogos, failedLogos }) => {
   const total = projects.length;
   const lastIndex = Math.max(0, total - 1);
   const isMobile = viewport === "mobile";
@@ -1144,6 +1154,63 @@ const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, redu
       </motion.div>
 
       <motion.div className="pointer-events-none mx-auto -mt-0.5 h-8 w-[80%] rounded-[50%] bg-black/75 blur-2xl sm:h-11" style={{ scaleX: shadowScale, opacity: shadowOpacity }} />
+    </div>
+  );
+};
+
+const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, isVisible }) => {
+  const total = projects.length;
+  const lastIndex = Math.max(0, total - 1);
+  const isMobile = viewport === "mobile";
+  const isTablet = viewport === "tablet";
+  const xTravel = isMobile ? 8 : isTablet ? 34 : 205;
+  const yTravel = isMobile ? 94 : isTablet ? 125 : 178;
+  const exitTravel = isMobile ? 105 : 150;
+  const getLocal = (value) => value >= lastIndex ? 0 : clamp01(value - Math.floor(value));
+  const getDepth = (value) => Math.sin(Math.PI * getLocal(value));
+  const getTail = (value) => lastIndex === 0 ? clamp01(value / 0.35) : clamp01((value - lastIndex) / 0.35);
+  const getHorizontalPosition = (value) => {
+    if (total <= 1) return xTravel;
+    if (value >= lastIndex) return (lastIndex % 2 === 0 ? xTravel : -xTravel) + getTail(value) * (isMobile ? 4 : 18);
+    const segment = Math.min(lastIndex - 1, Math.floor(value));
+    const local = clamp01(value - segment);
+    const eased = local * local * (3 - 2 * local);
+    const start = segment % 2 === 0 ? xTravel : -xTravel;
+    const end = -start;
+    const curve = Math.sin(Math.PI * local) * (segment % 2 === 0 ? -1 : 1) * (isMobile ? 6 : isTablet ? 18 : 32);
+    return start + (end - start) * eased + curve;
+  };
+  const x = useTransform(travelProgress, getHorizontalPosition);
+  const y = useTransform(travelProgress, (value) => value >= lastIndex ? getTail(value) * exitTravel : getDepth(value) * yTravel);
+  const scale = useTransform(travelProgress, (value) => {
+    if (reduceMotion) return 1;
+    if (value >= lastIndex) return 1 - getTail(value) * 0.06;
+    return 1 - getDepth(value) * (isMobile ? 0.08 : 0.1);
+  });
+  const opacity = useTransform(travelProgress, (value) => value <= lastIndex ? 1 : 1 - getTail(value));
+  const shadowScale = useTransform(travelProgress, (value) => 1 + getDepth(value) * 0.16 + getTail(value) * 0.06);
+  const shadowOpacity = useTransform(travelProgress, (value) => 0.38 - getDepth(value) * 0.12 - getTail(value) * 0.28);
+  const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
+
+  return (
+    <div className="relative mx-auto w-[min(96vw,840px)] md:w-[min(90vw,840px)] lg:w-[min(66vw,840px)]" data-traveling-laptop data-model-source="/models/laptop.glb">
+      <motion.div style={{ x, y, scale, opacity, transformOrigin: "50% 52%", willChange: "transform, opacity" }}>
+        {isVisible ? (
+          <PortfolioLaptop3D
+            project={activeProject}
+            activeIndex={activeIndex}
+            travelProgress={travelProgress}
+            total={total}
+            viewport={viewport}
+            reduceMotion={reduceMotion}
+            isVisible
+            linkLabel={`${visitLabel}: ${activeProject.titleEn}`}
+          />
+        ) : (
+          <div className="relative aspect-[1.42] w-full"><img src="/models/laptop-poster.png" alt="" aria-hidden="true" className="h-full w-full object-contain" /></div>
+        )}
+      </motion.div>
+      <motion.div aria-hidden="true" className="pointer-events-none mx-auto -mt-[8%] h-8 w-[72%] rounded-[50%] bg-black/70 blur-2xl sm:h-11" style={{ scaleX: shadowScale, opacity: shadowOpacity }} />
     </div>
   );
 };
@@ -1312,7 +1379,7 @@ const SingleLaptopPortfolioJourney = ({ projects, activeIndex, setActiveIndex, l
 
       <div ref={journeyRef} className="relative">
         <div className="pointer-events-none sticky top-16 z-30 flex h-[calc(100svh-4rem)] items-start overflow-hidden pt-[8svh] md:top-20 md:h-[calc(100vh-5rem)] md:pt-[8vh] lg:items-center lg:pt-0">
-          <TravelingLaptop projects={projects} activeIndex={activeIndex} travelProgress={smoothTravelProgress} viewport={viewport} reduceMotion={reduceMotion} visitLabel={visitLabel} loadedLogos={loadedLogos} failedLogos={failedLogos} />
+          <TravelingLaptop projects={projects} activeIndex={activeIndex} travelProgress={smoothTravelProgress} viewport={viewport} reduceMotion={reduceMotion} visitLabel={visitLabel} isVisible={journeyVisible} />
         </div>
 
         <div className="relative z-10 -mt-[calc(100svh-4rem)] md:-mt-[calc(100vh-5rem)]">
@@ -1460,7 +1527,7 @@ const Portfolio = ({ lang }) => {
       caseStudyEn: "The system brings checkout, live stock tracking and sales insights together in one clear operational dashboard.",
       caseStudyAr: "جمعنا الكاشير والمخزون اللحظي وتحليلات المبيعات في لوحة تشغيل واحدة واضحة وسريعة.",
       descriptionAr: "نظام نقاط بيع حديث بواجهة بديهية وإدارة مخزون فورية",
-      logo: heroImage,
+      logo: "/project-logos/cashier-pos.webp",
       preview: heroImage,
       color: "from-[#00ACC1] to-[#26C6DA]",
       tagsEn: ["POS", "Inventory", "Real-time"],
@@ -1585,7 +1652,7 @@ const Portfolio = ({ lang }) => {
       caseStudyEn: "A focused travel experience that presents Egyptian activities clearly and makes trip discovery simple on every device.",
       caseStudyAr: "تجربة سفر مركزة تعرض الأنشطة المصرية بوضوح وتجعل اكتشاف الرحلات سهلًا على كل الأجهزة.",
       descriptionAr: "منصة سفر عصرية لاكتشاف وتجهيز التجارب السياحية في مصر",
-      logo: logo2,
+      logo: "/project-logos/tripyramids.webp",
       preview: tripyramidsHero,
       color: "from-[#0F766E] to-[#2DBEA1]",
       tagsEn: ["Travel", "Tourism", "Responsive"],
@@ -1606,7 +1673,7 @@ const Portfolio = ({ lang }) => {
       caseStudyEn: "We shaped a premium, conversion-focused property experience that highlights listings and investment opportunities without visual noise.",
       caseStudyAr: "صممنا تجربة عقارية راقية تركز على التحويل وتعرض العقارات والفرص الاستثمارية بدون تشتيت بصري.",
       descriptionAr: "موقع عقاري راقٍ لعرض العقارات والفرص الاستثمارية",
-      logo: logo3,
+      logo: "/project-logos/amjad-estate.webp",
       preview: amjadEstateHero,
       color: "from-[#334155] to-[#0F766E]",
       tagsEn: ["Real Estate", "Premium", "Responsive"],
