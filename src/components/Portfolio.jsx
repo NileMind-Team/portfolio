@@ -628,10 +628,10 @@ const CinematicProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang,
 };
 
 const SceneInfoItem = ({ progress, order, reduceMotion, className = "", children }) => {
-  const enterStart = 0.025 + order * 0.012;
-  const enterEnd = 0.2 + order * 0.014;
-  const exitStart = 0.73 + order * 0.006;
-  const exitEnd = 0.96 + order * 0.004;
+  const enterStart = 0.16 + order * 0.008;
+  const enterEnd = 0.31 + order * 0.01;
+  const exitStart = 0.59 + order * 0.005;
+  const exitEnd = 0.74 + order * 0.004;
   const opacity = useTransform(progress, (value) => {
     if (reduceMotion) return value < 0.1 || value > 0.96 ? 0 : 1;
     if (value <= enterStart) return 0;
@@ -930,7 +930,7 @@ const NormalFlowProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang
   );
 };
 
-const getFeaturedBrandLogo = (project) => ([7, 8, 9, 2, 4].includes(project.id) ? project.logo : null);
+const getFeaturedBrandLogo = (project) => project.logo || null;
 
 const getScreenTheme = (projectId) => {
   const themes = {
@@ -960,7 +960,10 @@ const mapScrollToTravel = (scrollPosition, anchors, exitAnchor) => {
   for (let index = 0; index < anchors.length - 1; index += 1) {
     if (scrollPosition <= anchors[index + 1]) {
       const range = Math.max(1, anchors[index + 1] - anchors[index]);
-      return index + clamp01((scrollPosition - anchors[index]) / range);
+      const rawLocal = clamp01((scrollPosition - anchors[index]) / range);
+      const travelLocal = clamp01((rawLocal - 0.2) / 0.6);
+      const eased = travelLocal * travelLocal * (3 - 2 * travelLocal);
+      return index + eased;
     }
   }
   const lastIndex = anchors.length - 1;
@@ -1163,9 +1166,9 @@ const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, redu
   const lastIndex = Math.max(0, total - 1);
   const isMobile = viewport === "mobile";
   const isTablet = viewport === "tablet";
-  const xTravel = isMobile ? 8 : isTablet ? 34 : 205;
-  const yTravel = isMobile ? 94 : isTablet ? 125 : 178;
-  const exitTravel = isMobile ? 105 : 150;
+  const xTravel = isMobile ? 6 : isTablet ? 28 : 180;
+  const yTravel = isMobile ? 58 : isTablet ? 104 : 148;
+  const exitTravel = isMobile ? 70 : 118;
   const getLocal = (value) => value >= lastIndex ? 0 : clamp01(value - Math.floor(value));
   const getDepth = (value) => Math.sin(Math.PI * getLocal(value));
   const getTail = (value) => lastIndex === 0 ? clamp01(value / 0.35) : clamp01((value - lastIndex) / 0.35);
@@ -1193,7 +1196,7 @@ const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, redu
   const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
 
   return (
-    <div className="relative mx-auto w-[min(96vw,840px)] md:w-[min(90vw,840px)] lg:w-[min(66vw,840px)]" data-traveling-laptop data-model-source="/models/laptop.glb">
+    <div className="relative mx-auto w-[min(94vw,840px)] md:w-[min(88vw,840px)] lg:w-[min(62vw,840px)]" data-traveling-laptop data-model-source="/models/macbook-pro-14.glb">
       <motion.div style={{ x, y, scale, opacity, transformOrigin: "50% 52%", willChange: "transform, opacity" }}>
         {isVisible ? (
           <PortfolioLaptop3D
@@ -1231,9 +1234,9 @@ const TravelingInfoScene = ({ project, index, total, lang, visitLabel, registerS
   const laptopOnRight = index % 2 === 0;
 
   return (
-    <article ref={setSceneNode} data-travel-info-scene={index + 1} className="relative flex min-h-[100svh] w-full items-center overflow-hidden py-14 md:min-h-[92vh] md:py-16 lg:min-h-[90vh] lg:py-20" aria-labelledby={`travel-info-title-${project.id}`}>
+    <article ref={setSceneNode} data-travel-info-scene={index + 1} className="relative flex min-h-[84svh] w-full items-center overflow-hidden py-1 sm:py-6 md:min-h-[76vh] md:py-12 lg:min-h-[72vh] lg:py-14" aria-labelledby={`travel-info-title-${project.id}`}>
       <div className="pointer-events-none absolute inset-0" style={{ background: `radial-gradient(circle at ${laptopOnRight ? "72%" : "28%"} 46%, ${getSceneLight(project.id)} 0%, transparent 51%)` }} />
-      <div dir="ltr" className={`relative mx-auto grid w-full max-w-7xl items-center gap-8 px-4 pt-[68svh] sm:px-6 sm:pt-[68svh] md:pt-[70vh] lg:pt-0 ${laptopOnRight ? "lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]" : "lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]"}`}>
+      <div dir="ltr" className={`relative mx-auto grid w-full max-w-7xl items-center gap-6 px-4 pt-[39svh] sm:px-6 sm:pt-[40svh] md:pt-[46vh] lg:pt-0 ${laptopOnRight ? "lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]" : "lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]"}`}>
         <div className={`mx-auto w-full max-w-lg text-center lg:row-start-1 lg:text-start ${laptopOnRight ? "lg:col-start-1" : "lg:col-start-2"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
           <div className="mb-3 flex items-center justify-center gap-3 lg:justify-start">
             <SceneInfoItem progress={progress} order={0} reduceMotion={reduceMotion}><span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span></SceneInfoItem>
@@ -1378,13 +1381,13 @@ const SingleLaptopPortfolioJourney = ({ projects, activeIndex, setActiveIndex, l
       </AnimatePresence>
 
       <div ref={journeyRef} className="relative">
-        <div className="pointer-events-none sticky top-16 z-30 flex h-[calc(100svh-4rem)] items-start overflow-hidden pt-[8svh] md:top-20 md:h-[calc(100vh-5rem)] md:pt-[8vh] lg:items-center lg:pt-0">
+        <div className="pointer-events-none sticky top-16 z-30 flex h-[calc(100svh-4rem)] items-start overflow-hidden pt-[4svh] md:top-20 md:h-[calc(100vh-5rem)] md:pt-[6vh] lg:items-center lg:pt-0">
           <TravelingLaptop projects={projects} activeIndex={activeIndex} travelProgress={smoothTravelProgress} viewport={viewport} reduceMotion={reduceMotion} visitLabel={visitLabel} isVisible={journeyVisible} />
         </div>
 
         <div className="relative z-10 -mt-[calc(100svh-4rem)] md:-mt-[calc(100vh-5rem)]">
           {projects.map((project, index) => <TravelingInfoScene key={`travel-info-${project.id}`} project={project} index={index} total={total} lang={lang} visitLabel={visitLabel} registerScene={registerScene} />)}
-          <div className="flex h-[58svh] items-end justify-center pb-10 md:h-[62vh] md:pb-16">
+          <div className="flex h-[30svh] items-end justify-center pb-8 md:h-[32vh] md:pb-12 lg:h-[36vh]">
             <a href="/work" className="relative z-40 inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-dark/75 px-7 py-3 text-sm font-bold text-primary-light backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{viewAllLabel}</a>
           </div>
         </div>
