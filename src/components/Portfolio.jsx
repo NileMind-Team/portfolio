@@ -920,6 +920,412 @@ const NormalFlowProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang
   );
 };
 
+const getFeaturedBrandLogo = (project) => ([7, 2].includes(project.id) ? project.logo : null);
+
+const getScreenTheme = (projectId) => {
+  const themes = {
+    7: "radial-gradient(circle at 50% 42%, rgba(13,148,136,0.24), transparent 42%), linear-gradient(145deg, #031b2b 0%, #062f40 52%, #04141f 100%)",
+    8: "radial-gradient(circle at 50% 42%, rgba(202,154,62,0.19), transparent 38%), linear-gradient(145deg, #091426 0%, #172239 56%, #080f1c 100%)",
+    9: "radial-gradient(circle at 50% 42%, rgba(197,160,91,0.15), transparent 38%), linear-gradient(145deg, #0c111b 0%, #1b2432 58%, #080d15 100%)",
+    2: "radial-gradient(circle at 50% 42%, rgba(220,38,38,0.18), transparent 40%), linear-gradient(145deg, #21080d 0%, #4a1019 54%, #18060a 100%)",
+    4: "radial-gradient(circle at 50% 42%, rgba(20,184,166,0.2), transparent 40%), linear-gradient(145deg, #071827 0%, #0b3340 56%, #06111c 100%)",
+  };
+  return themes[projectId] || themes[4];
+};
+
+const getSceneLight = (projectId) => {
+  const lights = {
+    7: "rgba(20,184,166,0.1)",
+    8: "rgba(202,154,62,0.075)",
+    9: "rgba(148,163,184,0.07)",
+    2: "rgba(185,28,28,0.065)",
+    4: "rgba(13,148,136,0.08)",
+  };
+  return lights[projectId] || lights[4];
+};
+
+const mapScrollToTravel = (scrollPosition, anchors, exitAnchor) => {
+  if (!anchors.length) return 0;
+  if (anchors.length === 1 || scrollPosition <= anchors[0]) return 0;
+  for (let index = 0; index < anchors.length - 1; index += 1) {
+    if (scrollPosition <= anchors[index + 1]) {
+      const range = Math.max(1, anchors[index + 1] - anchors[index]);
+      return index + clamp01((scrollPosition - anchors[index]) / range);
+    }
+  }
+  const lastIndex = anchors.length - 1;
+  const tailRange = Math.max(1, exitAnchor - anchors[lastIndex]);
+  return lastIndex + clamp01((scrollPosition - anchors[lastIndex]) / tailRange) * 0.35;
+};
+
+const TravelingScreenLayer = ({ project, index, travelProgress, reduceMotion, logo }) => {
+  const distance = useTransform(travelProgress, (value) => value - index);
+  const themeOpacity = useTransform(distance, (value) => clamp01(1 - Math.abs(value)));
+  const contentOpacity = useTransform(distance, (value) => {
+    if (reduceMotion) return clamp01(1 - Math.abs(value));
+    if (value < -0.42 || value > 0.42) return 0;
+    if (value < -0.25) return clamp01((value + 0.42) / 0.17);
+    if (value <= 0) return 1;
+    if (value < 0.25) return 1 - value / 0.25;
+    return 0;
+  });
+  const contentScale = useTransform(distance, (value) => {
+    if (reduceMotion) return 1;
+    if (value < 0) return 0.82 + 0.18 * clamp01((value + 0.42) / 0.42);
+    return 1 - 0.18 * clamp01(value / 0.25);
+  });
+  const contentY = useTransform(distance, (value) => {
+    if (reduceMotion) return 0;
+    if (value < 0) return 12 * (1 - clamp01((value + 0.42) / 0.42));
+    return 12 * clamp01(value / 0.25);
+  });
+  const contentFilter = useTransform(distance, (value) => {
+    if (reduceMotion) return "blur(0px)";
+    return `blur(${2 * clamp01(Math.abs(value) / 0.42)}px)`;
+  });
+
+  return (
+    <motion.div className="absolute inset-0" style={{ opacity: themeOpacity, background: getScreenTheme(project.id) }}>
+      <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-[12%] text-center sm:gap-5" style={{ opacity: contentOpacity, scale: contentScale, y: contentY, filter: contentFilter }}>
+        {logo ? (
+          <div className="relative h-[42%] w-[62%] sm:h-[46%] sm:w-[58%]">
+            <Image src={logo} alt={`${project.titleEn} logo`} fill sizes="(max-width: 767px) 54vw, 420px" className="object-contain" />
+          </div>
+        ) : (
+          <div className="flex h-[42%] w-[76%] items-center justify-center">
+            <span className="text-balance text-2xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl lg:text-5xl">{project.titleEn}</span>
+          </div>
+        )}
+        <span className="text-xs font-semibold tracking-[0.16em] text-white/75 sm:text-sm">{project.titleEn}</span>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, loadedLogos, failedLogos }) => {
+  const total = projects.length;
+  const lastIndex = Math.max(0, total - 1);
+  const isMobile = viewport === "mobile";
+  const isTablet = viewport === "tablet";
+  const xTravel = isMobile ? 8 : isTablet ? 34 : 205;
+  const yTravel = isMobile ? 94 : isTablet ? 125 : 178;
+  const exitTravel = isMobile ? 105 : 150;
+  const getLocal = (value) => {
+    if (value >= lastIndex) return 0;
+    return clamp01(value - Math.floor(value));
+  };
+  const getDepth = (value) => Math.sin(Math.PI * getLocal(value));
+  const getTail = (value) => lastIndex === 0 ? clamp01(value / 0.35) : clamp01((value - lastIndex) / 0.35);
+  const getHorizontalPosition = (value) => {
+    if (total <= 1) return xTravel;
+    if (value >= lastIndex) return (lastIndex % 2 === 0 ? xTravel : -xTravel) + getTail(value) * (isMobile ? 4 : 18);
+    const segment = Math.min(lastIndex - 1, Math.floor(value));
+    const local = clamp01(value - segment);
+    const eased = local * local * (3 - 2 * local);
+    const start = segment % 2 === 0 ? xTravel : -xTravel;
+    const end = -start;
+    const curve = Math.sin(Math.PI * local) * (segment % 2 === 0 ? -1 : 1) * (isMobile ? 6 : isTablet ? 18 : 32);
+    return start + (end - start) * eased + curve;
+  };
+  const rotateY = useTransform(travelProgress, (value) => {
+    if (reduceMotion) return 0;
+    if (value <= lastIndex) return value * 360;
+    return lastIndex * 360 + getTail(value) * 18;
+  });
+  const x = useTransform(travelProgress, getHorizontalPosition);
+  const y = useTransform(travelProgress, (value) => {
+    if (value >= lastIndex) return getTail(value) * exitTravel;
+    return getDepth(value) * yTravel;
+  });
+  const rotateX = useTransform(travelProgress, (value) => reduceMotion ? 0 : value >= lastIndex ? getTail(value) * 3 : getDepth(value) * (isMobile ? 3.5 : 7));
+  const rotateZ = useTransform(travelProgress, (value) => {
+    if (reduceMotion) return 0;
+    if (value >= lastIndex) return getTail(value) * 0.8;
+    const segment = Math.floor(value);
+    return getDepth(value) * (segment % 2 === 0 ? 1 : -1) * (isMobile ? 0.45 : 1);
+  });
+  const scale = useTransform(travelProgress, (value) => {
+    if (reduceMotion) return 1;
+    if (value >= lastIndex) return 1 - getTail(value) * 0.06;
+    return 1 - getDepth(value) * (isMobile ? 0.08 : 0.1);
+  });
+  const opacity = useTransform(travelProgress, (value) => value <= lastIndex ? 1 : 1 - getTail(value));
+  const shadowScale = useTransform(travelProgress, (value) => 1 + getDepth(value) * 0.2 + getTail(value) * 0.08);
+  const shadowOpacity = useTransform(travelProgress, (value) => 0.52 - getDepth(value) * 0.18 - getTail(value) * 0.32);
+  const reflectionOpacity = useTransform(travelProgress, (value) => reduceMotion ? 0 : 0.025 + Math.abs(Math.cos(value * Math.PI * 2)) * 0.035);
+  const frontFaceOpacity = useTransform(travelProgress, (value) => {
+    if (reduceMotion || value >= lastIndex) return 1;
+    const local = getLocal(value);
+    if (local <= 0.22 || local >= 0.78) return 1;
+    if (local < 0.28) return 1 - (local - 0.22) / 0.06;
+    if (local <= 0.72) return 0;
+    return (local - 0.72) / 0.06;
+  });
+  const backFaceOpacity = useTransform(travelProgress, (value) => {
+    if (reduceMotion || value >= lastIndex) return 0;
+    const local = getLocal(value);
+    if (local <= 0.22 || local >= 0.78) return 0;
+    if (local < 0.28) return (local - 0.22) / 0.06;
+    if (local <= 0.72) return 1;
+    return 1 - (local - 0.72) / 0.06;
+  });
+  const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
+  const keyboardRows = [13, 13, 12, 11];
+
+  return (
+    <div className="relative mx-auto w-[min(92vw,780px)] [perspective:1400px] md:w-[min(86vw,780px)] lg:w-[min(61vw,780px)]" data-traveling-laptop>
+      <motion.div
+        className="relative [transform-style:preserve-3d]"
+        style={{ x, y, rotateX, rotateY, rotateZ, scale, opacity, transformStyle: "preserve-3d", transformOrigin: "50% 48%", willChange: "transform, opacity" }}
+      >
+        <div className="relative mx-auto w-[91.5%] [transform-style:preserve-3d]">
+          <motion.a
+            href={activeProject.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${visitLabel}: ${activeProject.titleEn}`}
+            className="pointer-events-auto relative z-10 block rounded-t-[1.2rem] border border-white/20 bg-[linear-gradient(135deg,#d7dce1_0%,#7a838b_10%,#252b31_48%,#899198_90%,#dfe3e6_100%)] p-[2px] shadow-[0_22px_56px_-25px_rgba(0,0,0,0.82)] [backface-visibility:hidden] sm:rounded-t-[1.65rem] sm:p-[3px]"
+            style={{ transform: "translateZ(7px)", backfaceVisibility: "visible", opacity: frontFaceOpacity }}
+          >
+            <div className="relative rounded-t-[1.08rem] bg-[#07090b] p-[5px] sm:rounded-t-[1.48rem] sm:p-[8px]">
+              <div className="absolute left-1/2 top-[3px] z-30 flex h-[7px] w-[38px] -translate-x-1/2 items-center justify-center rounded-b-md bg-[#050709] sm:h-[11px] sm:w-[58px]">
+                <span className="h-1 w-1 rounded-full bg-slate-700 shadow-[0_0_2px_rgba(148,163,184,0.55)] sm:h-1.5 sm:w-1.5" />
+              </div>
+              <div className="relative aspect-[16/9] overflow-hidden rounded-[0.52rem] border border-white/[0.065] bg-[#08121d] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] sm:rounded-[0.8rem]">
+                {projects.map((project, index) => {
+                  const brandLogo = getFeaturedBrandLogo(project);
+                  const logo = brandLogo && loadedLogos.has(project.id) && !failedLogos.has(project.id) ? brandLogo : null;
+                  return <TravelingScreenLayer key={`travel-screen-${project.id}`} project={project} index={index} travelProgress={travelProgress} reduceMotion={reduceMotion} logo={logo} />;
+                })}
+                <motion.div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.055)_0%,transparent_18%,transparent_80%,rgba(255,255,255,0.018)_100%)]" style={{ opacity: reflectionOpacity }} />
+              </div>
+            </div>
+          </motion.a>
+
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-0 overflow-hidden rounded-[1.2rem] border border-black/15 bg-[linear-gradient(145deg,#b4bbc1_0%,#737c84_28%,#4a535b_62%,#8d969e_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.58),inset_0_-2px_4px_rgba(15,23,42,0.32)] [backface-visibility:hidden] sm:rounded-[1.65rem]"
+            style={{ transform: "rotateY(180deg) translateZ(7px)", backfaceVisibility: "visible", opacity: backFaceOpacity }}
+          >
+            <div className="absolute inset-[2px] rounded-[1.05rem] border border-white/14 bg-[radial-gradient(circle_at_42%_24%,rgba(255,255,255,0.18),transparent_28%),linear-gradient(145deg,#929aa2_0%,#5e6871_52%,#858e96_100%)] sm:rounded-[1.5rem]" />
+            <div className="absolute inset-x-[8%] top-[4%] h-px bg-white/22" />
+          </motion.div>
+          <div aria-hidden="true" className="absolute bottom-2 left-[-6px] top-2 w-3 rounded-l-md bg-gradient-to-r from-slate-900 via-slate-500 to-slate-300" style={{ transform: "rotateY(-90deg)", transformOrigin: "right center" }} />
+          <div aria-hidden="true" className="absolute bottom-2 right-[-6px] top-2 w-3 rounded-r-md bg-gradient-to-l from-slate-900 via-slate-500 to-slate-300" style={{ transform: "rotateY(90deg)", transformOrigin: "left center" }} />
+        </div>
+
+        <div className="relative z-20 mx-auto -mt-px h-2.5 w-[72%] rounded-b-[50%] bg-[linear-gradient(180deg,#14181c_0%,#717981_48%,#15191e_100%)] shadow-[0_2px_4px_rgba(0,0,0,0.78)] sm:h-3.5">
+          <div className="absolute inset-x-[5%] top-0 h-px bg-white/34" />
+        </div>
+
+        <div className="relative mx-auto -mt-1.5 h-[clamp(47px,6vw,78px)] w-full [transform-style:preserve-3d]">
+          <div className="absolute inset-0 overflow-hidden bg-[linear-gradient(160deg,#d9dde0_0%,#a1a8ae_22%,#68717a_58%,#c3c8cc_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.82),inset_0_-2px_3px_rgba(15,23,42,0.38)] [backface-visibility:hidden] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)]" style={{ transform: "translateZ(5px)", backfaceVisibility: "hidden" }}>
+            <div className="absolute left-[15%] right-[15%] top-[9%] flex h-[43%] flex-col justify-between rounded-[0.24rem] border border-black/20 bg-black/20 p-[2px] shadow-[0_2px_4px_rgba(0,0,0,0.28)] sm:p-[3px]">
+              {keyboardRows.map((keyCount, rowIndex) => (
+                <div key={`travel-key-row-${rowIndex}`} className="flex h-[21%] justify-center gap-[2px] sm:gap-[3px]">
+                  {Array.from({ length: keyCount }).map((_, keyIndex) => <span key={`travel-key-${rowIndex}-${keyIndex}`} className="h-full flex-1 rounded-[1px] border border-white/[0.045] bg-[linear-gradient(180deg,#20262b_0%,#080b0e_100%)] shadow-[0_1px_1px_rgba(0,0,0,0.7)]" />)}
+                </div>
+              ))}
+            </div>
+            <div className="absolute bottom-[8%] left-1/2 h-[30%] w-[30%] -translate-x-1/2 rounded-[0.3rem] border border-slate-500/26 bg-white/[0.02] shadow-[inset_0_1px_1px_rgba(255,255,255,0.11)]" />
+            <div className="absolute inset-x-[4%] top-0 h-px bg-white/58" />
+          </div>
+          <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(145deg,#7f8890_0%,#4f5962_55%,#737c84_100%)] [backface-visibility:hidden] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)]" style={{ transform: "rotateY(180deg) translateZ(5px)", backfaceVisibility: "hidden" }}>
+            <div className="absolute inset-[8%] rounded-[45%] border border-white/10 bg-black/5" />
+          </div>
+          <div aria-hidden="true" className="absolute bottom-1 left-0 top-1 w-2 bg-gradient-to-r from-slate-700 to-slate-300" style={{ transform: "rotateY(-90deg)", transformOrigin: "left center" }} />
+          <div aria-hidden="true" className="absolute bottom-1 right-0 top-1 w-2 bg-gradient-to-l from-slate-700 to-slate-300" style={{ transform: "rotateY(90deg)", transformOrigin: "right center" }} />
+        </div>
+
+        <div className="relative mx-auto h-[clamp(6px,1vw,12px)] w-full rounded-b-[45%] border-t border-white/38 bg-[linear-gradient(180deg,#9199a0_0%,#cfd3d6_22%,#737c84_65%,#30373d_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] [backface-visibility:hidden]">
+          <div className="absolute left-1/2 top-0 h-[42%] w-[12%] -translate-x-1/2 rounded-b-full border-x border-b border-slate-600/28 bg-slate-500/14" />
+          <div className="absolute inset-x-[7%] top-0 h-px bg-white/62" />
+        </div>
+      </motion.div>
+
+      <motion.div className="pointer-events-none mx-auto -mt-0.5 h-8 w-[80%] rounded-[50%] bg-black/75 blur-2xl sm:h-11" style={{ scaleX: shadowScale, opacity: shadowOpacity }} />
+    </div>
+  );
+};
+
+const TravelingInfoScene = ({ project, index, total, lang, visitLabel, registerScene }) => {
+  const sceneRef = useRef(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: sceneRef, offset: ["start 92%", "end 8%"] });
+  const progress = useSpring(scrollYProgress, { stiffness: 115, damping: 28, mass: 0.3 });
+  const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
+  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
+  const category = project.category === "website"
+    ? (lang === "en" ? "Website" : "موقع إلكتروني")
+    : project.category === "pos"
+      ? (lang === "en" ? "POS System" : "نظام نقاط بيع")
+      : (lang === "en" ? "Custom Software" : "برنامج مخصص");
+  const setSceneNode = (node) => { sceneRef.current = node; registerScene(index, node); };
+  const laptopOnRight = index % 2 === 0;
+
+  return (
+    <article ref={setSceneNode} data-travel-info-scene={index + 1} className="relative flex min-h-[100svh] w-full items-center overflow-hidden py-14 md:min-h-[92vh] md:py-16 lg:min-h-[90vh] lg:py-20" aria-labelledby={`travel-info-title-${project.id}`}>
+      <div className="pointer-events-none absolute inset-0" style={{ background: `radial-gradient(circle at ${laptopOnRight ? "72%" : "28%"} 46%, ${getSceneLight(project.id)} 0%, transparent 51%)` }} />
+      <div dir="ltr" className={`relative mx-auto grid w-full max-w-7xl items-center gap-8 px-4 pt-[68svh] sm:px-6 sm:pt-[68svh] md:pt-[70vh] lg:pt-0 ${laptopOnRight ? "lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]" : "lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]"}`}>
+        <div className={`mx-auto w-full max-w-lg text-center lg:row-start-1 lg:text-start ${laptopOnRight ? "lg:col-start-1" : "lg:col-start-2"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
+          <div className="mb-3 flex items-center justify-center gap-3 lg:justify-start">
+            <SceneInfoItem progress={progress} order={0} reduceMotion={reduceMotion}><span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span></SceneInfoItem>
+            <SceneInfoItem progress={progress} order={1} reduceMotion={reduceMotion}><span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-dark dark:text-primary-light sm:text-xs">{category}</span></SceneInfoItem>
+          </div>
+          <SceneInfoItem progress={progress} order={2} reduceMotion={reduceMotion} className="mb-3 md:mb-4"><h3 id={`travel-info-title-${project.id}`} className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3></SceneInfoItem>
+          <SceneInfoItem progress={progress} order={3} reduceMotion={reduceMotion} className="mb-3 md:mb-4"><p className="text-sm leading-6 text-gray-600 dark:text-gray-300 sm:text-base sm:leading-7">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p></SceneInfoItem>
+          {caseStudy && <SceneInfoItem progress={progress} order={4} reduceMotion={reduceMotion} className="mb-4 md:mb-5"><p className="border-s-2 border-primary/40 ps-3 text-xs leading-6 text-gray-500 dark:text-gray-400 sm:text-sm">{caseStudy}</p></SceneInfoItem>}
+          <SceneInfoItem progress={progress} order={5} reduceMotion={reduceMotion} className="mb-5 md:mb-6"><div className="flex flex-wrap justify-center gap-2 lg:justify-start">{technologies.slice(0, 4).map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/65 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">{technology}</span>)}</div></SceneInfoItem>
+          <SceneInfoItem progress={progress} order={6} reduceMotion={reduceMotion}><a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/18 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></a></SceneInfoItem>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+const SingleLaptopPortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
+  const journeyRef = useRef(null);
+  const sceneRefs = useRef([]);
+  const activeIndexRef = useRef(activeIndex);
+  const rawTravelProgress = useMotionValue(0);
+  const smoothTravelProgress = useSpring(rawTravelProgress, { stiffness: 122, damping: 30, mass: 0.32 });
+  const [waypoints, setWaypoints] = useState({ anchors: [], exit: 1 });
+  const [viewport, setViewport] = useState("desktop");
+  const [journeyVisible, setJourneyVisible] = useState(false);
+  const [loadedLogos, setLoadedLogos] = useState(() => new Set());
+  const [failedLogos, setFailedLogos] = useState(() => new Set());
+  const reduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  const total = projects.length;
+  const projectsKey = projects.map((project) => project.id).join("|");
+  const logoProjects = projects.filter((project) => getFeaturedBrandLogo(project));
+  const logosResolved = logoProjects.every((project) => loadedLogos.has(project.id) || failedLogos.has(project.id));
+
+  useEffect(() => { activeIndexRef.current = activeIndex; }, [activeIndex]);
+
+  useEffect(() => {
+    sceneRefs.current = [];
+    activeIndexRef.current = 0;
+    setActiveIndex(0);
+    rawTravelProgress.set(0);
+    setLoadedLogos(new Set());
+    setFailedLogos(new Set());
+  }, [projectsKey, rawTravelProgress, setActiveIndex]);
+
+  useEffect(() => {
+    const updateViewport = () => setViewport(window.innerWidth < 768 ? "mobile" : window.innerWidth < 1024 ? "tablet" : "desktop");
+    updateViewport();
+    window.addEventListener("resize", updateViewport, { passive: true });
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    const journeyNode = journeyRef.current;
+    if (!journeyNode) return undefined;
+    const visibilityObserver = new IntersectionObserver(([entry]) => setJourneyVisible(entry.isIntersecting), { threshold: 0.01 });
+    visibilityObserver.observe(journeyNode);
+    return () => visibilityObserver.disconnect();
+  }, [projectsKey]);
+
+  useEffect(() => {
+    const journeyNode = journeyRef.current;
+    const nodes = sceneRefs.current.filter(Boolean);
+    if (!journeyNode || !nodes.length) return undefined;
+    let frameId;
+    const measure = () => {
+      window.cancelAnimationFrame(frameId);
+      frameId = window.requestAnimationFrame(() => {
+        const anchors = nodes.map((node) => window.scrollY + node.getBoundingClientRect().top + node.offsetHeight / 2 - window.innerHeight / 2);
+        const exit = (anchors[anchors.length - 1] || 0) + window.innerHeight * 0.62;
+        setWaypoints({ anchors, exit });
+        if (logosResolved) rawTravelProgress.set(mapScrollToTravel(window.scrollY, anchors, exit));
+      });
+    };
+    measure();
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(journeyNode);
+    nodes.forEach((node) => resizeObserver.observe(node));
+    window.addEventListener("resize", measure, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [logosResolved, projectsKey, rawTravelProgress]);
+
+  useEffect(() => {
+    if (logosResolved && waypoints.anchors.length) rawTravelProgress.set(mapScrollToTravel(window.scrollY, waypoints.anchors, waypoints.exit));
+  }, [logosResolved, rawTravelProgress, waypoints]);
+
+  useMotionValueEvent(scrollY, "change", (value) => {
+    if (!logosResolved || !waypoints.anchors.length) return;
+    rawTravelProgress.set(mapScrollToTravel(value, waypoints.anchors, waypoints.exit));
+  });
+
+  useMotionValueEvent(smoothTravelProgress, "change", (value) => {
+    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(Math.min(total - 1, value) + 0.5)));
+    if (nextIndex !== activeIndexRef.current) {
+      activeIndexRef.current = nextIndex;
+      setActiveIndex(nextIndex);
+    }
+  });
+
+  const registerScene = (index, node) => { sceneRefs.current[index] = node; };
+  const scrollToProject = (requestedIndex) => {
+    const nextIndex = Math.min(total - 1, Math.max(0, requestedIndex));
+    const target = waypoints.anchors[nextIndex];
+    if (Number.isFinite(target)) window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
+    else sceneRefs.current[nextIndex]?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+  };
+
+  if (!total) return null;
+
+  const navigation = (compact = false) => (
+    <div className={`flex items-center ${compact ? "gap-2" : "flex-col gap-3"}`}>
+      <button type="button" disabled={activeIndex === 0} onClick={() => scrollToProject(activeIndex - 1)} aria-label={lang === "en" ? "Previous project" : "المشروع السابق"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronLeft size={18} /></button>
+      <div className={`${compact ? "flex gap-2" : "relative flex flex-col gap-2"}`} aria-label={lang === "en" ? "Projects progress" : "تقدم المشاريع"}>
+        {!compact && <div className="absolute bottom-1 left-1/2 top-1 w-px -translate-x-1/2 bg-primary/15" />}
+        {projects.map((project, index) => <button key={`single-progress-${project.id}`} type="button" onClick={() => scrollToProject(index)} aria-label={`${lang === "en" ? "Go to project" : "انتقل إلى المشروع"} ${index + 1}`} aria-current={index === activeIndex ? "step" : undefined} className={`relative z-10 h-3 w-3 rounded-full border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${index === activeIndex ? "scale-125 border-primary-light bg-primary shadow-[0_0_0_4px_rgba(20,184,166,0.12)]" : "border-primary/35 bg-dark-light hover:border-primary"}`} />)}
+      </div>
+      <button type="button" disabled={activeIndex === total - 1} onClick={() => scrollToProject(activeIndex + 1)} aria-label={lang === "en" ? "Next project" : "المشروع التالي"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronRight size={18} /></button>
+    </div>
+  );
+
+  return (
+    <div className="relative">
+      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+        {logoProjects.map((project) => (
+          <div key={`brand-preload-${project.id}`} className="relative h-80 w-80">
+            <Image src={getFeaturedBrandLogo(project)} alt="" fill priority sizes="320px" className="object-contain" onLoad={async (event) => { try { await event.currentTarget.decode(); } catch { /* The cached logo remains usable. */ } setLoadedLogos((current) => new Set(current).add(project.id)); }} onError={() => setFailedLogos((current) => new Set(current).add(project.id))} />
+          </div>
+        ))}
+      </div>
+
+      <div className="mb-2 flex items-center justify-center gap-4 lg:hidden">
+        <span dir="ltr" className="min-w-14 font-mono text-xs text-gray-500">{String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+        {navigation(true)}
+      </div>
+
+      <AnimatePresence>
+        {journeyVisible && <motion.aside initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 12 }} className="fixed end-5 top-1/2 z-50 hidden -translate-y-1/2 lg:block" aria-label={lang === "en" ? "Portfolio navigation" : "التنقل بين المشاريع"}>{navigation(false)}</motion.aside>}
+      </AnimatePresence>
+
+      <div ref={journeyRef} className="relative">
+        <div className="pointer-events-none sticky top-16 z-30 flex h-[calc(100svh-4rem)] items-start overflow-hidden pt-[8svh] md:top-20 md:h-[calc(100vh-5rem)] md:pt-[8vh] lg:items-center lg:pt-0">
+          <TravelingLaptop projects={projects} activeIndex={activeIndex} travelProgress={smoothTravelProgress} viewport={viewport} reduceMotion={reduceMotion} visitLabel={visitLabel} loadedLogos={loadedLogos} failedLogos={failedLogos} />
+        </div>
+
+        <div className="relative z-10 -mt-[calc(100svh-4rem)] md:-mt-[calc(100vh-5rem)]">
+          {projects.map((project, index) => <TravelingInfoScene key={`travel-info-${project.id}`} project={project} index={index} total={total} lang={lang} visitLabel={visitLabel} registerScene={registerScene} />)}
+          <div className="flex h-[58svh] items-end justify-center pb-10 md:h-[62vh] md:pb-16">
+            <a href="/work" className="relative z-40 inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-dark/75 px-7 py-3 text-sm font-bold text-primary-light backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{viewAllLabel}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Portfolio = ({ lang }) => {
   const [filter, setFilter] = useState("all");
   const [activeProject, setActiveProject] = useState(0);
@@ -1306,7 +1712,7 @@ const Portfolio = ({ lang }) => {
           </div>
         </div>
 
-        <NormalFlowProjectShowcase
+        <SingleLaptopPortfolioJourney
           projects={showcaseProjects}
           activeIndex={activeProject}
           setActiveIndex={setActiveProject}
