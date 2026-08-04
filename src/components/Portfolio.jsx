@@ -31,6 +31,86 @@ const SCENE_LIGHT = {
   4: "rgba(41,178,222,0.09)",
 };
 
+const categoryLabel = (project, lang) =>
+  project.category === "website"
+    ? lang === "en"
+      ? "Website"
+      : "موقع إلكتروني"
+    : project.category === "pos"
+      ? lang === "en"
+        ? "POS System"
+        : "نظام نقاط بيع"
+      : lang === "en"
+        ? "Custom Software"
+        : "برنامج مخصص";
+
+/* ---------------------------------------------------------------- turn interlude */
+
+/*
+ * The copy is deliberately hidden while the device sweeps between two projects, so on a wide screen
+ * the frame sits empty for the length of the turn. This fills that beat with the identity of the
+ * project being turned to, which makes the pause read as intent rather than as dead space.
+ *
+ * It runs off the same motion value as the device rather than its own clock, so it cannot drift out
+ * of sync. Its presence curve is notched to zero at the exact midpoint — the instant the lid faces
+ * away and the screen texture swaps — so the numeral changes inside that same hidden beat instead
+ * of popping over at full strength.
+ *
+ * It is centred in the sticky viewport rather than in the stage, which is what makes it work on
+ * both layouts from one position: on desktop the stage already fills that viewport so it lands
+ * behind the device, and on mobile the stage only occupies the top third, so viewport-centre puts
+ * it in the band the copy vacates during the turn instead of on top of the laptop.
+ */
+const TurnInterlude = ({ projects, travel, stageOpacity, lang }) => {
+  const [incoming, setIncoming] = useState(0);
+  const lastIndex = Math.max(0, projects.length - 1);
+
+  const presence = useTransform(travel, (value) => {
+    const position = Math.min(Math.max(value, 0), lastIndex);
+    const local = clamp01(position - Math.floor(position));
+    const arc = Math.sin(Math.PI * local);
+    return arc * (1 - Math.pow(arc, 10));
+  });
+  /* Folded in so the interlude still fades with the section's own entry and exit. */
+  const opacity = useTransform([presence, stageOpacity], ([turn, stage]) => {
+    const eased = turn <= 0.15 ? 0 : Math.min(1, (turn - 0.15) / 0.57);
+    return eased * stage;
+  });
+  const drift = useTransform(presence, [0, 0.72], [26, 0]);
+  const spread = useTransform(presence, [0, 0.72], ["10%", "56%"]);
+
+  useMotionValueEvent(travel, "change", (value) => {
+    const next = Math.min(lastIndex, Math.max(0, Math.round(value)));
+    setIncoming((current) => (current === next ? current : next));
+  });
+
+  const project = projects[Math.min(incoming, lastIndex)];
+  if (!project) return null;
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{ opacity }}
+      className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center"
+    >
+      <motion.span
+        dir="ltr"
+        style={{ y: drift }}
+        className="font-mono text-[24vw] font-bold leading-none tracking-tighter text-gray-900/[0.05] dark:text-white/[0.06] sm:text-[16vw] lg:text-[10.5vw]"
+      >
+        {String(Math.min(incoming, lastIndex) + 1).padStart(2, "0")}
+      </motion.span>
+      <motion.span
+        style={{ y: drift }}
+        className="mt-3 text-[10px] font-semibold uppercase tracking-[0.42em] text-gray-500/50 dark:text-gray-300/40 sm:text-xs"
+      >
+        {categoryLabel(project, lang)}
+      </motion.span>
+      <motion.div style={{ width: spread }} className="mt-4 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+    </motion.div>
+  );
+};
+
 /* ---------------------------------------------------------------- copy reveal */
 
 /*
@@ -67,18 +147,7 @@ const ProjectScene = ({ project, index, total, lang, visitLabel, registerScene, 
   const laptopOnRight = index % 2 === 0;
   const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
   const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
-  const category =
-    project.category === "website"
-      ? lang === "en"
-        ? "Website"
-        : "موقع إلكتروني"
-      : project.category === "pos"
-        ? lang === "en"
-          ? "POS System"
-          : "نظام نقاط بيع"
-        : lang === "en"
-          ? "Custom Software"
-          : "برنامج مخصص";
+  const category = categoryLabel(project, lang);
 
   const attachScene = useCallback(
     (node) => {
@@ -438,6 +507,7 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
 
       <div ref={journeyRef} className="relative">
         <div className="pointer-events-none sticky top-16 z-20 h-[calc(100svh-4rem)] md:top-20 md:h-[calc(100vh-5rem)]">
+          <TurnInterlude projects={projects} travel={travel} stageOpacity={stageOpacity} lang={lang} />
           <motion.div
             style={{ opacity: stageOpacity }}
             className="absolute inset-x-0 top-0 mx-auto h-[31svh] w-full max-w-7xl md:bottom-0 md:h-auto"
@@ -747,18 +817,18 @@ const Portfolio = ({ lang }) => {
     <section
       id="portfolio"
       /*
-       * The translateZ promotes the section to its own compositing layer. Without it the WebGL
-       * canvas gets a layer of its own, and the very shallow background gradient behind it is
-       * rasterised with different dithering inside that layer than outside — which showed as a
-       * faint but hard-edged rectangle exactly on the canvas bounds. The canvas is fully
-       * transparent there (measured [0,0,0,0] at every edge and corner), so this is a compositing
-       * artifact rather than anything the 3D draws; promoting the section makes the gradient
-       * rasterise once. It is set inline because as a Tailwind arbitrary class it lost to the
-       * framework's own transform utilities and collapsed to a 2D identity matrix, which does not
-       * promote. Note this makes the section the containing block for fixed children, which is why
-       * the journey navigation is portalled to <body>.
+       * Do NOT promote this section to its own compositing layer to chase the faint rectangle that
+       * appears on the WebGL canvas bounds. That rectangle is a compositing artifact — the canvas
+       * is fully transparent there, measured [0,0,0,0] at every edge and corner — caused by the
+       * very shallow background gradient below being dithered differently inside the canvas's layer
+       * than outside. Promotion does remove it, but on a section this tall every promoting
+       * declaration tried (translateZ(0), translate3d(0,0,0), will-change: transform) makes Chrome
+       * give up painting the section altogether and render it blank. A blank section is far worse
+       * than a faint seam.
+       *
+       * The root cause is the gradient, not the canvas: replacing it with a solid colour removed
+       * the seam completely in testing. If the seam needs to go, do that instead of promoting.
        */
-      style={{ transform: "translateZ(0)" }}
       className={`overflow-x-clip bg-gradient-to-b from-white to-gray-50 pb-10 pt-8 dark:from-dark dark:to-dark-light lg:pb-14 lg:pt-10 ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}
     >

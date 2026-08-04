@@ -232,9 +232,18 @@ const makeShadowTexture = () => {
   canvas.height = 256;
   const context = canvas.getContext("2d");
   const gradient = context.createRadialGradient(128, 128, 0, 128, 128, 128);
-  gradient.addColorStop(0, "rgba(0,0,0,0.85)");
-  gradient.addColorStop(0.45, "rgba(0,0,0,0.42)");
-  gradient.addColorStop(0.78, "rgba(0,0,0,0.1)");
+  /*
+   * Steep falloff on purpose. A gentle one spreads a large, faintly darker pool across a wide part
+   * of the frame; over a background that is already almost black that does not read as a shadow at
+   * all, it reads as a second block of colour whose edge you can see — and because the device
+   * alternates sides between projects, the block visibly swaps left and right as you scroll. Almost
+   * all of the density is kept inside the first third of the radius so the pool stays under the
+   * chassis and its edge dissolves before it becomes an area.
+   */
+  gradient.addColorStop(0, "rgba(0,0,0,0.9)");
+  gradient.addColorStop(0.28, "rgba(0,0,0,0.5)");
+  gradient.addColorStop(0.52, "rgba(0,0,0,0.16)");
+  gradient.addColorStop(0.75, "rgba(0,0,0,0.03)");
   gradient.addColorStop(1, "rgba(0,0,0,0)");
   context.fillStyle = gradient;
   context.fillRect(0, 0, 256, 256);
@@ -413,10 +422,17 @@ const Laptop = ({ projects, motion, layout, reduceMotion, onReady }) => {
        * 1.3 unit frame. Clamping against frameWidth keeps the falloff on screen at every
        * breakpoint without needing a per-breakpoint constant.
        */
-      const reach = Math.min(spread * growth * 1.35, layout.frameWidth * 0.8);
+      /*
+       * As the device lifts through the turn the pool spreads and softens rather than switching
+       * off. Fading it out on lift alone left the laptop with no contact at all mid-turn, which is
+       * what made it look like it was floating; a real object rising from a surface throws a wider,
+       * fainter shadow, not none.
+       */
+      const reach = Math.min(spread * growth * (1.15 + lift * 0.38), layout.frameWidth * 0.7);
+      const depth = Math.min(model.normalizedDepth * growth * (1.55 + lift * 0.3), layout.frameWidth * 0.46);
       shadow.position.set(positionX, positionY - model.normalizedHeight * 0.5 * growth - 0.03, positionZ + model.normalizedDepth * 0.2);
-      shadow.scale.set(reach, Math.min(model.normalizedDepth * growth * 1.9, layout.frameWidth * 0.55), 1);
-      shadow.material.opacity = (0.46 - lift * 0.22) * entry * (1 - exit);
+      shadow.scale.set(reach, depth, 1);
+      shadow.material.opacity = (0.44 - lift * 0.16) * entry * (1 - exit);
     }
 
     /* The panel changes only while the lid faces away from the viewer. */
