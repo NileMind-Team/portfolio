@@ -77,6 +77,22 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   category: 'technology',
+  /*
+   * These used to be hand-written <meta> tags inside a manual <head> element in the layout.
+   * That element was the source of the hydration mismatch: Next injects its own <style> and
+   * <link> tags into <head>, and React then had to reconcile a server head it did not author
+   * against the client tree. Declaring them here lets Next own the whole of <head>.
+   */
+  other: {
+    'geo.region': 'EG-FYM',
+    'geo.placename': 'Fayoum, Egypt',
+    'geo.position': '29.3084;30.8428',
+    ICBM: '29.3084, 30.8428',
+    'revisit-after': '3 days',
+    rating: 'general',
+    'fb:pages': 'https://www.facebook.com/Dogethertech',
+    'article:publisher': 'https://www.facebook.com/Dogethertech',
+  },
 }
 
 const localBusinessSchema = {
@@ -196,15 +212,13 @@ const websiteSchema = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl" className={`${inter.variable} ${poppins.variable}`}>
-      <head>
-        <meta name="geo.region" content="EG-FYM" />
-        <meta name="geo.placename" content="Fayoum, Egypt" />
-        <meta name="geo.position" content="29.3084;30.8428" />
-        <meta name="ICBM" content="29.3084, 30.8428" />
-        <meta name="revisit-after" content="3 days" />
-        <meta name="rating" content="general" />
-        <meta property="fb:pages" content="https://www.facebook.com/Dogethertech" />
-        <meta property="article:publisher" content="https://www.facebook.com/Dogethertech" />
+      {/* suppressHydrationWarning: إضافات المتصفح (زي ColorZilla) بتحقن خصائص
+          في <body> قبل ما React يعمل hydrate — ده بيمنع تحذير وهمي في الـ dev
+          ومش بيخفي أي أخطاء hydration حقيقية جوه المكوّنات. */}
+      <body suppressHydrationWarning>
+        {/* JSON-LD lives in the body on purpose. Search engines read it anywhere in the
+            document, and keeping it out of <head> means the layout no longer competes with
+            Next for ownership of that subtree. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
@@ -213,11 +227,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-      </head>
-      {/* suppressHydrationWarning: إضافات المتصفح (زي ColorZilla) بتحقن خصائص
-          في <body> قبل ما React يعمل hydrate — ده بيمنع تحذير وهمي في الـ dev
-          ومش بيخفي أي أخطاء hydration حقيقية جوه المكوّنات. */}
-      <body suppressHydrationWarning>
         {children}
         <SocialFab />
         <Analytics />

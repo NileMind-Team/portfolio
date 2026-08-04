@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import logo from "../assets/logo1.png";
 import logo1 from "../assets/logo2.png";
@@ -15,1386 +15,489 @@ import sharmLogo from "../assets/sharm-kitesurf.png";
 import tripyramidsHero from "../../public/tripyramids-hero.jpg";
 import amjadEstateHero from "../../public/amjad-estate-hero.jpg";
 
-const PortfolioLaptop3D = dynamic(() => import("./PortfolioLaptop3D"), {
-  ssr: false,
-  loading: () => (
-    <div className="relative aspect-[1.42] w-full">
-      <img src="/models/laptop-poster.png" alt="" aria-hidden="true" className="h-full w-full object-contain" />
-    </div>
-  ),
-});
-
-const DeviceProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
-  const trackRef = useRef(null);
-  const scrollTimerRef = useRef(null);
-  const [loadedScreens, setLoadedScreens] = useState(() => new Set());
-  const [isScrolling, setIsScrolling] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const tiltX = useSpring(useMotionValue(0), { stiffness: 170, damping: 24 });
-  const tiltY = useSpring(useMotionValue(0), { stiffness: 170, damping: 24 });
-  const { scrollYProgress } = useScroll({ target: trackRef, offset: ["start start", "end end"] });
-
-  const preloadKey = projects
-    .map((project) => {
-      const source = project.preview || project.logo;
-      return typeof source === "string" ? source : source?.src || "";
-    })
-    .join("|");
-  const screensReady = projects.length > 0 && loadedScreens.size === projects.length;
-
-  useEffect(() => {
-    setLoadedScreens(new Set());
-  }, [preloadKey]);
-
-  useEffect(
-    () => () => {
-      if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
-    },
-    [],
-  );
-
-  useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    if (typeof window === "undefined" || window.innerWidth < 768 || !screensReady) return;
-    setIsScrolling(true);
-    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
-    scrollTimerRef.current = window.setTimeout(() => setIsScrolling(false), 180);
-    const nextIndex = Math.min(projects.length - 1, Math.floor(progress * projects.length));
-    if (nextIndex !== activeIndex) setActiveIndex(nextIndex);
-  });
-
-  const project = projects[activeIndex];
-  if (!project) return null;
-
-  const goToProject = (index) => {
-    if (!screensReady) return;
-    const nextIndex = (index + projects.length) % projects.length;
-    setActiveIndex(nextIndex);
-
-    if (typeof window === "undefined" || window.innerWidth < 768 || !trackRef.current) return;
-    const trackTop = window.scrollY + trackRef.current.getBoundingClientRect().top;
-    const scrollRange = Math.max(0, trackRef.current.offsetHeight - window.innerHeight);
-    const targetProgress = (nextIndex + 0.15) / projects.length;
-    window.scrollTo({
-      top: trackTop + scrollRange * targetProgress,
-      behavior: "auto",
-    });
-  };
-  const previousProject = () => goToProject(activeIndex - 1);
-  const nextProject = () => goToProject(activeIndex + 1);
-  const onPointerMove = (event) => {
-    if (reduceMotion || event.pointerType === "touch") return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    tiltY.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 5);
-    tiltX.set(-((event.clientY - bounds.top) / bounds.height - 0.5) * 4);
-  };
-  const resetTilt = () => { tiltX.set(0); tiltY.set(0); };
-  const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
-  const category = project.category === "website" ? (lang === "en" ? "Website" : "موقع إلكتروني") : project.category === "pos" ? (lang === "en" ? "POS System" : "نظام نقاط بيع") : (lang === "en" ? "Custom Software" : "برنامج مخصص");
-  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
-  const progress = `${((activeIndex + 1) / projects.length) * 100}%`;
-  const textDirection = lang === "ar" ? 22 : -22;
-  const textContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: reduceMotion ? 0 : 0.035, delayChildren: reduceMotion ? 0 : 0.24 } },
-    exit: { opacity: 0, transition: { duration: reduceMotion ? 0.1 : 0.16, staggerChildren: reduceMotion ? 0 : 0.015, staggerDirection: -1 } },
-  };
-  const textItem = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 14, x: reduceMotion ? 0 : textDirection },
-    visible: { opacity: 1, y: 0, x: 0, transition: { duration: reduceMotion ? 0.14 : 0.28, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, y: reduceMotion ? 0 : -8, x: reduceMotion ? 0 : -textDirection * 0.45, transition: { duration: reduceMotion ? 0.1 : 0.16 } },
-  };
-
-  return (
-    <div ref={trackRef} className="relative md:h-[var(--project-track)]" style={{ "--project-track": `${Math.max(160, 80 + projects.length * 40)}vh` }}>
-      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
-        {projects.map((preloadProject) => (
-          <div key={`preload-${preloadProject.id}`} className="relative h-[675px] w-[1200px]">
-            <Image
-              src={preloadProject.preview || preloadProject.logo}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 768px) 94vw, 60vw"
-              className="object-cover object-top"
-              onLoad={() =>
-                setLoadedScreens((current) => {
-                  if (current.has(preloadProject.id)) return current;
-                  const next = new Set(current);
-                  next.add(preloadProject.id);
-                  return next;
-                })
-              }
-            />
-          </div>
-        ))}
-      </div>
-      <div className="mx-auto grid min-h-0 max-w-7xl items-center gap-10 py-12 md:sticky md:top-20 md:min-h-[calc(100vh-5rem)] md:grid-cols-[minmax(0,3fr)_minmax(300px,2fr)] md:py-10 lg:gap-16">
-        <motion.div
-          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 70, scale: 0.88, rotateX: 7, rotateY: -6 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: reduceMotion ? 0.25 : 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative order-1 mx-auto w-full max-w-4xl [perspective:1400px]"
-        >
-          <motion.div
-            animate={
-              reduceMotion
-                ? { opacity: 1 }
-                : {
-                    rotateX: activeIndex % 2 === 0 ? 2 : -2,
-                    rotateY: activeIndex % 2 === 0 ? -5 : 5,
-                    x: activeIndex % 2 === 0 ? -4 : 4,
-                    y: activeIndex % 2 === 0 ? -2 : 3,
-                    scale: activeIndex % 2 === 0 ? 1 : 0.992,
-                  }
-            }
-            transition={{ type: "spring", stiffness: 88, damping: 18, mass: 0.72 }}
-            className="relative mx-auto w-[96%] focus-within:outline-none sm:w-[94%]"
-          >
-            <motion.div
-              animate={reduceMotion || isScrolling ? { y: 0 } : { y: [0, -3.5, 0] }}
-              transition={reduceMotion || isScrolling ? { duration: 0.2 } : { duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <motion.div
-                onPointerMove={onPointerMove}
-                onPointerLeave={resetTilt}
-                style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" }}
-                whileHover={reduceMotion ? undefined : { scale: 1.012 }}
-              >
-                <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`${visitLabel}: ${project.titleEn}`} className="group block rounded-[1.8rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">
-                  <div className="relative rounded-t-[1.7rem] border-[9px] border-slate-950 bg-slate-950 p-1 shadow-[0_36px_84px_-30px_rgba(0,0,0,0.72)] transition-shadow duration-500 group-hover:shadow-[0_42px_96px_-26px_rgba(0,0,0,0.82)] sm:border-[12px]">
-                    <div className="absolute left-1/2 top-[-7px] z-30 flex h-2.5 w-10 -translate-x-1/2 items-center justify-center rounded-b-full bg-slate-950">
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-700 ring-1 ring-slate-500/40" />
-                    </div>
-                    <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-slate-900">
-                      <AnimatePresence initial={false} mode="sync">
-                        <motion.div
-                          key={project.id}
-                          initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.018 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.982 }}
-                          transition={{ duration: reduceMotion ? 0.18 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-                          className={`absolute inset-0 bg-gradient-to-br ${project.color}`}
-                        >
-                          <div className="absolute inset-0 flex items-center justify-center bg-inherit p-10">
-                            <Image src={project.logo} alt="" width={220} height={220} className="max-h-[62%] w-auto object-contain opacity-85 drop-shadow-2xl" />
-                          </div>
-                          {project.preview && (
-                            <Image src={project.preview} alt={`${project.titleEn} project screenshot`} fill className="object-cover object-top" sizes="(max-width: 768px) 94vw, 60vw" />
-                          )}
-                          <motion.div
-                            key={`reflection-${project.id}`}
-                            initial={{ x: "-160%", opacity: 0 }}
-                            animate={{ x: "210%", opacity: [0, 0.12, 0] }}
-                            transition={{ duration: reduceMotion ? 0 : 1.35, delay: 0.1, ease: "easeInOut" }}
-                            className="pointer-events-none absolute inset-y-0 w-[18%] -skew-x-12 bg-gradient-to-r from-transparent via-white/80 to-transparent blur-xl"
-                          />
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                  <div className="relative mx-auto h-2.5 w-[90%] rounded-t-md bg-gradient-to-b from-slate-700 via-slate-500 to-slate-800 shadow-inner">
-                    <div className="absolute inset-x-[8%] top-0 h-px bg-white/35" />
-                  </div>
-                  <div className="relative mx-auto h-6 w-[108%] -translate-x-[4%] overflow-hidden rounded-b-[1.15rem] bg-[linear-gradient(180deg,#f8fafc_0%,#cbd5e1_16%,#94a3b8_68%,#475569_100%)] shadow-[0_25px_45px_-18px_rgba(0,0,0,0.72)] dark:bg-[linear-gradient(180deg,#cbd5e1_0%,#64748b_20%,#334155_72%,#0f172a_100%)] sm:h-8">
-                    <div className="absolute inset-x-[3%] top-0 h-px bg-white/90" />
-                    <div className="absolute left-1/2 top-0 h-2 w-24 -translate-x-1/2 rounded-b-xl border-x border-b border-slate-500/50 bg-slate-400/35 sm:w-32" />
-                    <div className="absolute inset-x-[8%] bottom-0 h-px bg-slate-950/45" />
-                  </div>
-                  <div className="mx-auto mt-4 h-7 w-[82%] rounded-[50%] bg-black/45 blur-2xl transition-all duration-500 group-hover:w-[86%] group-hover:bg-black/55" />
-                </a>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        <div className="order-2 px-2 text-center md:text-start" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <AnimatePresence initial={false} mode="sync">
-            <motion.div key={`project-copy-${project.id}`} variants={textContainer} initial="hidden" animate="visible" exit="exit">
-              <motion.div variants={textItem} className="mb-4 flex items-center justify-center gap-3 md:justify-start">
-                <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-dark dark:text-primary-light">{category}</span>
-                <span dir="ltr" className="font-mono text-sm text-gray-500">{String(activeIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
-              </motion.div>
-              <motion.h3 variants={textItem} className="mb-4 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</motion.h3>
-              <motion.p variants={textItem} className="mb-4 text-sm leading-7 text-gray-600 dark:text-gray-300 sm:text-base">{lang === "en" ? project.descriptionEn : project.descriptionAr}</motion.p>
-              {caseStudy && (
-                <motion.p variants={textItem} className="mb-5 border-s-2 border-primary/45 ps-3 text-xs leading-6 text-gray-500 dark:text-gray-400 sm:text-sm">
-                  {caseStudy}
-                </motion.p>
-              )}
-              <motion.div variants={textItem} className="mb-7 flex flex-wrap justify-center gap-2 md:justify-start">
-                {technologies.map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">{technology}</span>)}
-              </motion.div>
-              <motion.a variants={textItem} href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></motion.a>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="mt-8">
-            <div className="h-1 overflow-hidden rounded-full bg-primary/15"><motion.div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-light" animate={{ width: progress }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} /></div>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              <button type="button" disabled={!screensReady} onClick={previousProject} aria-label="Previous project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-wait disabled:opacity-40 dark:text-primary-light"><ChevronLeft size={18} /></button>
-              <button type="button" disabled={!screensReady} onClick={nextProject} aria-label="Next project" className="grid h-10 w-10 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-wait disabled:opacity-40 dark:text-primary-light"><ChevronRight size={18} /></button>
-              <a href="/work" className="ms-1 inline-flex h-10 items-center rounded-full border border-primary/20 px-4 text-xs font-semibold text-primary-dark transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light">
-                {viewAllLabel}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+const PortfolioLaptop3D = dynamic(() => import("./PortfolioLaptop3D"), { ssr: false, loading: () => null });
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
+const smootherstep = (value) => value * value * value * (value * (value * 6 - 15) + 10);
 
-const getSegmentProgress = (progress, total) => {
-  if (total <= 1) return 0;
-  const scaled = clamp01(progress) * (total - 1);
-  const segment = Math.min(total - 2, Math.floor(scaled));
-  return clamp01(scaled - segment);
+/* Share of the gap between two projects that stays settled before and after the turn. */
+const SETTLE_SHARE = 0.19;
+
+const SCENE_LIGHT = {
+  7: "rgba(56,170,205,0.10)",
+  8: "rgba(206,166,86,0.085)",
+  9: "rgba(196,148,104,0.075)",
+  2: "rgba(209,32,36,0.075)",
+  4: "rgba(41,178,222,0.09)",
 };
 
-const getProjectSource = (project) => project?.preview || project?.logo;
+/* ---------------------------------------------------------------- copy reveal */
 
-const ProjectScreenLayer = ({ project, progress, index, total, ready, reduceMotion }) => {
-  const distance = useTransform(progress, (value) => value * Math.max(1, total - 1) - index);
-  const opacity = useTransform(distance, (value) => {
-    if (!ready) return 0;
-    if (total <= 1) return index === 0 ? 1 : 0;
-    if (value <= -0.62 || value >= 0.62) return 0;
-    if (value < -0.38) return (value + 0.62) / 0.24;
-    if (value <= 0.38) return 1;
-    return 1 - (value - 0.38) / 0.24;
-  });
-  const scale = useTransform(distance, (value) => {
-    if (reduceMotion) return 1;
-    if (value < 0) return 1.03 - clamp01((value + 0.62) / 0.62) * 0.03;
-    return 1 - clamp01(value / 0.62) * 0.03;
-  });
+/*
+ * Copy visibility is driven by the same value that drives the device, not by its own scroll box.
+ * That keeps the text on screen while the laptop is settled beside it and clears it out of the way
+ * before the turn sweeps across the column, so the two never overlap.
+ */
+const revealAt = (distance, order) => {
+  const hold = 0.11 - order * 0.006;
+  const release = 0.32 - order * 0.008;
+  const magnitude = Math.abs(distance);
+  if (magnitude <= hold) return 1;
+  if (magnitude >= release) return 0;
+  return 1 - (magnitude - hold) / (release - hold);
+};
 
+const SceneCopy = ({ distance, order, reduceMotion, className = "", children }) => {
+  const presence = useTransform(distance, (value) => (reduceMotion ? (Math.abs(value) < 0.5 ? 1 : 0) : revealAt(value, order)));
+  const opacity = useTransform(presence, (value) => value);
+  const y = useTransform([presence, distance], ([value, offset]) => (reduceMotion ? 0 : (1 - value) * (offset > 0 ? -26 : 26)));
+  const filter = useTransform(presence, (value) => (reduceMotion ? "blur(0px)" : `blur(${(1 - value) * 3}px)`));
   return (
-    <motion.div aria-hidden={index !== 0} className="absolute inset-0" style={{ opacity, scale }}>
-      <Image
-        src={getProjectSource(project)}
-        alt={`${project.titleEn} project screenshot`}
-        fill
-        priority={index < 2}
-        sizes="(max-width: 767px) 93vw, (max-width: 1199px) 58vw, 760px"
-        className="object-cover object-top"
-      />
+    <motion.div className={className} style={{ opacity, y, filter }}>
+      {children}
     </motion.div>
   );
 };
 
-const ScrollInfoItem = ({ progress, total, order, reduceMotion, className = "", children }) => {
-  const localProgress = useTransform(progress, (value) => getSegmentProgress(value, total));
-  const opacity = useTransform(localProgress, (value) => {
-    if (reduceMotion || total <= 1) return 1;
-    if (value <= 0.18) return 1;
-    if (value < 0.44) return 1 - (value - 0.18) / 0.26;
-    const start = 0.55 + order * 0.014;
-    if (value <= start) return 0;
-    return clamp01((value - start) / 0.16);
-  });
-  const y = useTransform(localProgress, (value) => {
-    if (reduceMotion || total <= 1) return 0;
-    if (value <= 0.18) return 0;
-    if (value < 0.44) return -26 * clamp01((value - 0.18) / 0.26);
-    const start = 0.55 + order * 0.014;
-    if (value <= start) return 18;
-    return 18 * (1 - clamp01((value - start) / 0.16));
-  });
-  const filter = useTransform(localProgress, (value) => {
-    if (reduceMotion || total <= 1) return "blur(0px)";
-    if (value <= 0.18) return "blur(0px)";
-    if (value < 0.44) return `blur(${4 * clamp01((value - 0.18) / 0.26)}px)`;
-    const start = 0.55 + order * 0.014;
-    if (value <= start) return "blur(4px)";
-    return `blur(${4 * (1 - clamp01((value - start) / 0.16))}px)`;
-  });
+/* ---------------------------------------------------------------- one project block */
 
-  return <motion.div className={className} style={{ opacity, y, filter }}>{children}</motion.div>;
-};
-
-const CinematicProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
-  const trackRef = useRef(null);
-  const scrollTimerRef = useRef(null);
-  const touchStartRef = useRef(null);
-  const activeIndexRef = useRef(activeIndex);
-  const scrollingRef = useRef(false);
-  const [loadedScreens, setLoadedScreens] = useState(() => new Set());
-  const [failedScreens, setFailedScreens] = useState(() => new Set());
-  const [viewport, setViewport] = useState("desktop");
-  const [isIdle, setIsIdle] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const total = projects.length;
-  const preloadKey = projects.map((project) => {
-    const source = getProjectSource(project);
-    return typeof source === "string" ? source : source?.src || project.id;
-  }).join("|");
-  const allScreensResolved = total > 0 && projects.every((project) => loadedScreens.has(project.id) || failedScreens.has(project.id));
-
-  const { scrollYProgress } = useScroll({ target: trackRef, offset: ["start start", "end end"] });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 105, damping: 28, mass: 0.34 });
-  const effectiveProgress = useMotionValue(0);
-  const segmentProgress = useTransform(effectiveProgress, (value) => getSegmentProgress(value, total));
-  const depth = useTransform(segmentProgress, (value) => Math.sin(Math.PI * value));
-
-  const movement = viewport === "mobile"
-    ? { y: 52, rotateY: 10, rotateX: 6.5, rotateZ: 0.8, scale: 0.07 }
-    : viewport === "tablet"
-      ? { y: 76, rotateY: 17, rotateX: 9, rotateZ: 1.1, scale: 0.075 }
-      : { y: 96, rotateY: 20, rotateX: 10.5, rotateZ: 1.5, scale: 0.08 };
-
-  const phaseAngle = (value, amount) => {
-    if (value <= 0.44) return amount * Math.sin((value / 0.44) * Math.PI / 2);
-    if (value < 0.56) return amount - ((value - 0.44) / 0.12) * amount * 2;
-    return -amount * (1 - (value - 0.56) / 0.44);
-  };
-  const deviceY = useTransform(segmentProgress, (value) => reduceMotion ? 0 : Math.sin(Math.PI * value) * movement.y);
-  const deviceScale = useTransform(depth, (value) => reduceMotion ? 1 : 1 - value * movement.scale);
-  const deviceRotateY = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateY));
-  const deviceRotateX = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateX));
-  const deviceRotateZ = useTransform(segmentProgress, (value) => reduceMotion ? 0 : phaseAngle(value, movement.rotateZ));
-  const shadowScale = useTransform(depth, [0, 1], [1, 1.16]);
-  const shadowOpacity = useTransform(depth, [0, 1], [0.56, 0.34]);
-  const reflectionX = useTransform(segmentProgress, [0.28, 0.7], ["-170%", "260%"]);
-  const reflectionOpacity = useTransform(segmentProgress, (value) => reduceMotion ? 0 : Math.max(0, 0.16 - Math.abs(value - 0.5) * 0.8));
-  const overallProgress = useTransform(effectiveProgress, (value) => total <= 1 ? 1 : (1 / total) + value * (1 - 1 / total));
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const pointerRotateX = useSpring(pointerY, { stiffness: 180, damping: 26 });
-  const pointerRotateY = useSpring(pointerX, { stiffness: 180, damping: 26 });
-
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
-
-  useEffect(() => {
-    setLoadedScreens(new Set());
-    setFailedScreens(new Set());
-    effectiveProgress.set(0);
-  }, [preloadKey, effectiveProgress]);
-
-  useEffect(() => {
-    const updateViewport = () => {
-      const width = window.innerWidth;
-      setViewport(width < 768 ? "mobile" : width < 1200 ? "tablet" : "desktop");
-    };
-    updateViewport();
-    window.addEventListener("resize", updateViewport, { passive: true });
-    return () => window.removeEventListener("resize", updateViewport);
-  }, []);
-
-  useEffect(() => () => {
-    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
-  }, []);
-
-  useEffect(() => {
-    if (!allScreensResolved || total === 0) return;
-    const currentProgress = smoothProgress.get();
-    effectiveProgress.set(currentProgress);
-    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(currentProgress * Math.max(1, total - 1) + 0.5)));
-    activeIndexRef.current = nextIndex;
-    setActiveIndex(nextIndex);
-  }, [allScreensResolved, effectiveProgress, setActiveIndex, smoothProgress, total]);
-
-  useMotionValueEvent(smoothProgress, "change", (value) => {
-    if (!allScreensResolved || total === 0) return;
-    effectiveProgress.set(value);
-    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(value * Math.max(1, total - 1) + 0.5)));
-    if (nextIndex !== activeIndexRef.current) {
-      activeIndexRef.current = nextIndex;
-      setActiveIndex(nextIndex);
-    }
-    if (!scrollingRef.current) {
-      scrollingRef.current = true;
-      setIsIdle(false);
-    }
-    if (scrollTimerRef.current) window.clearTimeout(scrollTimerRef.current);
-    scrollTimerRef.current = window.setTimeout(() => {
-      scrollingRef.current = false;
-      setIsIdle(depth.get() < 0.075);
-    }, 190);
-  });
-
-  const safeIndex = Math.min(Math.max(activeIndex, 0), Math.max(0, total - 1));
-  const project = projects[safeIndex];
-  if (!project) return null;
-
-  const resolvedProjectFor = (projectIndex) => {
-    const candidate = projects[projectIndex];
-    if (!failedScreens.has(candidate.id)) return candidate;
-    for (let index = projectIndex - 1; index >= 0; index -= 1) {
-      if (loadedScreens.has(projects[index].id)) return projects[index];
-    }
-    return { ...candidate, preview: null };
-  };
-
-  const goToProject = (requestedIndex) => {
-    if (!allScreensResolved || !trackRef.current || total <= 1) return;
-    const nextIndex = Math.min(total - 1, Math.max(0, requestedIndex));
-    const trackTop = window.scrollY + trackRef.current.getBoundingClientRect().top;
-    const scrollRange = Math.max(0, trackRef.current.offsetHeight - window.innerHeight);
-    window.scrollTo({
-      top: trackTop + scrollRange * (nextIndex / (total - 1)),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  };
-
-  const onPointerMove = (event) => {
-    if (event.pointerType === "touch" || reduceMotion || viewport !== "desktop" || scrollingRef.current || depth.get() > 0.075) return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    pointerX.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 4.5);
-    pointerY.set(-((event.clientY - bounds.top) / bounds.height - 0.5) * 3.2);
-  };
-  const resetPointerTilt = () => { pointerX.set(0); pointerY.set(0); };
-  const onPointerDown = (event) => {
-    if (event.pointerType !== "touch") return;
-    touchStartRef.current = { x: event.clientX, y: event.clientY };
-  };
-  const onPointerUp = (event) => {
-    if (event.pointerType !== "touch" || !touchStartRef.current) return;
-    const deltaX = event.clientX - touchStartRef.current.x;
-    const deltaY = event.clientY - touchStartRef.current.y;
-    touchStartRef.current = null;
-    if (Math.abs(deltaX) < 58 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
-    goToProject(safeIndex + (deltaX < 0 ? 1 : -1));
-  };
-
-  const category = project.category === "website"
-    ? (lang === "en" ? "Website" : "موقع إلكتروني")
-    : project.category === "pos"
-      ? (lang === "en" ? "POS System" : "نظام نقاط بيع")
-      : (lang === "en" ? "Custom Software" : "برنامج مخصص");
-  const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
-  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
-  const trackHeights = {
-    "--portfolio-track-mobile": `${Math.max(170, 120 + total * 54)}svh`,
-    "--portfolio-track-tablet": `${Math.max(160, 100 + total * 40)}vh`,
-    "--portfolio-track-desktop": `${Math.max(180, 100 + total * 50)}vh`,
-  };
-
-  return (
-    <div
-      ref={trackRef}
-      className="relative h-[var(--portfolio-track-mobile)] md:h-[var(--portfolio-track-tablet)] lg:h-[var(--portfolio-track-desktop)]"
-      style={trackHeights}
-    >
-      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
-        {projects.map((preloadProject) => (
-          <div key={`cinematic-preload-${preloadProject.id}`} className="relative h-[675px] w-[1200px]">
-            <Image
-              src={getProjectSource(preloadProject)}
-              alt=""
-              fill
-              priority
-              sizes="1200px"
-              className="object-cover object-top"
-              onLoad={async (event) => {
-                try { await event.currentTarget.decode(); } catch { /* The decoded browser cache is still usable. */ }
-                setLoadedScreens((current) => {
-                  if (current.has(preloadProject.id)) return current;
-                  const next = new Set(current);
-                  next.add(preloadProject.id);
-                  return next;
-                });
-              }}
-              onError={() => setFailedScreens((current) => new Set(current).add(preloadProject.id))}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="sticky top-16 flex min-h-[calc(100svh-4rem)] items-center overflow-hidden py-3 md:top-20 md:min-h-[calc(100vh-5rem)] md:py-6">
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-3 lg:grid-cols-[minmax(0,1.7fr)_minmax(330px,1fr)] lg:gap-12">
-          <div className="pointer-events-none absolute left-[8%] top-[10%] h-[64%] w-[58%] rounded-full bg-primary/10 blur-[90px] dark:bg-primary/9" />
-
-          <div className="relative z-10 mx-auto w-[min(93vw,850px)] [perspective:1400px] md:w-full">
-            <motion.div
-              animate={isIdle && !reduceMotion ? { y: [0, -3, 0] } : { y: 0 }}
-              transition={isIdle && !reduceMotion ? { duration: 5.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
-            >
-              <motion.div
-                style={{ y: deviceY, scale: deviceScale, rotateX: deviceRotateX, rotateY: deviceRotateY, rotateZ: deviceRotateZ, transformStyle: "preserve-3d", willChange: "transform" }}
-              >
-                <motion.div
-                  onPointerMove={onPointerMove}
-                  onPointerLeave={resetPointerTilt}
-                  onPointerDown={onPointerDown}
-                  onPointerUp={onPointerUp}
-                  onPointerCancel={() => { touchStartRef.current = null; }}
-                  style={{ rotateX: pointerRotateX, rotateY: pointerRotateY, transformStyle: "preserve-3d", touchAction: "pan-y" }}
-                  className="relative select-none"
-                >
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${visitLabel}: ${lang === "en" ? project.titleEn : project.titleAr}`}
-                    className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark"
-                  >
-                    <div className="relative mx-auto w-[91%] rounded-t-[1.25rem] border border-white/30 bg-[linear-gradient(135deg,#d7dce1_0%,#707982_9%,#20262d_46%,#929aa1_90%,#e4e8eb_100%)] p-[2px] shadow-[0_22px_58px_-22px_rgba(0,0,0,0.78),0_0_36px_rgba(20,184,166,0.06)] sm:rounded-t-[1.7rem] sm:p-[3px]">
-                      <div className="relative rounded-t-[1.12rem] bg-[#07090c] p-[5px] sm:rounded-t-[1.52rem] sm:p-[9px]">
-                        <div className="absolute left-1/2 top-[3px] z-30 flex h-[7px] w-[38px] -translate-x-1/2 items-center justify-center rounded-b-md bg-[#06080a] sm:h-[11px] sm:w-[58px]">
-                          <span className="h-1 w-1 rounded-full bg-slate-700 shadow-[0_0_3px_rgba(96,165,250,0.55)] sm:h-1.5 sm:w-1.5" />
-                        </div>
-                        <div className="relative aspect-[16/9] overflow-hidden rounded-[0.55rem] bg-[#0b1420] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:rounded-[0.85rem]">
-                          <div className={`absolute inset-0 bg-gradient-to-br ${projects[0]?.color || "from-slate-900 to-slate-800"}`}>
-                            <div className="absolute inset-0 flex items-center justify-center p-12 opacity-65">
-                              <Image src={projects[0]?.logo || logo} alt="" width={220} height={220} className="max-h-[58%] w-auto object-contain drop-shadow-2xl" />
-                            </div>
-                          </div>
-                          {projects.map((screenProject, index) => (
-                            <ProjectScreenLayer
-                              key={`screen-${screenProject.id}`}
-                              project={resolvedProjectFor(index)}
-                              progress={effectiveProgress}
-                              index={index}
-                              total={total}
-                              ready={loadedScreens.has(screenProject.id) || failedScreens.has(screenProject.id)}
-                              reduceMotion={reduceMotion}
-                            />
-                          ))}
-                          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.12)_0%,transparent_19%,transparent_72%,rgba(255,255,255,0.035)_100%)]" />
-                          <motion.div style={{ x: reflectionX, opacity: reflectionOpacity }} className="pointer-events-none absolute inset-y-[-20%] w-[16%] -skew-x-12 bg-gradient-to-r from-transparent via-white/65 to-transparent blur-xl" />
-                        </div>
-                      </div>
-                      <motion.div style={{ x: reflectionX, opacity: reflectionOpacity }} className="pointer-events-none absolute inset-y-0 w-[8%] bg-gradient-to-r from-transparent via-white/75 to-transparent blur-md" />
-                    </div>
-
-                    <div className="relative z-20 mx-auto -mt-px h-3 w-[76%] rounded-b-[50%] bg-[linear-gradient(180deg,#14181c_0%,#69717a_48%,#161a1f_100%)] shadow-[0_2px_5px_rgba(0,0,0,0.8)] sm:h-4">
-                      <div className="absolute inset-x-[4%] top-0 h-px bg-white/45" />
-                    </div>
-                    <div className="relative z-10 mx-auto -mt-2 h-[clamp(54px,7.2vw,94px)] w-full overflow-hidden bg-[linear-gradient(160deg,#e1e5e8_0%,#a2a9af_20%,#68717a_56%,#c7ccd0_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(15,23,42,0.42)] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)] dark:bg-[linear-gradient(160deg,#aeb5bb_0%,#68717a_18%,#343c44_58%,#808991_100%)]">
-                      <div className="absolute left-[15%] right-[15%] top-[12%] h-[42%] rounded-[0.28rem] border border-black/30 bg-[repeating-linear-gradient(90deg,rgba(6,9,12,0.92)_0,rgba(6,9,12,0.92)_5.2%,rgba(80,88,96,0.28)_5.3%,rgba(80,88,96,0.28)_6.2%),repeating-linear-gradient(0deg,rgba(0,0,0,0.5)_0,rgba(0,0,0,0.5)_25%,transparent_26%,transparent_33%)] opacity-85 shadow-[0_2px_5px_rgba(0,0,0,0.35)]" />
-                      <div className="absolute bottom-[8%] left-1/2 h-[31%] w-[31%] -translate-x-1/2 rounded-[0.35rem] border border-slate-500/45 bg-white/5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.26)]" />
-                      <div className="absolute inset-x-[4%] top-0 h-px bg-white/75" />
-                    </div>
-                    <div className="relative mx-auto h-[clamp(7px,1.2vw,15px)] w-full rounded-b-[45%] bg-[linear-gradient(180deg,#7c858e_0%,#d5d9dc_24%,#7a838c_62%,#30373e_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.88)]">
-                      <div className="absolute left-1/2 top-0 h-[42%] w-[13%] -translate-x-1/2 rounded-b-full border-x border-b border-slate-600/40 bg-slate-500/25" />
-                    </div>
-                  </a>
-                  <motion.div style={{ scaleX: shadowScale, opacity: shadowOpacity }} className="pointer-events-none mx-auto -mt-1 h-8 w-[82%] rounded-[50%] bg-black/80 blur-2xl sm:h-12" />
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          <div className="relative z-20 mx-auto w-full max-w-xl px-1 text-center md:px-0 lg:text-start" dir={lang === "ar" ? "rtl" : "ltr"}>
-            <div className="min-h-[240px] lg:min-h-[390px]">
-              <div className="mb-2 flex items-center justify-center gap-3 md:mb-4 lg:justify-start">
-                <ScrollInfoItem progress={effectiveProgress} total={total} order={0} reduceMotion={reduceMotion}>
-                  <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-dark dark:text-primary-light sm:text-xs">{category}</span>
-                </ScrollInfoItem>
-                <ScrollInfoItem progress={effectiveProgress} total={total} order={1} reduceMotion={reduceMotion}>
-                  <span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(safeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-                </ScrollInfoItem>
-              </div>
-              <ScrollInfoItem progress={effectiveProgress} total={total} order={2} reduceMotion={reduceMotion} className="mb-2 md:mb-4">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3>
-              </ScrollInfoItem>
-              <ScrollInfoItem progress={effectiveProgress} total={total} order={3} reduceMotion={reduceMotion} className="mb-2 md:mb-4">
-                <p className="line-clamp-2 text-xs leading-5 text-gray-600 dark:text-gray-300 sm:text-sm sm:leading-6 md:line-clamp-none lg:text-base lg:leading-7">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p>
-              </ScrollInfoItem>
-              {caseStudy && (
-                <ScrollInfoItem progress={effectiveProgress} total={total} order={4} reduceMotion={reduceMotion} className="mb-3 md:mb-5">
-                  <p className="line-clamp-2 border-s-2 border-primary/45 ps-3 text-[11px] leading-5 text-gray-500 dark:text-gray-400 sm:text-xs md:line-clamp-none lg:text-sm lg:leading-6">{caseStudy}</p>
-                </ScrollInfoItem>
-              )}
-              <ScrollInfoItem progress={effectiveProgress} total={total} order={5} reduceMotion={reduceMotion} className="mb-3 md:mb-6">
-                <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 lg:justify-start">
-                  {technologies.slice(0, 4).map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/70 px-2.5 py-1 text-[10px] font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300 sm:text-xs">{technology}</span>)}
-                </div>
-              </ScrollInfoItem>
-              <ScrollInfoItem progress={effectiveProgress} total={total} order={6} reduceMotion={reduceMotion}>
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark sm:text-sm">{visitLabel}<ExternalLink size={15} /></a>
-              </ScrollInfoItem>
-            </div>
-
-            <ScrollInfoItem progress={effectiveProgress} total={total} order={7} reduceMotion={reduceMotion} className="ml-20 mt-2 md:ml-0 md:mt-5">
-              <div className="h-1 overflow-hidden rounded-full bg-primary/15"><motion.div className="h-full origin-left rounded-full bg-gradient-to-r from-primary to-primary-light" style={{ scaleX: overallProgress }} /></div>
-            </ScrollInfoItem>
-            <div className="ml-20 mt-3 flex flex-wrap items-center justify-center gap-2 md:ml-0 md:mt-4 lg:justify-start">
-              <button type="button" disabled={!allScreensResolved || safeIndex === 0} onClick={() => goToProject(safeIndex - 1)} aria-label={lang === "en" ? "Previous project" : "المشروع السابق"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-35 dark:text-primary-light"><ChevronLeft size={19} /></button>
-              <button type="button" disabled={!allScreensResolved || safeIndex === total - 1} onClick={() => goToProject(safeIndex + 1)} aria-label={lang === "en" ? "Next project" : "المشروع التالي"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 text-primary-dark transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-35 dark:text-primary-light"><ChevronRight size={19} /></button>
-              <a href="/work" className="ms-1 inline-flex min-h-11 items-center rounded-full border border-primary/20 px-4 text-[11px] font-semibold text-primary-dark transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light sm:text-xs">{viewAllLabel}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SceneInfoItem = ({ progress, order, reduceMotion, className = "", children }) => {
-  const enterStart = 0.16 + order * 0.008;
-  const enterEnd = 0.31 + order * 0.01;
-  const exitStart = 0.59 + order * 0.005;
-  const exitEnd = 0.74 + order * 0.004;
-  const opacity = useTransform(progress, (value) => {
-    if (reduceMotion) return value < 0.1 || value > 0.96 ? 0 : 1;
-    if (value <= enterStart) return 0;
-    if (value < enterEnd) return clamp01((value - enterStart) / (enterEnd - enterStart));
-    if (value <= exitStart) return 1;
-    return 1 - clamp01((value - exitStart) / (exitEnd - exitStart));
-  });
-  const y = useTransform(progress, (value) => {
-    if (reduceMotion) return 0;
-    if (value <= enterStart) return 32;
-    if (value < enterEnd) return 32 * (1 - clamp01((value - enterStart) / (enterEnd - enterStart)));
-    if (value <= exitStart) return 0;
-    return 26 * clamp01((value - exitStart) / (exitEnd - exitStart));
-  });
-  const filter = useTransform(progress, (value) => {
-    if (reduceMotion) return "blur(0px)";
-    if (value <= enterStart) return "blur(2px)";
-    if (value < enterEnd) return `blur(${2 * (1 - clamp01((value - enterStart) / (enterEnd - enterStart)))}px)`;
-    if (value <= exitStart) return "blur(0px)";
-    return `blur(${2 * clamp01((value - exitStart) / (exitEnd - exitStart))}px)`;
-  });
-
-  return <motion.div className={className} style={{ opacity, y, filter }}>{children}</motion.div>;
-};
-
-const RealisticMacBook = ({ project, visitLabel, imagePosition = "center top", shadowScale, shadowOpacity }) => {
-  const [screenReady, setScreenReady] = useState(false);
-  const keyboardRows = [13, 13, 12, 11];
-
-  return (
-    <div className="relative mx-auto w-full select-none [transform-style:preserve-3d]">
-      <a
-        href={project.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${visitLabel}: ${project.titleEn}`}
-        className="group block rounded-[1.25rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark"
-      >
-        <div className="relative mx-auto w-[91.5%] rounded-t-[1.2rem] border border-white/20 bg-[linear-gradient(135deg,#d7dce1_0%,#7a838b_10%,#252b31_48%,#899198_90%,#dfe3e6_100%)] p-[2px] shadow-[0_22px_56px_-25px_rgba(0,0,0,0.82),0_0_28px_rgba(15,23,42,0.38)] sm:rounded-t-[1.65rem] sm:p-[3px]">
-          <div className="relative rounded-t-[1.08rem] bg-[#07090b] p-[5px] sm:rounded-t-[1.48rem] sm:p-[8px]">
-            <div className="absolute left-1/2 top-[3px] z-30 flex h-[7px] w-[38px] -translate-x-1/2 items-center justify-center rounded-b-md bg-[#050709] sm:h-[11px] sm:w-[58px]">
-              <span className="h-1 w-1 rounded-full bg-slate-700 shadow-[0_0_2px_rgba(148,163,184,0.55)] sm:h-1.5 sm:w-1.5" />
-            </div>
-            <div className="relative aspect-[16/9] overflow-hidden rounded-[0.52rem] border border-white/[0.07] bg-[#0b1118] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.025)] sm:rounded-[0.8rem]">
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`}>
-                <div className="absolute inset-0 flex items-center justify-center p-12 opacity-60">
-                  <Image src={project.logo} alt="" width={220} height={220} className="max-h-[56%] w-auto object-contain drop-shadow-2xl" />
-                </div>
-              </div>
-              <Image
-                src={getProjectSource(project)}
-                alt={`${project.titleEn} project screenshot`}
-                fill
-                sizes="(max-width: 767px) 94vw, (max-width: 1199px) 86vw, 760px"
-                className={`object-cover transition-opacity duration-500 ${screenReady ? "opacity-100" : "opacity-0"}`}
-                style={{ objectPosition: imagePosition }}
-                onLoad={async (event) => {
-                  try { await event.currentTarget.decode(); } catch { /* The cached frame can still be displayed safely. */ }
-                  setScreenReady(true);
-                }}
-              />
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.055)_0%,transparent_18%,transparent_78%,rgba(255,255,255,0.018)_100%)]" />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative z-20 mx-auto -mt-px h-2.5 w-[76%] rounded-b-[50%] bg-[linear-gradient(180deg,#15191d_0%,#727a82_46%,#171b20_100%)] shadow-[0_2px_4px_rgba(0,0,0,0.78)] sm:h-3.5">
-          <div className="absolute inset-x-[5%] top-0 h-px bg-white/32" />
-        </div>
-        <div className="relative z-10 mx-auto -mt-1.5 h-[clamp(47px,6vw,78px)] w-full overflow-hidden bg-[linear-gradient(160deg,#d9dde0_0%,#a1a8ae_22%,#6b747c_58%,#c3c8cc_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.82),inset_0_-2px_3px_rgba(15,23,42,0.38)] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)] dark:bg-[linear-gradient(160deg,#aab1b7_0%,#68717a_20%,#374049_60%,#7d858d_100%)]">
-          <div className="absolute left-[15%] right-[15%] top-[9%] flex h-[43%] flex-col justify-between rounded-[0.24rem] border border-black/20 bg-black/20 p-[2px] shadow-[0_2px_4px_rgba(0,0,0,0.28)] sm:p-[3px]">
-            {keyboardRows.map((keyCount, rowIndex) => (
-              <div key={`keyboard-row-${rowIndex}`} className="flex h-[21%] justify-center gap-[2px] sm:gap-[3px]">
-                {Array.from({ length: keyCount }).map((_, keyIndex) => (
-                  <span key={`key-${rowIndex}-${keyIndex}`} className="h-full flex-1 rounded-[1px] border border-white/[0.045] bg-[linear-gradient(180deg,#20262b_0%,#080b0e_100%)] shadow-[0_1px_1px_rgba(0,0,0,0.7)]" />
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="absolute bottom-[8%] left-1/2 h-[30%] w-[30%] -translate-x-1/2 rounded-[0.3rem] border border-slate-500/30 bg-white/[0.025] shadow-[inset_0_1px_1px_rgba(255,255,255,0.13)]" />
-          <div className="absolute inset-x-[4%] top-0 h-px bg-white/62" />
-        </div>
-        <div className="relative mx-auto h-[clamp(6px,1vw,12px)] w-full rounded-b-[45%] border-t border-white/40 bg-[linear-gradient(180deg,#929aa1_0%,#d2d6d9_22%,#737c84_65%,#31383e_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)]">
-          <div className="absolute left-1/2 top-0 h-[42%] w-[12%] -translate-x-1/2 rounded-b-full border-x border-b border-slate-600/30 bg-slate-500/16" />
-          <div className="absolute inset-x-[7%] top-0 h-px bg-white/65" />
-        </div>
-      </a>
-      <motion.div style={{ scaleX: shadowScale, opacity: shadowOpacity }} className="pointer-events-none mx-auto -mt-0.5 h-8 w-[80%] rounded-[50%] bg-black/75 blur-2xl sm:h-11" />
-    </div>
-  );
-};
-
-const ProjectScene = ({ project, index, total, lang, visitLabel, viewport, reduceMotion, registerScene, isActive }) => {
+const ProjectScene = ({ project, index, total, lang, visitLabel, registerScene, reduceMotion, travel }) => {
   const sceneRef = useRef(null);
-  const direction = index % 2 === 0 ? -1 : 1;
-  const isMobile = viewport === "mobile";
-  const { scrollYProgress } = useScroll({ target: sceneRef, offset: ["start 92%", "end 8%"] });
-  const progress = useSpring(scrollYProgress, { stiffness: 115, damping: 28, mass: 0.3 });
-  const entryX = isMobile ? direction * 12 : direction * 40;
-  const entryY = isMobile ? -35 : -70;
-  const exitY = isMobile ? 76 : 138;
-  const entryRotateX = isMobile ? 5 : 8;
-  const exitRotateX = isMobile ? -5 : 8;
-  const entryRotateY = isMobile ? direction * 8 : direction * 16;
-  const exitRotateY = isMobile ? direction * -8 : direction * -16;
-  const entryScale = isMobile ? 0.94 : 0.9;
-  const exitScale = isMobile ? 0.95 : 0.93;
-  const laptopOpacity = useTransform(progress, reduceMotion ? [0, 0.08, 0.92, 1] : [0, 0.1, 0.86, 1], [0, 1, 1, 0]);
-  const laptopY = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [0, 0, 0, 0] : [entryY, 0, 0, exitY]);
-  const laptopX = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [0, 0, 0, 0] : [entryX, 0, 0, -entryX * 0.7]);
-  const laptopRotateX = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [0, 0, 0, 0] : [entryRotateX, 0, 0, exitRotateX]);
-  const laptopRotateY = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [0, 0, 0, 0] : [entryRotateY, 0, 0, exitRotateY]);
-  const laptopRotateZ = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [0, 0, 0, 0] : [direction * 1.4, 0, 0, direction * -1]);
-  const laptopScale = useTransform(progress, [0, 0.24, 0.68, 1], reduceMotion ? [1, 1, 1, 1] : [entryScale, 1, 1, exitScale]);
-  const shadowScale = useTransform(progress, [0, 0.5, 1], [0.88, 1, 1.16]);
-  const shadowOpacity = useTransform(progress, [0, 0.5, 1], [0.18, 0.58, 0.26]);
+  const distance = useTransform(travel, (value) => value - index);
+  const laptopOnRight = index % 2 === 0;
   const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
   const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
-  const category = project.category === "website"
-    ? (lang === "en" ? "Website" : "موقع إلكتروني")
-    : project.category === "pos"
-      ? (lang === "en" ? "POS System" : "نظام نقاط بيع")
-      : (lang === "en" ? "Custom Software" : "برنامج مخصص");
-  const imagePositions = { 7: "center top", 8: "center center", 9: "center center", 2: "center top", 4: "center top" };
-  const sceneLights = [
-    "rgba(20,184,166,0.11)",
-    "rgba(59,130,246,0.085)",
-    "rgba(249,115,22,0.07)",
-    "rgba(34,197,94,0.07)",
-    "rgba(148,163,184,0.065)",
-  ];
-  const setSceneNode = (node) => {
-    sceneRef.current = node;
-    registerScene(index, node);
-  };
+  const category =
+    project.category === "website"
+      ? lang === "en"
+        ? "Website"
+        : "موقع إلكتروني"
+      : project.category === "pos"
+        ? lang === "en"
+          ? "POS System"
+          : "نظام نقاط بيع"
+        : lang === "en"
+          ? "Custom Software"
+          : "برنامج مخصص";
+
+  const attachScene = useCallback(
+    (node) => {
+      sceneRef.current = node;
+      registerScene(index, node);
+    },
+    [index, registerScene],
+  );
 
   return (
     <article
-      ref={setSceneNode}
+      ref={attachScene}
       data-portfolio-scene={index + 1}
-      className={`relative flex w-full items-center overflow-hidden py-14 sm:py-20 md:min-h-[78vh] md:py-16 lg:min-h-[88vh] lg:py-20 ${index > 0 ? "-mt-10 sm:-mt-14 md:-mt-16 lg:-mt-20" : ""}`}
-      aria-labelledby={`project-scene-title-${project.id}`}
+      className="relative flex w-full items-center py-6 md:py-8"
+      style={{ minHeight: "var(--scene-height)" }}
+      aria-labelledby={`portfolio-scene-${project.id}`}
     >
-      <div className="pointer-events-none absolute inset-0" style={{ background: `radial-gradient(circle at ${direction < 0 ? "70%" : "30%"} 48%, ${sceneLights[index % sceneLights.length]} 0%, transparent 50%)` }} />
-      <div dir="ltr" className={`relative mx-auto grid w-full max-w-7xl items-center gap-8 px-4 sm:px-6 md:gap-10 lg:gap-14 lg:px-8 ${index % 2 === 0 ? "lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]" : "lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]"}`}>
-        <motion.div
-          style={{ opacity: laptopOpacity, x: laptopX, y: laptopY, rotateX: laptopRotateX, rotateY: laptopRotateY, rotateZ: laptopRotateZ, scale: laptopScale, transformStyle: "preserve-3d" }}
-          className={`relative order-1 mx-auto w-[min(94vw,850px)] [perspective:1400px] md:w-[min(88vw,850px)] lg:row-start-1 lg:w-full ${index % 2 === 0 ? "lg:col-start-2" : "lg:col-start-1"} ${isActive ? "will-change-transform" : ""}`}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ background: `radial-gradient(60% 55% at ${laptopOnRight ? "72%" : "28%"} 50%, ${SCENE_LIGHT[project.id] || "rgba(148,163,184,0.07)"} 0%, transparent 100%)` }}
+      />
+      <div dir="ltr" className="relative mx-auto grid w-full max-w-7xl items-center px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
+        <div
+          className={`mx-auto w-full max-w-lg pt-[var(--copy-offset)] text-center lg:row-start-1 lg:max-w-none lg:pt-0 lg:text-start ${laptopOnRight ? "lg:col-start-1 lg:pe-4" : "lg:col-start-2 lg:ps-4"}`}
+          dir={lang === "ar" ? "rtl" : "ltr"}
         >
-          <RealisticMacBook project={project} visitLabel={visitLabel} imagePosition={imagePositions[project.id] || "center top"} shadowScale={shadowScale} shadowOpacity={shadowOpacity} />
-        </motion.div>
-
-        <div className={`relative order-2 mx-auto w-full max-w-lg px-2 text-center lg:row-start-1 lg:px-0 lg:text-start ${index % 2 === 0 ? "lg:col-start-1" : "lg:col-start-2"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
           <div className="mb-3 flex items-center justify-center gap-3 lg:justify-start">
-            <SceneInfoItem progress={progress} order={0} reduceMotion={reduceMotion}>
-              <span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-            </SceneInfoItem>
-            <SceneInfoItem progress={progress} order={1} reduceMotion={reduceMotion}>
+            <SceneCopy distance={distance} order={0} reduceMotion={reduceMotion}>
+              <span dir="ltr" className="font-mono text-xs tracking-widest text-gray-500 sm:text-sm">
+                {String(index + 1).padStart(2, "0")} <span className="opacity-40">/</span> {String(total).padStart(2, "0")}
+              </span>
+            </SceneCopy>
+            <SceneCopy distance={distance} order={1} reduceMotion={reduceMotion}>
               <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-dark dark:text-primary-light sm:text-xs">{category}</span>
-            </SceneInfoItem>
+            </SceneCopy>
           </div>
-          <SceneInfoItem progress={progress} order={2} reduceMotion={reduceMotion} className="mb-3 md:mb-4">
-            <h3 id={`project-scene-title-${project.id}`} className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3>
-          </SceneInfoItem>
-          <SceneInfoItem progress={progress} order={3} reduceMotion={reduceMotion} className="mb-3 md:mb-4">
+          <SceneCopy distance={distance} order={2} reduceMotion={reduceMotion} className="mb-3 md:mb-4">
+            <h3 id={`portfolio-scene-${project.id}`} className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl lg:text-[2.6rem] lg:leading-tight">
+              {lang === "en" ? project.titleEn : project.titleAr}
+            </h3>
+          </SceneCopy>
+          <SceneCopy distance={distance} order={3} reduceMotion={reduceMotion} className="mb-3 md:mb-4">
             <p className="text-sm leading-6 text-gray-600 dark:text-gray-300 sm:text-base sm:leading-7">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p>
-          </SceneInfoItem>
+          </SceneCopy>
           {caseStudy && (
-            <SceneInfoItem progress={progress} order={4} reduceMotion={reduceMotion} className="mb-4 md:mb-5">
+            <SceneCopy distance={distance} order={4} reduceMotion={reduceMotion} className="mb-4 md:mb-5">
               <p className="border-s-2 border-primary/40 ps-3 text-xs leading-6 text-gray-500 dark:text-gray-400 sm:text-sm">{caseStudy}</p>
-            </SceneInfoItem>
+            </SceneCopy>
           )}
-          <SceneInfoItem progress={progress} order={5} reduceMotion={reduceMotion} className="mb-5 md:mb-6">
+          <SceneCopy distance={distance} order={5} reduceMotion={reduceMotion} className="mb-5 md:mb-6">
             <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
-              {technologies.slice(0, 4).map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/65 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">{technology}</span>)}
-            </div>
-          </SceneInfoItem>
-          <SceneInfoItem progress={progress} order={6} reduceMotion={reduceMotion}>
-            <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/18 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></a>
-          </SceneInfoItem>
-        </div>
-      </div>
-    </article>
-  );
-};
-
-const NormalFlowProjectShowcase = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
-  const sectionRef = useRef(null);
-  const sceneRefs = useRef([]);
-  const [sectionVisible, setSectionVisible] = useState(false);
-  const [viewport, setViewport] = useState("desktop");
-  const reduceMotion = useReducedMotion();
-  const total = projects.length;
-  const projectsKey = projects.map((project) => project.id).join("|");
-
-  useEffect(() => {
-    const updateViewport = () => setViewport(window.innerWidth < 768 ? "mobile" : window.innerWidth < 1024 ? "tablet" : "desktop");
-    updateViewport();
-    window.addEventListener("resize", updateViewport, { passive: true });
-    return () => window.removeEventListener("resize", updateViewport);
-  }, []);
-
-  useEffect(() => {
-    const sectionNode = sectionRef.current;
-    if (!sectionNode) return undefined;
-    const sectionObserver = new IntersectionObserver(([entry]) => setSectionVisible(entry.isIntersecting), { threshold: 0.02 });
-    sectionObserver.observe(sectionNode);
-    return () => sectionObserver.disconnect();
-  }, [projectsKey]);
-
-  useEffect(() => {
-    const nodes = sceneRefs.current.filter(Boolean);
-    if (!nodes.length) return undefined;
-    const sceneObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const index = Number(entry.target.getAttribute("data-portfolio-scene")) - 1;
-        if (Number.isFinite(index)) setActiveIndex(index);
-      });
-    }, { rootMargin: "-38% 0px -38% 0px", threshold: 0 });
-    nodes.forEach((node) => sceneObserver.observe(node));
-    return () => sceneObserver.disconnect();
-  }, [projectsKey, setActiveIndex]);
-
-  useEffect(() => {
-    sceneRefs.current = sceneRefs.current.slice(0, total);
-  }, [total]);
-
-  const registerScene = (index, node) => { sceneRefs.current[index] = node; };
-  const scrollToProject = (requestedIndex) => {
-    const nextIndex = Math.min(total - 1, Math.max(0, requestedIndex));
-    sceneRefs.current[nextIndex]?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
-  };
-
-  if (!total) return null;
-
-  const navigation = (compact = false) => (
-    <div className={`flex items-center ${compact ? "gap-2" : "flex-col gap-3"}`}>
-      <button type="button" disabled={activeIndex === 0} onClick={() => scrollToProject(activeIndex - 1)} aria-label={lang === "en" ? "Previous project" : "المشروع السابق"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronLeft size={18} /></button>
-      <div className={`${compact ? "flex gap-2" : "relative flex flex-col gap-2"}`} aria-label={lang === "en" ? "Projects progress" : "تقدم المشاريع"}>
-        {!compact && <div className="absolute bottom-1 left-1/2 top-1 w-px -translate-x-1/2 bg-primary/15" />}
-        {projects.map((project, index) => (
-          <button key={`progress-${project.id}`} type="button" onClick={() => scrollToProject(index)} aria-label={`${lang === "en" ? "Go to project" : "انتقل إلى المشروع"} ${index + 1}`} aria-current={index === activeIndex ? "step" : undefined} className={`relative z-10 h-3 w-3 rounded-full border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${index === activeIndex ? "scale-125 border-primary-light bg-primary shadow-[0_0_0_4px_rgba(20,184,166,0.12)]" : "border-primary/35 bg-dark-light hover:border-primary"}`} />
-        ))}
-      </div>
-      <button type="button" disabled={activeIndex === total - 1} onClick={() => scrollToProject(activeIndex + 1)} aria-label={lang === "en" ? "Next project" : "المشروع التالي"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronRight size={18} /></button>
-    </div>
-  );
-
-  return (
-    <div ref={sectionRef} className="relative">
-      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
-        {projects.map((project, index) => (
-          <div key={`flow-preload-${project.id}`} className="relative h-[675px] w-[1200px]">
-            <Image src={getProjectSource(project)} alt="" fill priority={index < 5} sizes="1200px" className="object-cover object-top" />
-          </div>
-        ))}
-      </div>
-
-      <div className="mb-2 flex items-center justify-center gap-4 lg:hidden">
-        <span dir="ltr" className="min-w-14 font-mono text-xs text-gray-500">{String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-        {navigation(true)}
-      </div>
-
-      <AnimatePresence>
-        {sectionVisible && (
-          <motion.aside initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 12 }} className="fixed end-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block" aria-label={lang === "en" ? "Portfolio navigation" : "التنقل بين المشاريع"}>
-            {navigation(false)}
-          </motion.aside>
-        )}
-      </AnimatePresence>
-
-      <div>
-        {projects.map((project, index) => (
-          <ProjectScene
-            key={`flow-scene-${project.id}`}
-            project={project}
-            index={index}
-            total={total}
-            lang={lang}
-            visitLabel={visitLabel}
-            viewport={viewport}
-            reduceMotion={reduceMotion}
-            registerScene={registerScene}
-            isActive={index === activeIndex}
-          />
-        ))}
-      </div>
-
-      <div className="flex justify-center pb-8 pt-4 md:pb-12 md:pt-8">
-        <a href="/work" className="inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-primary/10 px-7 py-3 text-sm font-bold text-primary-dark transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light">
-          {viewAllLabel}
-        </a>
-      </div>
-    </div>
-  );
-};
-
-const getFeaturedBrandLogo = (project) => project.logo || null;
-
-const getScreenTheme = (projectId) => {
-  const themes = {
-    7: "radial-gradient(circle at 50% 42%, rgba(13,148,136,0.24), transparent 42%), linear-gradient(145deg, #031b2b 0%, #062f40 52%, #04141f 100%)",
-    8: "radial-gradient(circle at 50% 42%, rgba(202,154,62,0.19), transparent 38%), linear-gradient(145deg, #091426 0%, #172239 56%, #080f1c 100%)",
-    9: "radial-gradient(circle at 50% 42%, rgba(197,160,91,0.15), transparent 38%), linear-gradient(145deg, #0c111b 0%, #1b2432 58%, #080d15 100%)",
-    2: "radial-gradient(circle at 50% 42%, rgba(220,38,38,0.18), transparent 40%), linear-gradient(145deg, #21080d 0%, #4a1019 54%, #18060a 100%)",
-    4: "radial-gradient(circle at 50% 42%, rgba(20,184,166,0.2), transparent 40%), linear-gradient(145deg, #071827 0%, #0b3340 56%, #06111c 100%)",
-  };
-  return themes[projectId] || themes[4];
-};
-
-const getSceneLight = (projectId) => {
-  const lights = {
-    7: "rgba(20,184,166,0.1)",
-    8: "rgba(202,154,62,0.075)",
-    9: "rgba(148,163,184,0.07)",
-    2: "rgba(185,28,28,0.065)",
-    4: "rgba(13,148,136,0.08)",
-  };
-  return lights[projectId] || lights[4];
-};
-
-const mapScrollToTravel = (scrollPosition, anchors, exitAnchor) => {
-  if (!anchors.length) return 0;
-  if (anchors.length === 1 || scrollPosition <= anchors[0]) return 0;
-  for (let index = 0; index < anchors.length - 1; index += 1) {
-    if (scrollPosition <= anchors[index + 1]) {
-      const range = Math.max(1, anchors[index + 1] - anchors[index]);
-      const rawLocal = clamp01((scrollPosition - anchors[index]) / range);
-      const travelLocal = clamp01((rawLocal - 0.2) / 0.6);
-      const eased = travelLocal * travelLocal * (3 - 2 * travelLocal);
-      return index + eased;
-    }
-  }
-  const lastIndex = anchors.length - 1;
-  const tailRange = Math.max(1, exitAnchor - anchors[lastIndex]);
-  return lastIndex + clamp01((scrollPosition - anchors[lastIndex]) / tailRange) * 0.35;
-};
-
-const TravelingScreenLayer = ({ project, index, travelProgress, reduceMotion, logo }) => {
-  const distance = useTransform(travelProgress, (value) => value - index);
-  const themeOpacity = useTransform(distance, (value) => clamp01(1 - Math.abs(value)));
-  const contentOpacity = useTransform(distance, (value) => {
-    if (reduceMotion) return clamp01(1 - Math.abs(value));
-    if (value < -0.42 || value > 0.42) return 0;
-    if (value < -0.25) return clamp01((value + 0.42) / 0.17);
-    if (value <= 0) return 1;
-    if (value < 0.25) return 1 - value / 0.25;
-    return 0;
-  });
-  const contentScale = useTransform(distance, (value) => {
-    if (reduceMotion) return 1;
-    if (value < 0) return 0.82 + 0.18 * clamp01((value + 0.42) / 0.42);
-    return 1 - 0.18 * clamp01(value / 0.25);
-  });
-  const contentY = useTransform(distance, (value) => {
-    if (reduceMotion) return 0;
-    if (value < 0) return 12 * (1 - clamp01((value + 0.42) / 0.42));
-    return 12 * clamp01(value / 0.25);
-  });
-  const contentFilter = useTransform(distance, (value) => {
-    if (reduceMotion) return "blur(0px)";
-    return `blur(${2 * clamp01(Math.abs(value) / 0.42)}px)`;
-  });
-
-  return (
-    <motion.div className="absolute inset-0" style={{ opacity: themeOpacity, background: getScreenTheme(project.id) }}>
-      <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-[12%] text-center sm:gap-5" style={{ opacity: contentOpacity, scale: contentScale, y: contentY, filter: contentFilter }}>
-        {logo ? (
-          <div className="relative h-[42%] w-[62%] sm:h-[46%] sm:w-[58%]">
-            <Image src={logo} alt={`${project.titleEn} logo`} fill sizes="(max-width: 767px) 54vw, 420px" className="object-contain" />
-          </div>
-        ) : (
-          <div className="flex h-[42%] w-[76%] items-center justify-center">
-            <span className="text-balance text-2xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl lg:text-5xl">{project.titleEn}</span>
-          </div>
-        )}
-        <span className="text-xs font-semibold tracking-[0.16em] text-white/75 sm:text-sm">{project.titleEn}</span>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-const LegacyTravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, loadedLogos, failedLogos }) => {
-  const total = projects.length;
-  const lastIndex = Math.max(0, total - 1);
-  const isMobile = viewport === "mobile";
-  const isTablet = viewport === "tablet";
-  const xTravel = isMobile ? 8 : isTablet ? 34 : 205;
-  const yTravel = isMobile ? 94 : isTablet ? 125 : 178;
-  const exitTravel = isMobile ? 105 : 150;
-  const getLocal = (value) => {
-    if (value >= lastIndex) return 0;
-    return clamp01(value - Math.floor(value));
-  };
-  const getDepth = (value) => Math.sin(Math.PI * getLocal(value));
-  const getTail = (value) => lastIndex === 0 ? clamp01(value / 0.35) : clamp01((value - lastIndex) / 0.35);
-  const getHorizontalPosition = (value) => {
-    if (total <= 1) return xTravel;
-    if (value >= lastIndex) return (lastIndex % 2 === 0 ? xTravel : -xTravel) + getTail(value) * (isMobile ? 4 : 18);
-    const segment = Math.min(lastIndex - 1, Math.floor(value));
-    const local = clamp01(value - segment);
-    const eased = local * local * (3 - 2 * local);
-    const start = segment % 2 === 0 ? xTravel : -xTravel;
-    const end = -start;
-    const curve = Math.sin(Math.PI * local) * (segment % 2 === 0 ? -1 : 1) * (isMobile ? 6 : isTablet ? 18 : 32);
-    return start + (end - start) * eased + curve;
-  };
-  const rotateY = useTransform(travelProgress, (value) => {
-    if (reduceMotion) return 0;
-    if (value <= lastIndex) return value * 360;
-    return lastIndex * 360 + getTail(value) * 18;
-  });
-  const x = useTransform(travelProgress, getHorizontalPosition);
-  const y = useTransform(travelProgress, (value) => {
-    if (value >= lastIndex) return getTail(value) * exitTravel;
-    return getDepth(value) * yTravel;
-  });
-  const rotateX = useTransform(travelProgress, (value) => reduceMotion ? 0 : value >= lastIndex ? getTail(value) * 3 : getDepth(value) * (isMobile ? 3.5 : 7));
-  const rotateZ = useTransform(travelProgress, (value) => {
-    if (reduceMotion) return 0;
-    if (value >= lastIndex) return getTail(value) * 0.8;
-    const segment = Math.floor(value);
-    return getDepth(value) * (segment % 2 === 0 ? 1 : -1) * (isMobile ? 0.45 : 1);
-  });
-  const scale = useTransform(travelProgress, (value) => {
-    if (reduceMotion) return 1;
-    if (value >= lastIndex) return 1 - getTail(value) * 0.06;
-    return 1 - getDepth(value) * (isMobile ? 0.08 : 0.1);
-  });
-  const opacity = useTransform(travelProgress, (value) => value <= lastIndex ? 1 : 1 - getTail(value));
-  const shadowScale = useTransform(travelProgress, (value) => 1 + getDepth(value) * 0.2 + getTail(value) * 0.08);
-  const shadowOpacity = useTransform(travelProgress, (value) => 0.52 - getDepth(value) * 0.18 - getTail(value) * 0.32);
-  const reflectionOpacity = useTransform(travelProgress, (value) => reduceMotion ? 0 : 0.025 + Math.abs(Math.cos(value * Math.PI * 2)) * 0.035);
-  const frontFaceOpacity = useTransform(travelProgress, (value) => {
-    if (reduceMotion || value >= lastIndex) return 1;
-    const local = getLocal(value);
-    if (local <= 0.22 || local >= 0.78) return 1;
-    if (local < 0.28) return 1 - (local - 0.22) / 0.06;
-    if (local <= 0.72) return 0;
-    return (local - 0.72) / 0.06;
-  });
-  const backFaceOpacity = useTransform(travelProgress, (value) => {
-    if (reduceMotion || value >= lastIndex) return 0;
-    const local = getLocal(value);
-    if (local <= 0.22 || local >= 0.78) return 0;
-    if (local < 0.28) return (local - 0.22) / 0.06;
-    if (local <= 0.72) return 1;
-    return 1 - (local - 0.72) / 0.06;
-  });
-  const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
-  const keyboardRows = [13, 13, 12, 11];
-
-  return (
-    <div className="relative mx-auto w-[min(92vw,780px)] [perspective:1400px] md:w-[min(86vw,780px)] lg:w-[min(61vw,780px)]" data-traveling-laptop>
-      <motion.div
-        className="relative [transform-style:preserve-3d]"
-        style={{ x, y, rotateX, rotateY, rotateZ, scale, opacity, transformStyle: "preserve-3d", transformOrigin: "50% 48%", willChange: "transform, opacity" }}
-      >
-        <div className="relative mx-auto w-[91.5%] [transform-style:preserve-3d]">
-          <motion.a
-            href={activeProject.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${visitLabel}: ${activeProject.titleEn}`}
-            className="pointer-events-auto relative z-10 block rounded-t-[1.2rem] border border-white/20 bg-[linear-gradient(135deg,#d7dce1_0%,#7a838b_10%,#252b31_48%,#899198_90%,#dfe3e6_100%)] p-[2px] shadow-[0_22px_56px_-25px_rgba(0,0,0,0.82)] [backface-visibility:hidden] sm:rounded-t-[1.65rem] sm:p-[3px]"
-            style={{ transform: "translateZ(7px)", backfaceVisibility: "visible", opacity: frontFaceOpacity }}
-          >
-            <div className="relative rounded-t-[1.08rem] bg-[#07090b] p-[5px] sm:rounded-t-[1.48rem] sm:p-[8px]">
-              <div className="absolute left-1/2 top-[3px] z-30 flex h-[7px] w-[38px] -translate-x-1/2 items-center justify-center rounded-b-md bg-[#050709] sm:h-[11px] sm:w-[58px]">
-                <span className="h-1 w-1 rounded-full bg-slate-700 shadow-[0_0_2px_rgba(148,163,184,0.55)] sm:h-1.5 sm:w-1.5" />
-              </div>
-              <div className="relative aspect-[16/9] overflow-hidden rounded-[0.52rem] border border-white/[0.065] bg-[#08121d] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] sm:rounded-[0.8rem]">
-                {projects.map((project, index) => {
-                  const brandLogo = getFeaturedBrandLogo(project);
-                  const logo = brandLogo && loadedLogos.has(project.id) && !failedLogos.has(project.id) ? brandLogo : null;
-                  return <TravelingScreenLayer key={`travel-screen-${project.id}`} project={project} index={index} travelProgress={travelProgress} reduceMotion={reduceMotion} logo={logo} />;
-                })}
-                <motion.div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,rgba(255,255,255,0.055)_0%,transparent_18%,transparent_80%,rgba(255,255,255,0.018)_100%)]" style={{ opacity: reflectionOpacity }} />
-              </div>
-            </div>
-          </motion.a>
-
-          <motion.div
-            aria-hidden="true"
-            className="absolute inset-0 overflow-hidden rounded-[1.2rem] border border-black/15 bg-[linear-gradient(145deg,#b4bbc1_0%,#737c84_28%,#4a535b_62%,#8d969e_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.58),inset_0_-2px_4px_rgba(15,23,42,0.32)] [backface-visibility:hidden] sm:rounded-[1.65rem]"
-            style={{ transform: "rotateY(180deg) translateZ(7px)", backfaceVisibility: "visible", opacity: backFaceOpacity }}
-          >
-            <div className="absolute inset-[2px] rounded-[1.05rem] border border-white/14 bg-[radial-gradient(circle_at_42%_24%,rgba(255,255,255,0.18),transparent_28%),linear-gradient(145deg,#929aa2_0%,#5e6871_52%,#858e96_100%)] sm:rounded-[1.5rem]" />
-            <div className="absolute inset-x-[8%] top-[4%] h-px bg-white/22" />
-          </motion.div>
-          <div aria-hidden="true" className="absolute bottom-2 left-[-6px] top-2 w-3 rounded-l-md bg-gradient-to-r from-slate-900 via-slate-500 to-slate-300" style={{ transform: "rotateY(-90deg)", transformOrigin: "right center" }} />
-          <div aria-hidden="true" className="absolute bottom-2 right-[-6px] top-2 w-3 rounded-r-md bg-gradient-to-l from-slate-900 via-slate-500 to-slate-300" style={{ transform: "rotateY(90deg)", transformOrigin: "left center" }} />
-        </div>
-
-        <div className="relative z-20 mx-auto -mt-px h-2.5 w-[72%] rounded-b-[50%] bg-[linear-gradient(180deg,#14181c_0%,#717981_48%,#15191e_100%)] shadow-[0_2px_4px_rgba(0,0,0,0.78)] sm:h-3.5">
-          <div className="absolute inset-x-[5%] top-0 h-px bg-white/34" />
-        </div>
-
-        <div className="relative mx-auto -mt-1.5 h-[clamp(47px,6vw,78px)] w-full [transform-style:preserve-3d]">
-          <div className="absolute inset-0 overflow-hidden bg-[linear-gradient(160deg,#d9dde0_0%,#a1a8ae_22%,#68717a_58%,#c3c8cc_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.82),inset_0_-2px_3px_rgba(15,23,42,0.38)] [backface-visibility:hidden] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)]" style={{ transform: "translateZ(5px)", backfaceVisibility: "hidden" }}>
-            <div className="absolute left-[15%] right-[15%] top-[9%] flex h-[43%] flex-col justify-between rounded-[0.24rem] border border-black/20 bg-black/20 p-[2px] shadow-[0_2px_4px_rgba(0,0,0,0.28)] sm:p-[3px]">
-              {keyboardRows.map((keyCount, rowIndex) => (
-                <div key={`travel-key-row-${rowIndex}`} className="flex h-[21%] justify-center gap-[2px] sm:gap-[3px]">
-                  {Array.from({ length: keyCount }).map((_, keyIndex) => <span key={`travel-key-${rowIndex}-${keyIndex}`} className="h-full flex-1 rounded-[1px] border border-white/[0.045] bg-[linear-gradient(180deg,#20262b_0%,#080b0e_100%)] shadow-[0_1px_1px_rgba(0,0,0,0.7)]" />)}
-                </div>
+              {technologies.slice(0, 4).map((technology) => (
+                <span key={technology} className="rounded-full border border-gray-200 bg-white/65 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">
+                  {technology}
+                </span>
               ))}
             </div>
-            <div className="absolute bottom-[8%] left-1/2 h-[30%] w-[30%] -translate-x-1/2 rounded-[0.3rem] border border-slate-500/26 bg-white/[0.02] shadow-[inset_0_1px_1px_rgba(255,255,255,0.11)]" />
-            <div className="absolute inset-x-[4%] top-0 h-px bg-white/58" />
-          </div>
-          <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(145deg,#7f8890_0%,#4f5962_55%,#737c84_100%)] [backface-visibility:hidden] [clip-path:polygon(4.5%_0,95.5%_0,100%_100%,0_100%)]" style={{ transform: "rotateY(180deg) translateZ(5px)", backfaceVisibility: "hidden" }}>
-            <div className="absolute inset-[8%] rounded-[45%] border border-white/10 bg-black/5" />
-          </div>
-          <div aria-hidden="true" className="absolute bottom-1 left-0 top-1 w-2 bg-gradient-to-r from-slate-700 to-slate-300" style={{ transform: "rotateY(-90deg)", transformOrigin: "left center" }} />
-          <div aria-hidden="true" className="absolute bottom-1 right-0 top-1 w-2 bg-gradient-to-l from-slate-700 to-slate-300" style={{ transform: "rotateY(90deg)", transformOrigin: "right center" }} />
-        </div>
-
-        <div className="relative mx-auto h-[clamp(6px,1vw,12px)] w-full rounded-b-[45%] border-t border-white/38 bg-[linear-gradient(180deg,#9199a0_0%,#cfd3d6_22%,#737c84_65%,#30373d_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] [backface-visibility:hidden]">
-          <div className="absolute left-1/2 top-0 h-[42%] w-[12%] -translate-x-1/2 rounded-b-full border-x border-b border-slate-600/28 bg-slate-500/14" />
-          <div className="absolute inset-x-[7%] top-0 h-px bg-white/62" />
-        </div>
-      </motion.div>
-
-      <motion.div className="pointer-events-none mx-auto -mt-0.5 h-8 w-[80%] rounded-[50%] bg-black/75 blur-2xl sm:h-11" style={{ scaleX: shadowScale, opacity: shadowOpacity }} />
-    </div>
-  );
-};
-
-const TravelingLaptop = ({ projects, activeIndex, travelProgress, viewport, reduceMotion, visitLabel, isVisible }) => {
-  const total = projects.length;
-  const lastIndex = Math.max(0, total - 1);
-  const isMobile = viewport === "mobile";
-  const isTablet = viewport === "tablet";
-  const xTravel = isMobile ? 6 : isTablet ? 28 : 180;
-  const yTravel = isMobile ? 58 : isTablet ? 104 : 148;
-  const exitTravel = isMobile ? 70 : 118;
-  const getLocal = (value) => value >= lastIndex ? 0 : clamp01(value - Math.floor(value));
-  const getDepth = (value) => Math.sin(Math.PI * getLocal(value));
-  const getTail = (value) => lastIndex === 0 ? clamp01(value / 0.35) : clamp01((value - lastIndex) / 0.35);
-  const getHorizontalPosition = (value) => {
-    if (total <= 1) return xTravel;
-    if (value >= lastIndex) return (lastIndex % 2 === 0 ? xTravel : -xTravel) + getTail(value) * (isMobile ? 4 : 18);
-    const segment = Math.min(lastIndex - 1, Math.floor(value));
-    const local = clamp01(value - segment);
-    const eased = local * local * (3 - 2 * local);
-    const start = segment % 2 === 0 ? xTravel : -xTravel;
-    const end = -start;
-    const curve = Math.sin(Math.PI * local) * (segment % 2 === 0 ? -1 : 1) * (isMobile ? 6 : isTablet ? 18 : 32);
-    return start + (end - start) * eased + curve;
-  };
-  const x = useTransform(travelProgress, getHorizontalPosition);
-  const y = useTransform(travelProgress, (value) => value >= lastIndex ? getTail(value) * exitTravel : getDepth(value) * yTravel);
-  const scale = useTransform(travelProgress, (value) => {
-    if (reduceMotion) return 1;
-    if (value >= lastIndex) return 1 - getTail(value) * 0.06;
-    return 1 - getDepth(value) * (isMobile ? 0.08 : 0.1);
-  });
-  const opacity = useTransform(travelProgress, (value) => value <= lastIndex ? 1 : 1 - getTail(value));
-  const shadowScale = useTransform(travelProgress, (value) => 1 + getDepth(value) * 0.16 + getTail(value) * 0.06);
-  const shadowOpacity = useTransform(travelProgress, (value) => 0.38 - getDepth(value) * 0.12 - getTail(value) * 0.28);
-  const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
-
-  return (
-    <div className="relative mx-auto w-[min(94vw,840px)] md:w-[min(88vw,840px)] lg:w-[min(62vw,840px)]" data-traveling-laptop data-model-source="/models/macbook-pro-14.glb">
-      <motion.div style={{ x, y, scale, opacity, transformOrigin: "50% 52%", willChange: "transform, opacity" }}>
-        {isVisible ? (
-          <PortfolioLaptop3D
-            project={activeProject}
-            activeIndex={activeIndex}
-            travelProgress={travelProgress}
-            total={total}
-            viewport={viewport}
-            reduceMotion={reduceMotion}
-            isVisible
-            linkLabel={`${visitLabel}: ${activeProject.titleEn}`}
-          />
-        ) : (
-          <div className="relative aspect-[1.42] w-full"><img src="/models/laptop-poster.png" alt="" aria-hidden="true" className="h-full w-full object-contain" /></div>
-        )}
-      </motion.div>
-      <motion.div aria-hidden="true" className="pointer-events-none mx-auto -mt-[8%] h-8 w-[72%] rounded-[50%] bg-black/70 blur-2xl sm:h-11" style={{ scaleX: shadowScale, opacity: shadowOpacity }} />
-    </div>
-  );
-};
-
-const TravelingInfoScene = ({ project, index, total, lang, visitLabel, registerScene }) => {
-  const sceneRef = useRef(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: sceneRef, offset: ["start 92%", "end 8%"] });
-  const progress = useSpring(scrollYProgress, { stiffness: 115, damping: 28, mass: 0.3 });
-  const technologies = lang === "en" ? project.tagsEn : project.tagsAr;
-  const caseStudy = lang === "en" ? project.caseStudyEn : project.caseStudyAr;
-  const category = project.category === "website"
-    ? (lang === "en" ? "Website" : "موقع إلكتروني")
-    : project.category === "pos"
-      ? (lang === "en" ? "POS System" : "نظام نقاط بيع")
-      : (lang === "en" ? "Custom Software" : "برنامج مخصص");
-  const setSceneNode = (node) => { sceneRef.current = node; registerScene(index, node); };
-  const laptopOnRight = index % 2 === 0;
-
-  return (
-    <article ref={setSceneNode} data-travel-info-scene={index + 1} className="relative flex min-h-[84svh] w-full items-center overflow-hidden py-1 sm:py-6 md:min-h-[76vh] md:py-12 lg:min-h-[72vh] lg:py-14" aria-labelledby={`travel-info-title-${project.id}`}>
-      <div className="pointer-events-none absolute inset-0" style={{ background: `radial-gradient(circle at ${laptopOnRight ? "72%" : "28%"} 46%, ${getSceneLight(project.id)} 0%, transparent 51%)` }} />
-      <div dir="ltr" className={`relative mx-auto grid w-full max-w-7xl items-center gap-6 px-4 pt-[39svh] sm:px-6 sm:pt-[40svh] md:pt-[46vh] lg:pt-0 ${laptopOnRight ? "lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]" : "lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,1fr)]"}`}>
-        <div className={`mx-auto w-full max-w-lg text-center lg:row-start-1 lg:text-start ${laptopOnRight ? "lg:col-start-1" : "lg:col-start-2"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
-          <div className="mb-3 flex items-center justify-center gap-3 lg:justify-start">
-            <SceneInfoItem progress={progress} order={0} reduceMotion={reduceMotion}><span dir="ltr" className="font-mono text-xs text-gray-500 sm:text-sm">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span></SceneInfoItem>
-            <SceneInfoItem progress={progress} order={1} reduceMotion={reduceMotion}><span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-dark dark:text-primary-light sm:text-xs">{category}</span></SceneInfoItem>
-          </div>
-          <SceneInfoItem progress={progress} order={2} reduceMotion={reduceMotion} className="mb-3 md:mb-4"><h3 id={`travel-info-title-${project.id}`} className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">{lang === "en" ? project.titleEn : project.titleAr}</h3></SceneInfoItem>
-          <SceneInfoItem progress={progress} order={3} reduceMotion={reduceMotion} className="mb-3 md:mb-4"><p className="text-sm leading-6 text-gray-600 dark:text-gray-300 sm:text-base sm:leading-7">{lang === "en" ? project.descriptionEn : project.descriptionAr}</p></SceneInfoItem>
-          {caseStudy && <SceneInfoItem progress={progress} order={4} reduceMotion={reduceMotion} className="mb-4 md:mb-5"><p className="border-s-2 border-primary/40 ps-3 text-xs leading-6 text-gray-500 dark:text-gray-400 sm:text-sm">{caseStudy}</p></SceneInfoItem>}
-          <SceneInfoItem progress={progress} order={5} reduceMotion={reduceMotion} className="mb-5 md:mb-6"><div className="flex flex-wrap justify-center gap-2 lg:justify-start">{technologies.slice(0, 4).map((technology) => <span key={technology} className="rounded-full border border-gray-200 bg-white/65 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-300">{technology}</span>)}</div></SceneInfoItem>
-          <SceneInfoItem progress={progress} order={6} reduceMotion={reduceMotion}><a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/18 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark">{visitLabel}<ExternalLink size={16} /></a></SceneInfoItem>
+          </SceneCopy>
+          <SceneCopy distance={distance} order={6} reduceMotion={reduceMotion}>
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-4 focus-visible:ring-offset-dark"
+            >
+              {visitLabel}
+              <ExternalLink size={16} />
+            </a>
+          </SceneCopy>
         </div>
       </div>
     </article>
   );
 };
 
-const SingleLaptopPortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
+/* ---------------------------------------------------------------- still fallback */
+
+/*
+ * The still is a real frame baked from the same 3D model, captured with the laptop centred.
+ * Because the render always spans the full stage width, drawing it at 100% width and nudging it
+ * by the same horizontal share the 3D uses keeps both presentations pixel-aligned.
+ */
+const LaptopStill = ({ project, label, offset, scale }) => {
+  const [state, setState] = useState("loading");
+  if (state === "failed") return null;
+  return (
+    <img
+      src={`/models/laptop-${project.id}.webp`}
+      alt={label}
+      className={`absolute top-1/2 max-w-none transition-opacity duration-300 ${state === "ready" ? "opacity-100" : "opacity-0"}`}
+      /*
+       * left is resolved against the stage, transform against the image. Keeping the settle
+       * offset on left means it stays a share of the stage no matter how wide the image is
+       * scaled for the breakpoint, which is the same quantity the renderer works in.
+       */
+      style={{ width: `${scale}%`, left: `calc(50% + ${offset}%)`, transform: "translate(-50%, -50%)" }}
+      onLoad={() => setState("ready")}
+      onError={() => setState("failed")}
+      draggable="false"
+    />
+  );
+};
+
+/* ---------------------------------------------------------------- journey */
+
+const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLabel, viewAllLabel }) => {
   const journeyRef = useRef(null);
   const sceneRefs = useRef([]);
-  const activeIndexRef = useRef(activeIndex);
-  const rawTravelProgress = useMotionValue(0);
-  const smoothTravelProgress = useSpring(rawTravelProgress, { stiffness: 122, damping: 30, mass: 0.32 });
-  const [waypoints, setWaypoints] = useState({ anchors: [], exit: 1 });
+  const activeRef = useRef(0);
+  const metricsRef = useRef({ anchors: [], entryStart: 0, exitEnd: 1 });
+
+  const [mounted, setMounted] = useState(false);
   const [viewport, setViewport] = useState("desktop");
-  const [journeyVisible, setJourneyVisible] = useState(false);
-  const [loadedLogos, setLoadedLogos] = useState(() => new Set());
-  const [failedLogos, setFailedLogos] = useState(() => new Set());
+  const [nearViewport, setNearViewport] = useState(false);
+  const [inViewport, setInViewport] = useState(false);
+  const [renderReady, setRenderReady] = useState(false);
+  const [renderFailed, setRenderFailed] = useState(false);
+
   const reduceMotion = useReducedMotion();
-  const { scrollY } = useScroll();
   const total = projects.length;
+  const lastIndex = Math.max(0, total - 1);
   const projectsKey = projects.map((project) => project.id).join("|");
-  const logoProjects = projects.filter((project) => getFeaturedBrandLogo(project));
-  const logosResolved = logoProjects.every((project) => loadedLogos.has(project.id) || failedLogos.has(project.id));
 
-  useEffect(() => { activeIndexRef.current = activeIndex; }, [activeIndex]);
+  const rawTravel = useMotionValue(0);
+  const travel = useSpring(rawTravel, { stiffness: 180, damping: 34, mass: 0.4 });
+  const entry = useMotionValue(0);
+  const exit = useMotionValue(0);
+  const stageOpacity = useTransform([entry, exit], ([enterValue, exitValue]) => enterValue * (1 - exitValue));
+  const motionBundle = useMemo(() => ({ travel, entry, exit }), [travel, entry, exit]);
+
+  const activeProject = projects[Math.min(activeIndex, lastIndex)] || projects[0];
+
+  const registerScene = useCallback((index, node) => {
+    sceneRefs.current[index] = node;
+  }, []);
+
+  /*
+   * Waypoints are read from layout on every frame rather than cached. Fonts, images and lazy
+   * sections all shift this page after mount, and a cached measurement silently desynchronises
+   * the device from the copy when that happens.
+   */
+  const readWaypoints = useCallback(() => {
+    const journey = journeyRef.current;
+    const nodes = sceneRefs.current.slice(0, total).filter(Boolean);
+    if (!journey || !total || nodes.length !== total) return null;
+    const viewportHeight = window.innerHeight;
+    const base = window.scrollY;
+    const anchors = nodes.map((node) => {
+      const bounds = node.getBoundingClientRect();
+      return base + bounds.top + bounds.height / 2 - viewportHeight / 2;
+    });
+    const journeyBounds = journey.getBoundingClientRect();
+    const journeyTop = base + journeyBounds.top;
+    const journeyBottom = journeyTop + journeyBounds.height;
+    const metrics = {
+      anchors,
+      entryStart: Math.min(anchors[0] - 1, journeyTop - viewportHeight * 0.7),
+      exitEnd: Math.max(anchors[total - 1] + 1, journeyBottom - viewportHeight * 0.35),
+    };
+    metricsRef.current = metrics;
+    return metrics;
+  }, [total]);
+
+  const applyScroll = useCallback(
+    (position) => {
+      const waypoints = readWaypoints();
+      if (!waypoints) return;
+      const { anchors, entryStart, exitEnd } = waypoints;
+      const last = anchors.length - 1;
+
+      entry.set(anchors[0] > entryStart ? clamp01((position - entryStart) / (anchors[0] - entryStart)) : 1);
+      exit.set(exitEnd > anchors[last] ? clamp01((position - anchors[last]) / (exitEnd - anchors[last])) : 0);
+
+      let value = 0;
+      if (position >= anchors[last]) {
+        value = last;
+      } else if (position > anchors[0]) {
+        for (let index = 0; index < last; index += 1) {
+          if (position <= anchors[index + 1]) {
+            const span = Math.max(1, anchors[index + 1] - anchors[index]);
+            const raw = clamp01((position - anchors[index]) / span);
+            const turn = clamp01((raw - SETTLE_SHARE) / Math.max(0.001, 1 - SETTLE_SHARE * 2));
+            value = index + smootherstep(turn);
+            break;
+          }
+        }
+      }
+      rawTravel.set(value);
+    },
+    [entry, exit, rawTravel, readWaypoints],
+  );
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    sceneRefs.current = [];
-    activeIndexRef.current = 0;
-    setActiveIndex(0);
-    rawTravelProgress.set(0);
-    setLoadedLogos(new Set());
-    setFailedLogos(new Set());
-  }, [projectsKey, rawTravelProgress, setActiveIndex]);
-
-  useEffect(() => {
-    const updateViewport = () => setViewport(window.innerWidth < 768 ? "mobile" : window.innerWidth < 1024 ? "tablet" : "desktop");
-    updateViewport();
-    window.addEventListener("resize", updateViewport, { passive: true });
-    return () => window.removeEventListener("resize", updateViewport);
+    const readViewport = () => setViewport(window.innerWidth < 768 ? "mobile" : window.innerWidth < 1024 ? "tablet" : "desktop");
+    readViewport();
+    window.addEventListener("resize", readViewport, { passive: true });
+    return () => window.removeEventListener("resize", readViewport);
   }, []);
 
   useEffect(() => {
-    const journeyNode = journeyRef.current;
-    if (!journeyNode) return undefined;
-    const visibilityObserver = new IntersectionObserver(([entry]) => setJourneyVisible(entry.isIntersecting), { threshold: 0.01 });
-    visibilityObserver.observe(journeyNode);
-    return () => visibilityObserver.disconnect();
+    const journey = journeyRef.current;
+    if (!journey) return undefined;
+    const nearObserver = new IntersectionObserver(([record]) => setNearViewport(record.isIntersecting), { rootMargin: "600px 0px 600px 0px" });
+    const liveObserver = new IntersectionObserver(([record]) => setInViewport(record.isIntersecting), { rootMargin: "80px 0px 80px 0px" });
+    nearObserver.observe(journey);
+    liveObserver.observe(journey);
+    return () => {
+      nearObserver.disconnect();
+      liveObserver.disconnect();
+    };
   }, [projectsKey]);
 
   useEffect(() => {
-    const journeyNode = journeyRef.current;
-    const nodes = sceneRefs.current.filter(Boolean);
-    if (!journeyNode || !nodes.length) return undefined;
-    let frameId;
-    const measure = () => {
-      window.cancelAnimationFrame(frameId);
-      frameId = window.requestAnimationFrame(() => {
-        const anchors = nodes.map((node) => window.scrollY + node.getBoundingClientRect().top + node.offsetHeight / 2 - window.innerHeight / 2);
-        const exit = (anchors[anchors.length - 1] || 0) + window.innerHeight * 0.62;
-        setWaypoints({ anchors, exit });
-        if (logosResolved) rawTravelProgress.set(mapScrollToTravel(window.scrollY, anchors, exit));
-      });
-    };
-    measure();
-    const resizeObserver = new ResizeObserver(measure);
-    resizeObserver.observe(journeyNode);
-    nodes.forEach((node) => resizeObserver.observe(node));
-    window.addEventListener("resize", measure, { passive: true });
+    /*
+     * Scroll events are already coalesced to one per frame, and the measurement below is a handful
+     * of rect reads, so it runs inline. Deferring it to requestAnimationFrame made the device lag
+     * the page whenever the browser throttled frames.
+     */
+    const schedule = () => applyScroll(window.scrollY);
+
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("load", schedule);
+    /* Late layout shifts (fonts, images, lazy sections) land within the first few seconds. */
+    const settleTimers = [120, 400, 900, 1800, 3200].map((delay) => window.setTimeout(schedule, delay));
+
     return () => {
-      window.cancelAnimationFrame(frameId);
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("load", schedule);
+      settleTimers.forEach((timer) => window.clearTimeout(timer));
     };
-  }, [logosResolved, projectsKey, rawTravelProgress]);
+  }, [applyScroll, projectsKey, viewport]);
 
-  useEffect(() => {
-    if (logosResolved && waypoints.anchors.length) rawTravelProgress.set(mapScrollToTravel(window.scrollY, waypoints.anchors, waypoints.exit));
-  }, [logosResolved, rawTravelProgress, waypoints]);
-
-  useMotionValueEvent(scrollY, "change", (value) => {
-    if (!logosResolved || !waypoints.anchors.length) return;
-    rawTravelProgress.set(mapScrollToTravel(value, waypoints.anchors, waypoints.exit));
-  });
-
-  useMotionValueEvent(smoothTravelProgress, "change", (value) => {
-    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(Math.min(total - 1, value) + 0.5)));
-    if (nextIndex !== activeIndexRef.current) {
-      activeIndexRef.current = nextIndex;
-      setActiveIndex(nextIndex);
+  useMotionValueEvent(travel, "change", (value) => {
+    const next = Math.min(lastIndex, Math.max(0, Math.round(value)));
+    if (next !== activeRef.current) {
+      activeRef.current = next;
+      setActiveIndex(next);
     }
   });
 
-  const registerScene = (index, node) => { sceneRefs.current[index] = node; };
-  const scrollToProject = (requestedIndex) => {
-    const nextIndex = Math.min(total - 1, Math.max(0, requestedIndex));
-    const target = waypoints.anchors[nextIndex];
-    if (Number.isFinite(target)) window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
-    else sceneRefs.current[nextIndex]?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
-  };
+  useEffect(() => {
+    activeRef.current = 0;
+    setActiveIndex(0);
+    rawTravel.set(0);
+    travel.jump(0);
+  }, [projectsKey, rawTravel, setActiveIndex, travel]);
+
+  const goToProject = useCallback(
+    (requested) => {
+      const target = Math.min(lastIndex, Math.max(0, requested));
+      const anchor = (readWaypoints() || metricsRef.current).anchors[target];
+      if (Number.isFinite(anchor)) {
+        window.scrollTo({ top: anchor, behavior: reduceMotion ? "auto" : "smooth" });
+      } else {
+        sceneRefs.current[target]?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      }
+    },
+    [lastIndex, readWaypoints, reduceMotion],
+  );
 
   if (!total) return null;
 
-  const navigation = (compact = false) => (
+  /*
+   * On mobile the device sits above the copy rather than beside it, so the scene height is bound by
+   * stage + copy, not by taste. The slack was inside the stage: the laptop is about 160px tall in a
+   * band that reserved 346px, leaving a large empty gap above and below it. Shrinking the stage is
+   * what actually removes the space; the scene height then follows it down.
+   */
+  const sceneHeight = viewport === "mobile" ? "68svh" : viewport === "tablet" ? "76vh" : "72vh";
+  const copyOffset = viewport === "mobile" ? "30svh" : viewport === "tablet" ? "46vh" : "0px";
+  const showStill = renderFailed || !renderReady;
+  /* Matches the world-space offset the renderer settles on: offsetX / frameWidth. */
+  const settleShare = viewport === "mobile" ? 0 : viewport === "tablet" ? 16.7 : 21.8;
+  const laptopOffset = activeIndex % 2 === 0 ? settleShare : -settleShare;
+  /*
+   * The stills are baked at the desktop framing (frameWidth 2.85). A narrower breakpoint frames
+   * less world, so the device fills more of the stage there and the still has to be scaled up by
+   * the same ratio, or the fallback shows a noticeably smaller laptop than the live render.
+   */
+  const stillScale = viewport === "mobile" ? 219.2 : viewport === "tablet" ? 132.6 : 100;
+
+  const navigation = (compact) => (
     <div className={`flex items-center ${compact ? "gap-2" : "flex-col gap-3"}`}>
-      <button type="button" disabled={activeIndex === 0} onClick={() => scrollToProject(activeIndex - 1)} aria-label={lang === "en" ? "Previous project" : "المشروع السابق"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronLeft size={18} /></button>
-      <div className={`${compact ? "flex gap-2" : "relative flex flex-col gap-2"}`} aria-label={lang === "en" ? "Projects progress" : "تقدم المشاريع"}>
-        {!compact && <div className="absolute bottom-1 left-1/2 top-1 w-px -translate-x-1/2 bg-primary/15" />}
-        {projects.map((project, index) => <button key={`single-progress-${project.id}`} type="button" onClick={() => scrollToProject(index)} aria-label={`${lang === "en" ? "Go to project" : "انتقل إلى المشروع"} ${index + 1}`} aria-current={index === activeIndex ? "step" : undefined} className={`relative z-10 h-3 w-3 rounded-full border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${index === activeIndex ? "scale-125 border-primary-light bg-primary shadow-[0_0_0_4px_rgba(20,184,166,0.12)]" : "border-primary/35 bg-dark-light hover:border-primary"}`} />)}
+      <button
+        type="button"
+        disabled={activeIndex === 0}
+        onClick={() => goToProject(activeIndex - 1)}
+        aria-label={lang === "en" ? "Previous project" : "المشروع السابق"}
+        className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"
+      >
+        <ChevronLeft size={18} />
+      </button>
+      <div className={compact ? "flex gap-2" : "relative flex flex-col gap-2"} aria-label={lang === "en" ? "Projects progress" : "تقدم المشاريع"}>
+        {!compact && <div aria-hidden="true" className="absolute bottom-1 left-1/2 top-1 w-px -translate-x-1/2 bg-primary/15" />}
+        {projects.map((project, index) => (
+          <button
+            key={`journey-dot-${project.id}`}
+            type="button"
+            onClick={() => goToProject(index)}
+            aria-label={`${lang === "en" ? "Go to project" : "انتقل إلى المشروع"} ${index + 1}`}
+            aria-current={index === activeIndex ? "step" : undefined}
+            className={`relative z-10 h-3 w-3 rounded-full border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${index === activeIndex ? "scale-125 border-primary-light bg-primary shadow-[0_0_0_4px_rgba(20,184,166,0.12)]" : "border-primary/35 bg-dark-light hover:border-primary"}`}
+          />
+        ))}
       </div>
-      <button type="button" disabled={activeIndex === total - 1} onClick={() => scrollToProject(activeIndex + 1)} aria-label={lang === "en" ? "Next project" : "المشروع التالي"} className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"><ChevronRight size={18} /></button>
+      <button
+        type="button"
+        disabled={activeIndex === lastIndex}
+        onClick={() => goToProject(activeIndex + 1)}
+        aria-label={lang === "en" ? "Next project" : "المشروع التالي"}
+        className="grid h-11 w-11 place-items-center rounded-full border border-primary/25 bg-dark/70 text-primary-light backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-30"
+      >
+        <ChevronRight size={18} />
+      </button>
     </div>
   );
 
   return (
-    <div className="relative">
-      <div aria-hidden="true" className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
-        {logoProjects.map((project) => (
-          <div key={`brand-preload-${project.id}`} className="relative h-80 w-80">
-            <Image src={getFeaturedBrandLogo(project)} alt="" fill priority sizes="320px" className="object-contain" onLoad={async (event) => { try { await event.currentTarget.decode(); } catch { /* The cached logo remains usable. */ } setLoadedLogos((current) => new Set(current).add(project.id)); }} onError={() => setFailedLogos((current) => new Set(current).add(project.id))} />
-          </div>
-        ))}
-      </div>
-
-      <div className="mb-2 flex items-center justify-center gap-4 lg:hidden">
-        <span dir="ltr" className="min-w-14 font-mono text-xs text-gray-500">{String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+    <div className="relative" style={{ "--scene-height": sceneHeight, "--copy-offset": copyOffset }}>
+      <div className="mb-1 flex items-center justify-center gap-4 lg:hidden">
+        <span dir="ltr" className="min-w-14 font-mono text-xs text-gray-500">
+          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
         {navigation(true)}
       </div>
 
-      <AnimatePresence>
-        {journeyVisible && <motion.aside initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 12 }} className="fixed end-5 top-1/2 z-50 hidden -translate-y-1/2 lg:block" aria-label={lang === "en" ? "Portfolio navigation" : "التنقل بين المشاريع"}>{navigation(false)}</motion.aside>}
-      </AnimatePresence>
+      {/*
+        * Rendered into <body> rather than in place. The section is promoted to its own compositing
+        * layer (see the [transform:translateZ(0)] on #portfolio), and a transformed ancestor becomes
+        * the containing block for fixed descendants — left here, this aside would anchor to the
+        * section instead of the viewport and scroll away with it.
+        */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {inViewport && (
+              <motion.aside
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 12 }}
+                dir={lang === "en" ? "ltr" : "rtl"}
+                className="fixed end-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block"
+                aria-label={lang === "en" ? "Portfolio navigation" : "التنقل بين المشاريع"}
+              >
+                {navigation(false)}
+              </motion.aside>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
 
       <div ref={journeyRef} className="relative">
-        <div className="pointer-events-none sticky top-16 z-30 flex h-[calc(100svh-4rem)] items-start overflow-hidden pt-[4svh] md:top-20 md:h-[calc(100vh-5rem)] md:pt-[6vh] lg:items-center lg:pt-0">
-          <TravelingLaptop projects={projects} activeIndex={activeIndex} travelProgress={smoothTravelProgress} viewport={viewport} reduceMotion={reduceMotion} visitLabel={visitLabel} isVisible={journeyVisible} />
+        <div className="pointer-events-none sticky top-16 z-20 h-[calc(100svh-4rem)] md:top-20 md:h-[calc(100vh-5rem)]">
+          <motion.div
+            style={{ opacity: stageOpacity }}
+            className="absolute inset-x-0 top-0 mx-auto h-[31svh] w-full max-w-7xl md:bottom-0 md:h-auto"
+          >
+            <div aria-hidden={!showStill} className={`absolute inset-0 overflow-hidden transition-opacity duration-700 ${showStill ? "opacity-100" : "opacity-0"}`}>
+              <LaptopStill project={activeProject} label={activeProject.titleEn} offset={laptopOffset} scale={stillScale} />
+            </div>
+            {nearViewport && (
+              <PortfolioLaptop3D
+                projects={projects}
+                motion={motionBundle}
+                viewport={viewport}
+                reduceMotion={reduceMotion}
+                active={inViewport}
+                onReady={() => setRenderReady(true)}
+                onUnavailable={() => setRenderFailed(true)}
+              />
+            )}
+            <a
+              href={activeProject.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${visitLabel}: ${activeProject.titleEn}`}
+              className="pointer-events-auto absolute top-1/2 h-[52%] w-[40%] -translate-x-1/2 -translate-y-1/2 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light"
+              style={{ left: `${50 + laptopOffset}%` }}
+            >
+              <span className="sr-only">{activeProject.titleEn}</span>
+            </a>
+          </motion.div>
         </div>
 
         <div className="relative z-10 -mt-[calc(100svh-4rem)] md:-mt-[calc(100vh-5rem)]">
-          {projects.map((project, index) => <TravelingInfoScene key={`travel-info-${project.id}`} project={project} index={index} total={total} lang={lang} visitLabel={visitLabel} registerScene={registerScene} />)}
-          <div className="flex h-[30svh] items-end justify-center pb-8 md:h-[32vh] md:pb-12 lg:h-[36vh]">
-            <a href="/work" className="relative z-40 inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-dark/75 px-7 py-3 text-sm font-bold text-primary-light backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{viewAllLabel}</a>
+          {projects.map((project, index) => (
+            <ProjectScene
+              key={`journey-scene-${project.id}`}
+              project={project}
+              index={index}
+              total={total}
+              lang={lang}
+              visitLabel={visitLabel}
+              registerScene={registerScene}
+              reduceMotion={reduceMotion}
+              travel={travel}
+            />
+          ))}
+          <div className="flex h-[26svh] items-end justify-center pb-2 md:h-[24vh] md:pb-4">
+            <a
+              href="/work"
+              className="relative z-30 inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-primary/10 px-7 py-3 text-sm font-bold text-primary-dark backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light"
+            >
+              {viewAllLabel}
+            </a>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+/* ---------------------------------------------------------------- section */
 
 const Portfolio = ({ lang }) => {
   const [filter, setFilter] = useState("all");
@@ -1404,8 +507,7 @@ const Portfolio = ({ lang }) => {
     en: {
       title: "Our",
       titleHighlight: "Portfolio",
-      subtitle:
-        "Showcasing successful projects that transformed businesses across various industries",
+      subtitle: "Showcasing successful projects that transformed businesses across various industries",
       categories: {
         all: "All Projects",
         website: "Websites",
@@ -1453,8 +555,7 @@ const Portfolio = ({ lang }) => {
       category: "website",
       titleEn: "Chicken One - ElZawy",
       titleAr: "تشيكن ون - الزعوي",
-      descriptionEn:
-        "Modern corporate website with responsive design and smooth user experience",
+      descriptionEn: "Modern corporate website with responsive design and smooth user experience",
       descriptionAr: "موقع شركة عصري بتصميم متجاوب وتجربة مستخدم سلسة",
       logo: logo,
       color: "from-[#F39101] to-[#FFA726]",
@@ -1472,12 +573,10 @@ const Portfolio = ({ lang }) => {
       category: "website",
       titleEn: "New - ElZawy",
       titleAr: "نيو - الزعوي",
-      descriptionEn:
-        "Complete e-commerce platform with product management and shopping cart",
+      descriptionEn: "Complete e-commerce platform with product management and shopping cart",
       caseStudyEn: "We delivered a complete storefront with catalog management, cart, secure checkout and an admin-ready workflow.",
       caseStudyAr: "نفّذنا متجرًا متكاملًا لإدارة المنتجات والسلة والدفع الآمن مع تجربة جاهزة للإدارة والتوسع.",
-      descriptionAr:
-        "منصة تجارة إلكترونية متكاملة مع إدارة المنتجات وسلة التسوق",
+      descriptionAr: "منصة تجارة إلكترونية متكاملة مع إدارة المنتجات وسلة التسوق",
       logo: logo1,
       preview: "/project-screens/elzawy-new.png",
       color: "from-[#D10003] to-[#FF5252]",
@@ -1495,26 +594,14 @@ const Portfolio = ({ lang }) => {
       category: "website",
       titleEn: "Fateer wi 3asal",
       titleAr: "فطير و عسل",
-      descriptionEn:
-        "Delicious food ordering platform with online ordering and delivery management",
-      descriptionAr:
-        "منصة طعام لذيذة مع إمكانية الطلب عبر الإنترنت وإدارة التوصيل",
+      descriptionEn: "Delicious food ordering platform with online ordering and delivery management",
+      descriptionAr: "منصة طعام لذيذة مع إمكانية الطلب عبر الإنترنت وإدارة التوصيل",
       logo: logo4,
       color: "from-[#FF6B35] to-[#FF8C42]",
       tagsEn: ["Food", "Online Order", "Delivery"],
       tagsAr: ["طعام", "طلب أونلاين", "توصيل"],
-      resultsEn: [
-        "Online ordering system",
-        "Delivery management",
-        "Menu management",
-        "Customer reviews",
-      ],
-      resultsAr: [
-        "نظام طلب أونلاين",
-        "إدارة التوصيل",
-        "إدارة القائمة",
-        "تقييمات العملاء",
-      ],
+      resultsEn: ["Online ordering system", "Delivery management", "Menu management", "Customer reviews"],
+      resultsAr: ["نظام طلب أونلاين", "إدارة التوصيل", "إدارة القائمة", "تقييمات العملاء"],
       client: "Fateer wi 3asal",
       duration: "4 weeks",
       link: "https://fateerwasal.com",
@@ -1525,8 +612,7 @@ const Portfolio = ({ lang }) => {
       category: "pos",
       titleEn: "Cashier POS System",
       titleAr: "نظام كاشير نقاط البيع",
-      descriptionEn:
-        "Modern Point of Sale system with intuitive interface and real-time inventory management",
+      descriptionEn: "Modern Point of Sale system with intuitive interface and real-time inventory management",
       caseStudyEn: "The system brings checkout, live stock tracking and sales insights together in one clear operational dashboard.",
       caseStudyAr: "جمعنا الكاشير والمخزون اللحظي وتحليلات المبيعات في لوحة تشغيل واحدة واضحة وسريعة.",
       descriptionAr: "نظام نقاط بيع حديث بواجهة بديهية وإدارة مخزون فورية",
@@ -1535,18 +621,8 @@ const Portfolio = ({ lang }) => {
       color: "from-[#00ACC1] to-[#26C6DA]",
       tagsEn: ["POS", "Inventory", "Real-time"],
       tagsAr: ["نقاط بيع", "مخزون", "فوري"],
-      resultsEn: [
-        "Fast checkout process",
-        "Inventory tracking",
-        "Sales analytics",
-        "User-friendly interface",
-      ],
-      resultsAr: [
-        "عملية دفع سريعة",
-        "تتبع المخزون",
-        "تحليلات المبيعات",
-        "واجهة سهلة الاستخدام",
-      ],
+      resultsEn: ["Fast checkout process", "Inventory tracking", "Sales analytics", "User-friendly interface"],
+      resultsAr: ["عملية دفع سريعة", "تتبع المخزون", "تحليلات المبيعات", "واجهة سهلة الاستخدام"],
       client: "Cashier Tech",
       duration: "4 weeks",
       link: "https://cashier-vert.vercel.app/",
@@ -1557,26 +633,15 @@ const Portfolio = ({ lang }) => {
       category: "custom",
       titleEn: "Aruqah - Real Estate Solutions",
       titleAr: "أروقة - حلول عقارية",
-      descriptionEn:
-        "Innovative real estate platform with advanced property management and analytics",
+      descriptionEn: "Innovative real estate platform with advanced property management and analytics",
       descriptionAr: "منصة عقارية مبتكرة مع إدارة متقدمة للعقارات وتحليلات",
       logo: logo3,
       preview: "/project-screens/aruqah.png",
       color: "from-[#2E7D32] to-[#4CAF50]",
       tagsEn: ["Real Estate", "Analytics", "Property Management"],
       tagsAr: ["عقارات", "تحليلات", "إدارة عقارية"],
-      resultsEn: [
-        "Property listings",
-        "Market analytics",
-        "Client management",
-        "Smart search",
-      ],
-      resultsAr: [
-        "قوائم العقارات",
-        "تحليلات المبيعات",
-        "إدارة العملاء",
-        "بحث ذكي",
-      ],
+      resultsEn: ["Property listings", "Market analytics", "Client management", "Smart search"],
+      resultsAr: ["قوائم العقارات", "تحليلات المبيعات", "إدارة العملاء", "بحث ذكي"],
       client: "Aruqah",
       duration: "6 weeks",
       link: "https://aruqah.vercel.app/",
@@ -1587,27 +652,15 @@ const Portfolio = ({ lang }) => {
       category: "custom",
       titleEn: "Cosmetics Store",
       titleAr: "متجر مستحضرات التجميل",
-      descriptionEn:
-        "Elegant cosmetics e-commerce platform with product showcase and online ordering",
-      descriptionAr:
-        "منصة تجارة إلكترونية أنيقة لمستحضرات التجميل مع عرض المنتجات والطلب عبر الإنترنت",
+      descriptionEn: "Elegant cosmetics e-commerce platform with product showcase and online ordering",
+      descriptionAr: "منصة تجارة إلكترونية أنيقة لمستحضرات التجميل مع عرض المنتجات والطلب عبر الإنترنت",
       logo: logo2,
       preview: "/project-screens/cosmetics.png",
       color: "from-[#C2185B] to-[#E91E63]",
       tagsEn: ["E-commerce", "Cosmetics", "Online Store"],
       tagsAr: ["تجارة إلكترونية", "تجميل", "متجر إلكتروني"],
-      resultsEn: [
-        "Product catalog",
-        "Shopping cart",
-        "Secure payments",
-        "Mobile responsive",
-      ],
-      resultsAr: [
-        "كتالوج منتجات",
-        "سلة تسوق",
-        "مدفوعات آمنة",
-        "متجاوب مع الجوال",
-      ],
+      resultsEn: ["Product catalog", "Shopping cart", "Secure payments", "Mobile responsive"],
+      resultsAr: ["كتالوج منتجات", "سلة تسوق", "مدفوعات آمنة", "متجاوب مع الجوال"],
       client: "Cosmetics Brand",
       duration: "5 weeks",
       link: "https://cosmetics-flame-three.vercel.app/",
@@ -1618,29 +671,17 @@ const Portfolio = ({ lang }) => {
       category: "website",
       titleEn: "Sharm Kite Surf",
       titleAr: "شرم كايت سيرف",
-      descriptionEn:
-        "Water sports & kite surfing platform in Sharm El Sheikh with online booking and activity showcase",
+      descriptionEn: "Water sports & kite surfing platform in Sharm El Sheikh with online booking and activity showcase",
       caseStudyEn: "We built a multilingual booking experience that helps international tourists discover activities and reserve before they travel.",
       caseStudyAr: "بنينا تجربة حجز متعددة اللغات تساعد السائح على اكتشاف الأنشطة والحجز المباشر قبل السفر.",
-      descriptionAr:
-        "منصة رياضات مائية وركوب الطائرة الورقية في شرم الشيخ مع حجز عبر الإنترنت وعرض الأنشطة",
+      descriptionAr: "منصة رياضات مائية وركوب الطائرة الورقية في شرم الشيخ مع حجز عبر الإنترنت وعرض الأنشطة",
       logo: sharmLogo,
       preview: "/project-screens/sharm-kitesurf.png",
       color: "from-[#0077B6] to-[#00B4D8]",
       tagsEn: ["Water Sports", "Booking", "Tourism"],
       tagsAr: ["رياضات مائية", "حجز", "سياحة"],
-      resultsEn: [
-        "Online booking system",
-        "Activity showcase",
-        "Mobile responsive",
-        "Multilingual support",
-      ],
-      resultsAr: [
-        "نظام حجز أونلاين",
-        "عرض الأنشطة",
-        "متجاوب مع الجوال",
-        "دعم متعدد اللغات",
-      ],
+      resultsEn: ["Online booking system", "Activity showcase", "Mobile responsive", "Multilingual support"],
+      resultsAr: ["نظام حجز أونلاين", "عرض الأنشطة", "متجاوب مع الجوال", "دعم متعدد اللغات"],
       client: "Sharm Kite Surf",
       duration: "4 weeks",
       link: "https://sharmkitesurf.com",
@@ -1692,97 +733,74 @@ const Portfolio = ({ lang }) => {
 
   const categories = [
     { key: "all", label: t.categories.all, count: projects.length },
-    {
-      key: "website",
-      label: t.categories.website,
-      count: projects.filter((p) => p.category === "website").length,
-    },
-    {
-      key: "pos",
-      label: t.categories.pos,
-      count: projects.filter((p) => p.category === "pos").length,
-    },
-    {
-      key: "custom",
-      label: t.categories.custom,
-      count: projects.filter((p) => p.category === "custom").length,
-    },
+    { key: "website", label: t.categories.website, count: projects.filter((project) => project.category === "website").length },
+    { key: "pos", label: t.categories.pos, count: projects.filter((project) => project.category === "pos").length },
+    { key: "custom", label: t.categories.custom, count: projects.filter((project) => project.category === "custom").length },
   ];
 
-  const filteredProjects =
-    filter === "all" ? projects : projects.filter((p) => p.category === filter);
+  const filteredProjects = filter === "all" ? projects : projects.filter((project) => project.category === filter);
   const featuredProjectIds = [7, 8, 9, 2, 4];
   const showcaseProjects =
-    filter === "all"
-      ? featuredProjectIds.map((id) => projects.find((project) => project.id === id)).filter(Boolean)
-      : filteredProjects.filter((project) => project.preview).slice(0, 5);
+    filter === "all" ? featuredProjectIds.map((id) => projects.find((project) => project.id === id)).filter(Boolean) : filteredProjects.slice(0, 5);
 
   return (
     <section
       id="portfolio"
-      className={`pt-8 lg:pt-10 pb-16 lg:pb-20 bg-gradient-to-b from-white to-gray-50 dark:from-dark dark:to-dark-light ${
-        isRTL ? "rtl" : "ltr"
-      }`}
+      /*
+       * The translateZ promotes the section to its own compositing layer. Without it the WebGL
+       * canvas gets a layer of its own, and the very shallow background gradient behind it is
+       * rasterised with different dithering inside that layer than outside — which showed as a
+       * faint but hard-edged rectangle exactly on the canvas bounds. The canvas is fully
+       * transparent there (measured [0,0,0,0] at every edge and corner), so this is a compositing
+       * artifact rather than anything the 3D draws; promoting the section makes the gradient
+       * rasterise once. It is set inline because as a Tailwind arbitrary class it lost to the
+       * framework's own transform utilities and collapsed to a 2D identity matrix, which does not
+       * promote. Note this makes the section the containing block for fixed children, which is why
+       * the journey navigation is portalled to <body>.
+       */
+      style={{ transform: "translateZ(0)" }}
+      className={`overflow-x-clip bg-gradient-to-b from-white to-gray-50 pb-10 pt-8 dark:from-dark dark:to-dark-light lg:pb-14 lg:pt-10 ${isRTL ? "rtl" : "ltr"}`}
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary-light/10 dark:bg-primary-light/20 mb-6">
-            <svg
-              className="text-primary-dark dark:text-primary-light"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
+        <div className="mb-6 text-center lg:mb-8">
+          <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary-light/10 dark:bg-primary-light/20 sm:h-20 sm:w-20">
+            <svg className="text-primary-dark dark:text-primary-light" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="2" y="3" width="20" height="14" rx="2" />
               <path d="M8 21h8" />
               <path d="M12 17v4" />
             </svg>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
-            {t.title}{" "}
-            <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-              {t.titleHighlight}
-            </span>
+          <h2 className="mb-4 text-2xl font-bold sm:text-3xl lg:mb-5 lg:text-4xl">
+            {t.title} <span className="bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">{t.titleHighlight}</span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 lg:mb-10">
-            {t.subtitle}
-          </p>
+          <p className="mx-auto mb-6 max-w-2xl text-base text-gray-600 dark:text-gray-300 sm:text-lg lg:mb-8">{t.subtitle}</p>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 lg:mb-12">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
             {categories.map((category) => (
               <motion.button
                 key={category.key}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { setFilter(category.key); setActiveProject(0); }}
-                className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 text-sm sm:text-base ${
+                onClick={() => {
+                  setFilter(category.key);
+                  setActiveProject(0);
+                }}
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 sm:px-6 sm:py-3 sm:text-base ${
                   filter === category.key
                     ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg"
-                    : "bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-light"
-                } ${isRTL ? "flex-row" : ""}`}
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-dark-card dark:text-gray-300 dark:hover:bg-dark-light"
+                }`}
               >
                 <span>{category.label}</span>
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${
-                    filter === category.key
-                      ? "bg-white/20"
-                      : "bg-gray-300 dark:bg-dark-light"
-                  }`}
-                >
-                  {category.count}
-                </span>
+                <span className={`rounded-full px-2 py-1 text-xs ${filter === category.key ? "bg-white/20" : "bg-gray-300 dark:bg-dark-light"}`}>{category.count}</span>
               </motion.button>
             ))}
           </div>
         </div>
 
-        <SingleLaptopPortfolioJourney
+        <PortfolioJourney
           projects={showcaseProjects}
           activeIndex={activeProject}
           setActiveIndex={setActiveProject}
@@ -1790,249 +808,6 @@ const Portfolio = ({ lang }) => {
           visitLabel={t.visit}
           viewAllLabel={t.viewAll}
         />
-
-        {false && (<div className="hidden">
-        {/* Projects Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={filter}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="relative mx-auto h-[460px] sm:h-[520px] max-w-3xl mb-6 overflow-hidden [perspective:1400px]"
-          >
-            {filteredProjects.map((project, projectIndex) => {
-              let offset = projectIndex - activeProject;
-              const half = Math.floor(filteredProjects.length / 2);
-              if (offset > half) offset -= filteredProjects.length;
-              if (offset < -half) offset += filteredProjects.length;
-              const distance = Math.abs(offset);
-              if (distance > 4) return null;
-              return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.88 }}
-                animate={{
-                  opacity: 1 - distance * 0.12,
-                  x: offset * 58,
-                  y: distance * 10,
-                  scale: 1 - distance * 0.065,
-                  rotateY: offset * -7,
-                  zIndex: 30 - distance,
-                }}
-                transition={{ type: "spring", stiffness: 240, damping: 24 }}
-                onClick={() => offset !== 0 && setActiveProject(projectIndex)}
-                className={`absolute inset-x-0 top-8 mx-auto w-[64%] max-w-[310px] group [transform-style:preserve-3d] sm:top-10 sm:w-[48%] ${offset === 0 ? "cursor-default" : "cursor-pointer"}`}
-              >
-                <div className={`relative flex flex-col overflow-hidden rounded-[2rem] border bg-white transition-all duration-500 dark:bg-dark-card ${offset === 0 ? "border-primary/40 shadow-2xl shadow-primary/20" : "border-white/10 shadow-xl shadow-black/20"}`}>
-                  <div
-                    className={`w-full h-[350px] sm:h-[410px] bg-gradient-to-r ${project.color} relative overflow-hidden shrink-0`}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {project.preview ? (
-                          <div className="relative w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-out">
-                          <Image
-                            src={project.preview}
-                            alt={`${project.titleEn} preview`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/10" />
-                          <div className="absolute -inset-x-1/2 top-0 h-full w-1/3 -skew-x-12 bg-white/20 blur-2xl opacity-0 transition-all duration-700 group-hover:left-full group-hover:opacity-100" />
-                        </div>
-                      ) : project.id === 4 ? (
-                        <div className="relative w-full h-full transform group-hover:scale-110 transition-transform duration-300">
-                          <Image
-                            src={project.logo}
-                            alt={`${project.titleEn} - DoGether شركة برمجة مصر`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
-                          <Image
-                            src={project.logo}
-                            alt={`${project.titleEn} - DoGether شركة برمجة مصر`}
-                            width={96}
-                            height={96}
-                            className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain rounded-full"
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    <div
-                      className={`absolute top-3 ${
-                        isRTL ? "right-3" : "left-3"
-                      } flex flex-wrap gap-1 sm:gap-2`}
-                    >
-                      {(lang === "en" ? project.tagsEn : project.tagsAr).map(
-                        (tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ),
-                      )}
-                    </div>
-
-                    <div
-                      className={`absolute bottom-3 ${
-                        isRTL ? "right-3" : "left-3"
-                      } px-2 py-1 bg-black/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full`}
-                    >
-                      {project.client}
-                    </div>
-
-                    <div
-                      className={`absolute bottom-3 ${
-                        isRTL ? "left-3" : "right-3"
-                      } px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full`}
-                    >
-                      {project.duration}
-                    </div>
-
-                    {project.live && (
-                      <div
-                        className={`absolute top-3 ${
-                          isRTL ? "left-3" : "right-3"
-                        } px-2 py-1 bg-green-500/90 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full animate-pulse`}
-                      >
-                        Live
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="hidden">
-                    <h3 className="text-base sm:text-xl font-bold mb-2 line-clamp-2 group-hover:text-primary-dark dark:group-hover:text-primary-light transition-colors">
-                      {lang === "en" ? project.titleEn : project.titleAr}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-base mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-2">
-                      {lang === "en"
-                        ? project.descriptionEn
-                        : project.descriptionAr}
-                    </p>
-
-                    <div className="mb-4 sm:mb-6">
-                      <h4
-                        className={`font-semibold text-gray-700 dark:text-gray-200 mb-2 flex items-center text-sm sm:text-base ${
-                          isRTL ? "flex-row-reverse justify-end" : ""
-                        }`}
-                      >
-                        <ChevronRight
-                          className={`w-3 h-3 sm:w-4 sm:h-4 ${
-                            isRTL ? "ml-1 rotate-180" : "mr-1"
-                          } text-primary-light`}
-                        />
-                        {t.keyFeatures}
-                      </h4>
-                      <ul
-                        className={`space-y-1 sm:space-y-2 ${
-                          isRTL ? "text-right" : ""
-                        }`}
-                      >
-                        {(lang === "en"
-                          ? project.resultsEn
-                          : project.resultsAr
-                        ).map((result, i) => (
-                          <li
-                            key={i}
-                            className={`flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 ${
-                              isRTL ? "flex-row" : ""
-                            }`}
-                          >
-                            <div
-                              className={`w-1.5 h-1.5 bg-primary-light rounded-full ${
-                                isRTL ? "ml-2" : "mr-2"
-                              }`}
-                            ></div>
-                            {result}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div
-                      className={`flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 dark:border-dark-light ${
-                        isRTL ? "flex-row-reverse" : ""
-                      }`}
-                    >
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`text-primary-dark dark:text-primary-light font-semibold flex items-center group-hover:text-primary-darker dark:group-hover:text-primary text-sm sm:text-base hover:underline ${
-                          isRTL ? "flex-row" : ""
-                        }`}
-                      >
-                        {isRTL && <ExternalLink className="ml-2" size={16} />}
-                        {t.visit}
-                        {!isRTL && <ExternalLink className="ml-2" size={16} />}
-                      </a>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                        {project.category}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              );
-            })}
-
-            <button
-              type="button"
-              onClick={() => setActiveProject((activeProject - 1 + filteredProjects.length) % filteredProjects.length)}
-              aria-label="Previous project"
-              className="absolute left-2 top-1/2 z-50 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-primary/30 bg-dark/80 text-primary-light shadow-xl backdrop-blur-md transition hover:scale-110 hover:bg-primary hover:text-white sm:left-6"
-            >
-              <ChevronRight className="rotate-180" size={22} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveProject((activeProject + 1) % filteredProjects.length)}
-              aria-label="Next project"
-              className="absolute right-2 top-1/2 z-50 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-primary/30 bg-dark/80 text-primary-light shadow-xl backdrop-blur-md transition hover:scale-110 hover:bg-primary hover:text-white sm:right-6"
-            >
-              <ChevronRight size={22} />
-            </button>
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="flex items-center justify-center gap-2" aria-label="Project carousel navigation">
-          {filteredProjects.map((project, index) => (
-            <button key={project.id} type="button" onClick={() => setActiveProject(index)} aria-label={`Show project ${index + 1}`} className={`h-2 rounded-full transition-all duration-300 ${index === activeProject ? "w-8 bg-primary" : "w-2 bg-primary/25 hover:bg-primary/50"}`} />
-          ))}
-        </div>
-
-        {filteredProjects[activeProject] && (
-          <motion.div
-            key={`details-${filteredProjects[activeProject].id}`}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mx-auto mt-6 max-w-2xl rounded-3xl border border-primary/15 bg-white/80 p-5 text-center shadow-lg backdrop-blur-xl dark:bg-dark-card/80 sm:p-7"
-          >
-            <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-dark dark:text-primary-light">
-              {filteredProjects[activeProject].client}
-            </span>
-            <h3 className="mb-2 text-xl font-bold sm:text-2xl">
-              {lang === "en" ? filteredProjects[activeProject].titleEn : filteredProjects[activeProject].titleAr}
-            </h3>
-            <p className="mx-auto mb-4 max-w-xl text-sm leading-relaxed text-gray-600 dark:text-gray-300 sm:text-base">
-              {lang === "en" ? filteredProjects[activeProject].descriptionEn : filteredProjects[activeProject].descriptionAr}
-            </p>
-            <a href={filteredProjects[activeProject].link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-transform hover:-translate-y-0.5">
-              {t.visit}<ExternalLink size={16} />
-            </a>
-          </motion.div>
-        )}
-        </div>)}
-
       </div>
     </section>
   );

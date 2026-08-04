@@ -1,260 +1,536 @@
 'use client'
 
-import { Component, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, useGLTF } from "@react-three/drei";
+import { Environment, Lightformer, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const MODEL_URL = "/models/macbook-pro-14.glb";
-const MODEL_SCALE = 17.25;
+
+/* The rear brand mark of the source model is hidden: the showcase runs on unbranded hardware. */
+const BRAND_MARK_MESH = "FnbkdmFKVeCCxTX";
+
+/* Display plane placement, expressed in the untouched local space of the source model. */
 const SCREEN_POSITION = [0.00008, 0.10231, -0.15686];
 const SCREEN_ROTATION_X = Math.atan(-0.362152);
-const SCREEN_SIZE = [0.294, 0.178];
+/*
+ * The panel covers the whole lid face, not just the active area: the source model exposes a bright
+ * aluminium frame there, and a modern machine shows continuous black glass instead. The bezel is
+ * painted into the same texture so the display keeps one uniform, very thin border.
+ */
+/*
+ * 2% larger than the lid's active area. At exactly the active area the model's aluminium frame
+ * stayed visible as a bright hairline tracing the display, which read as a glowing border once
+ * the panel itself was darkened. The small overlap buries it under the painted bezel.
+ */
+const SCREEN_SIZE = [0.31569, 0.19737];
+const BEZEL_X = 0.025;
+const BEZEL_Y = 0.04;
 
-const projectPalettes = {
-  7: ["#031b2b", "#08758a", "#04141f"],
-  8: ["#080d16", "#5f4211", "#111827"],
-  9: ["#0a0f17", "#51402f", "#182235"],
-  2: ["#22070c", "#8b1625", "#170509"],
-  4: ["#071827", "#0e7490", "#06111c"],
+const SCREEN_TEXTURE_WIDTH = 1100;
+const SCREEN_TEXTURE_HEIGHT = Math.round((SCREEN_TEXTURE_WIDTH * SCREEN_SIZE[1]) / SCREEN_SIZE[0]);
+
+/* Restrained, brand-derived display backgrounds. Each tone is sampled from the project logo itself. */
+const SCREEN_THEMES = {
+  7: { base: "#04202f", deep: "#010c14", glow: "rgba(56,170,205,0.30)", ink: "#eaf4fb" },
+  8: { base: "#08080a", deep: "#000000", glow: "rgba(206,166,86,0.26)", ink: "#f4ead6" },
+  9: { base: "#2a1710", deep: "#120a06", glow: "rgba(196,148,104,0.24)", ink: "#f6ece3" },
+  2: { base: "#150c0d", deep: "#050303", glow: "rgba(209,32,36,0.26)", ink: "#fbeaea" },
+  4: { base: "#05161f", deep: "#01080d", glow: "rgba(41,178,222,0.28)", ink: "#e6f6fd" },
+};
+const DEFAULT_THEME = { base: "#12161c", deep: "#05080b", glow: "rgba(148,163,184,0.22)", ink: "#eef2f6" };
+
+const clamp01 = (value) => Math.min(1, Math.max(0, value));
+const themeFor = (project) => SCREEN_THEMES[project?.id] || DEFAULT_THEME;
+const resolveSource = (source) => (typeof source === "string" ? source : source?.src || "");
+
+/* ---------------------------------------------------------------- screen art */
+
+const roundedRect = (context, x, y, width, height, radius) => {
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.arcTo(x + width, y, x + width, y + height, radius);
+  context.arcTo(x + width, y + height, x, y + height, radius);
+  context.arcTo(x, y + height, x, y, radius);
+  context.arcTo(x, y, x + width, y, radius);
+  context.closePath();
 };
 
-const normalizeAssetSource = (source) => (typeof source === "string" ? source : source?.src || "");
+const paintPanel = (context, width, height, project, image) => {
+  const theme = themeFor(project);
 
-const drawCoverImage = (context, image, centerX, centerY, maxWidth, maxHeight) => {
-  const ratio = Math.min(maxWidth / image.naturalWidth, maxHeight / image.naturalHeight);
-  const width = image.naturalWidth * ratio;
-  const height = image.naturalHeight * ratio;
-  context.drawImage(image, centerX - width / 2, centerY - height / 2, width, height);
+  const backdrop = context.createLinearGradient(0, 0, width * 0.35, height);
+  backdrop.addColorStop(0, theme.base);
+  backdrop.addColorStop(1, theme.deep);
+  context.fillStyle = backdrop;
+  context.fillRect(0, 0, width, height);
+
+  const glow = context.createRadialGradient(width * 0.5, height * 0.42, 0, width * 0.5, height * 0.42, width * 0.52);
+  glow.addColorStop(0, theme.glow);
+  glow.addColorStop(1, "rgba(0,0,0,0)");
+  context.fillStyle = glow;
+  context.fillRect(0, 0, width, height);
+
+  const vignette = context.createRadialGradient(width * 0.5, height * 0.46, width * 0.24, width * 0.5, height * 0.5, width * 0.78);
+  vignette.addColorStop(0, "rgba(0,0,0,0)");
+  vignette.addColorStop(1, "rgba(0,0,0,0.42)");
+  context.fillStyle = vignette;
+  context.fillRect(0, 0, width, height);
+
+  const centerY = height * 0.43;
+  if (image && image.naturalWidth) {
+    const maxWidth = width * 0.4;
+    const maxHeight = height * 0.5;
+    const ratio = Math.min(maxWidth / image.naturalWidth, maxHeight / image.naturalHeight);
+    const drawWidth = image.naturalWidth * ratio;
+    const drawHeight = image.naturalHeight * ratio;
+    context.save();
+    context.shadowColor = "rgba(0,0,0,0.45)";
+    context.shadowBlur = width * 0.03;
+    context.drawImage(image, width * 0.5 - drawWidth / 2, centerY - drawHeight / 2, drawWidth, drawHeight);
+    context.restore();
+  } else {
+    context.fillStyle = theme.ink;
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.font = `700 ${Math.round(width * 0.075)}px "Segoe UI", Inter, Arial, sans-serif`;
+    context.fillText(project?.titleEn || "", width * 0.5, centerY);
+  }
+
+  const label = (project?.titleEn || "").toUpperCase();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.font = `600 ${Math.round(width * 0.031)}px "Segoe UI", Inter, Arial, sans-serif`;
+  context.letterSpacing = `${Math.round(width * 0.009)}px`;
+  context.fillStyle = theme.ink;
+  context.globalAlpha = 0.92;
+  context.fillText(label, width * 0.5, height * 0.78);
+  context.globalAlpha = 1;
+
+  context.strokeStyle = "rgba(255,255,255,0.16)";
+  context.lineWidth = Math.max(1, width * 0.0016);
+  const underlineWidth = Math.min(width * 0.2, context.measureText(label).width * 0.62);
+  context.beginPath();
+  context.moveTo(width * 0.5 - underlineWidth / 2, height * 0.855);
+  context.lineTo(width * 0.5 + underlineWidth / 2, height * 0.855);
+  context.stroke();
+
+  /* Soft off-axis sheen so the panel never reads as a flat sticker. */
+  const sheen = context.createLinearGradient(0, 0, width * 0.7, height);
+  sheen.addColorStop(0, "rgba(255,255,255,0.035)");
+  sheen.addColorStop(0.35, "rgba(255,255,255,0.006)");
+  sheen.addColorStop(1, "rgba(255,255,255,0)");
+  context.fillStyle = sheen;
+  context.fillRect(0, 0, width, height);
 };
 
 const paintScreen = (canvas, project, image) => {
   const context = canvas.getContext("2d");
-  if (!context || !project) return;
-  const [start, glow, end] = projectPalettes[project.id] || projectPalettes[4];
-  const background = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-  background.addColorStop(0, start);
-  background.addColorStop(0.54, glow);
-  background.addColorStop(1, end);
-  context.fillStyle = background;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  if (!context) return;
+  const { width, height } = canvas;
 
-  const vignette = context.createRadialGradient(512, 238, 42, 512, 288, 620);
-  vignette.addColorStop(0, "rgba(255,255,255,0.09)");
-  vignette.addColorStop(0.54, "rgba(255,255,255,0.01)");
-  vignette.addColorStop(1, "rgba(0,0,0,0.62)");
-  context.fillStyle = vignette;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, width, height);
 
-  context.fillStyle = "rgba(255,255,255,0.94)";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  if (image) {
-    drawCoverImage(context, image, 512, 252, 460, 300);
-  } else {
-    context.font = "800 70px Arial, sans-serif";
-    context.fillText(project.titleEn, 512, 258);
-  }
-  context.font = "700 32px Arial, sans-serif";
-  context.fillText(project.titleEn, 512, 468);
+  /* Glass face with the rounded display corners of a modern lid. */
+  context.save();
+  roundedRect(context, 0, 0, width, height, height * 0.062);
+  context.clip();
+  context.fillStyle = "#050608";
+  context.fillRect(0, 0, width, height);
 
-  // The physical model includes the display notch; this keeps the dynamic screen aligned with it.
-  context.fillStyle = "#020306";
-  context.beginPath();
-  context.roundRect(458, -8, 108, 34, 14);
+  const insetX = width * BEZEL_X;
+  const insetY = height * BEZEL_Y;
+  const panelWidth = width - insetX * 2;
+  const panelHeight = height - insetY * 2;
+
+  context.save();
+  roundedRect(context, insetX, insetY, panelWidth, panelHeight, height * 0.028);
+  context.clip();
+  context.translate(insetX, insetY);
+  paintPanel(context, panelWidth, panelHeight, project, image);
+  context.restore();
+
+  /* Camera housing, centred in the top border like the real machine. */
+  context.fillStyle = "#0a0c0f";
+  roundedRect(context, width * 0.455, 0, width * 0.09, insetY * 0.72, insetY * 0.22);
   context.fill();
+  context.fillStyle = "#1b2027";
+  context.beginPath();
+  context.arc(width * 0.5, insetY * 0.36, insetY * 0.13, 0, Math.PI * 2);
+  context.fill();
+
+  context.restore();
 };
 
-const useProjectScreenTexture = (project) => {
-  const [texture, setTexture] = useState(null);
-  const texturesRef = useRef([]);
+const loadImage = (source) =>
+  new Promise((resolve) => {
+    if (!source) {
+      resolve(null);
+      return;
+    }
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.decoding = "async";
+    image.onload = async () => {
+      try {
+        await image.decode();
+      } catch {
+        /* Already-decoded pixels stay valid. */
+      }
+      resolve(image);
+    };
+    image.onerror = () => resolve(null);
+    image.src = source;
+  });
+
+const useScreenTextures = (projects, onReady) => {
+  const [textures, setTextures] = useState(null);
+  const signature = projects.map((project) => `${project.id}:${resolveSource(project.logo)}`).join("|");
 
   useEffect(() => {
     let cancelled = false;
-    const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 576;
-    const finish = (image = null) => {
+    const build = async () => {
+      const images = await Promise.all(projects.map((project) => loadImage(resolveSource(project.logo))));
       if (cancelled) return;
-      paintScreen(canvas, project, image);
-      const nextTexture = new THREE.CanvasTexture(canvas);
-      nextTexture.colorSpace = THREE.SRGBColorSpace;
-      nextTexture.anisotropy = 8;
-      nextTexture.minFilter = THREE.LinearMipmapLinearFilter;
-      nextTexture.magFilter = THREE.LinearFilter;
-      nextTexture.needsUpdate = true;
-      texturesRef.current.push(nextTexture);
-      setTexture(nextTexture);
+      const built = projects.map((project, index) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = SCREEN_TEXTURE_WIDTH;
+        canvas.height = SCREEN_TEXTURE_HEIGHT;
+        paintScreen(canvas, project, images[index]);
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = 8;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.generateMipmaps = true;
+        texture.needsUpdate = true;
+        return texture;
+      });
+      setTextures(built);
+      onReady?.();
     };
-
-    const logoSource = normalizeAssetSource(project?.logo);
-    if (!logoSource) {
-      finish();
-      return () => { cancelled = true; };
-    }
-
-    const image = new Image();
-    image.decoding = "async";
-    image.onload = async () => {
-      try { await image.decode(); } catch { /* Loaded pixels remain valid. */ }
-      finish(image);
+    build();
+    return () => {
+      cancelled = true;
     };
-    image.onerror = () => finish();
-    image.src = logoSource;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature]);
 
-    return () => { cancelled = true; };
-  }, [project]);
+  useEffect(
+    () => () => {
+      textures?.forEach((texture) => texture.dispose());
+    },
+    [textures],
+  );
 
-  useEffect(() => () => texturesRef.current.forEach((item) => item.dispose()), []);
+  return textures;
+};
+
+const makeShadowTexture = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+  const context = canvas.getContext("2d");
+  const gradient = context.createRadialGradient(128, 128, 0, 128, 128, 128);
+  gradient.addColorStop(0, "rgba(0,0,0,0.85)");
+  gradient.addColorStop(0.45, "rgba(0,0,0,0.42)");
+  gradient.addColorStop(0.78, "rgba(0,0,0,0.1)");
+  gradient.addColorStop(1, "rgba(0,0,0,0)");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 256, 256);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 };
 
-const ResponsiveCamera = ({ viewport }) => {
-  const { camera } = useThree();
-  useEffect(() => {
-    const mobile = viewport === "mobile";
-    const tablet = viewport === "tablet";
-    camera.position.set(0, mobile ? 0.76 : 1.05, mobile ? 7.5 : tablet ? 8 : 7.7);
-    camera.fov = mobile ? 41 : 40;
-    camera.near = 0.1;
-    camera.far = 50;
-    camera.lookAt(0, -0.18, 0);
-    camera.updateProjectionMatrix();
-  }, [camera, viewport]);
-  return null;
-};
+/* ---------------------------------------------------------------- model setup */
 
-const LaptopModel = ({ project, activeIndex, travelProgress, total, reduceMotion, onReady }) => {
-  const groupRef = useRef(null);
-  const currentScreenRef = useRef(null);
-  const previousScreenRef = useRef(null);
-  const currentMaterialRef = useRef(null);
-  const previousMaterialRef = useRef(null);
-  const reflectionRef = useRef(null);
-  const transitionStartedRef = useRef(0);
-  const lastProgressRef = useRef(0);
-  const lastMovementAtRef = useRef(0);
+const luminanceOf = (color) => color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722;
+
+const useSpaceBlackModel = () => {
   const { scene } = useGLTF(MODEL_URL, false, true);
-  const model = useMemo(() => scene.clone(true), [scene]);
-  const nextTexture = useProjectScreenTexture(project);
-  const [currentTexture, setCurrentTexture] = useState(null);
-  const [previousTexture, setPreviousTexture] = useState(null);
-  const currentTextureRef = useRef(null);
-  const lastIndex = Math.max(0, total - 1);
 
-  useEffect(() => {
-    model.traverse((object) => {
+  return useMemo(() => {
+    const root = scene.clone(true);
+    /*
+     * Neutral, not blue. The earlier shell colour carried more blue than red, and the studio's
+     * cool key multiplied it, which is what made the chassis read as blue graphite rather than
+     * Space Black. These are measured values: at #3b3a3a the settled chassis sits at a neutral
+     * dark grey and the closed rear lid still resolves as shaped metal instead of a flat hole.
+     */
+    const shell = new THREE.Color("#3b3a3a");
+    const secondary = new THREE.Color("#262525");
+
+    root.traverse((object) => {
       if (!object.isMesh) return;
-      if (object.name === "FnbkdmFKVeCCxTX") {
-        // Remove the source model's rear Apple mark; the portfolio uses unbranded hardware.
+      if (object.name === BRAND_MARK_MESH) {
         object.visible = false;
         return;
       }
-      object.castShadow = true;
-      object.receiveShadow = true;
-      object.frustumCulled = true;
-      object.material = object.material.clone();
-      const material = object.material;
-      const luminance = material?.color
-        ? material.color.r * 0.2126 + material.color.g * 0.7152 + material.color.b * 0.0722
-        : 0;
-      if (material?.isMeshStandardMaterial && luminance > 0.42) {
-        material.metalness = Math.max(0.66, material.metalness || 0);
-        material.roughness = THREE.MathUtils.clamp(material.roughness || 0.38, 0.28, 0.46);
-        material.envMapIntensity = 0.72;
+      object.castShadow = false;
+      object.receiveShadow = false;
+      object.frustumCulled = false;
+      const source = object.material;
+      const material = Array.isArray(source) ? source[0].clone() : source.clone();
+      object.material = material;
+      if (!material.color) return;
+
+      const luminance = luminanceOf(material.color);
+      if (luminance > 0.5) {
+        /*
+         * Bead-blasted Space Black anodising: metal, but broad and soft rather than chrome.
+         * Metalness stays deliberately low. A metal tints its reflections by its own albedo,
+         * so pushing metalness up on a near-black shell drains the reflection along with it
+         * and the rear lid collapses to a silhouette. Keeping it part dielectric preserves an
+         * uncoloured specular that describes the edges while the albedo stays dark.
+         */
+        material.color.copy(shell);
+        material.metalness = 0.35;
+        material.roughness = 0.34;
+        material.envMapIntensity = 1.1;
+      } else if (luminance > 0.12) {
+        material.color.copy(secondary);
+        material.metalness = 0.39;
+        material.roughness = 0.4;
+        material.envMapIntensity = 0.94;
+      } else {
+        material.metalness = Math.max(material.metalness ?? 0, 0.15);
+        material.roughness = THREE.MathUtils.clamp(material.roughness ?? 0.5, 0.26, 0.75);
+        material.envMapIntensity = 0.5;
       }
     });
-    return () => {
-      model.traverse((object) => {
-        if (object.isMesh && object.material?.dispose) object.material.dispose();
-      });
-    };
-  }, [model]);
 
-  useEffect(() => {
-    if (!nextTexture || nextTexture === currentTextureRef.current) return;
-    setPreviousTexture(currentTextureRef.current);
-    setCurrentTexture(nextTexture);
-    currentTextureRef.current = nextTexture;
-    transitionStartedRef.current = performance.now();
-    onReady?.(true);
-  }, [nextTexture, onReady]);
+    const box = new THREE.Box3().setFromObject(root);
+    const size = new THREE.Vector3();
+    const center = new THREE.Vector3();
+    box.getSize(size);
+    box.getCenter(center);
+
+    const metrics = {
+      object: root,
+      fitScale: 1 / size.x,
+      offset: [-center.x, -center.y, -center.z],
+      normalizedHeight: size.y / size.x,
+      normalizedDepth: size.z / size.x,
+    };
+    return metrics;
+  }, [scene]);
+};
+
+/* ---------------------------------------------------------------- camera rig */
+
+const CameraRig = ({ frameWidth, pitch, fov }) => {
+  const { camera, size } = useThree();
+
+  useLayoutEffect(() => {
+    const aspect = Math.max(0.35, size.width / Math.max(1, size.height));
+    const distance = frameWidth / (2 * Math.tan(THREE.MathUtils.degToRad(fov) / 2) * aspect);
+    const radians = THREE.MathUtils.degToRad(pitch);
+    camera.fov = fov;
+    camera.aspect = aspect;
+    camera.near = 0.1;
+    camera.far = 60;
+    camera.position.set(0, Math.sin(radians) * distance, Math.cos(radians) * distance);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+  }, [camera, size.width, size.height, frameWidth, pitch, fov]);
+
+  return null;
+};
+
+/* ---------------------------------------------------------------- laptop */
+
+const Laptop = ({ projects, motion, layout, reduceMotion, onReady }) => {
+  const groupRef = useRef(null);
+  const shadowRef = useRef(null);
+  const currentRef = useRef(null);
+  const previousRef = useRef(null);
+  const sheenRef = useRef(null);
+  const shownRef = useRef(-1);
+  const blendStartedRef = useRef(0);
+  const lastValueRef = useRef(0);
+  const lastMovedRef = useRef(0);
+  const readyRef = useRef(false);
+
+  const model = useSpaceBlackModel();
+  const textures = useScreenTextures(projects, null);
+  const shadowTexture = useMemo(() => makeShadowTexture(), []);
+  useEffect(() => () => shadowTexture.dispose(), [shadowTexture]);
+
+  const lastIndex = Math.max(0, projects.length - 1);
 
   useFrame(({ clock }) => {
     const group = groupRef.current;
-    if (!group) return;
-    const now = performance.now();
-    const value = travelProgress.get();
-    const bounded = Math.min(lastIndex, Math.max(0, value));
-    const segment = Math.min(Math.max(0, Math.floor(bounded)), Math.max(0, lastIndex - 1));
-    const local = bounded >= lastIndex ? 0 : bounded - segment;
-    const transitionLift = Math.sin(Math.PI * local);
-    if (Math.abs(value - lastProgressRef.current) > 0.0002) {
-      lastProgressRef.current = value;
-      lastMovementAtRef.current = now;
+    if (!group || !textures) return;
+
+    if (!readyRef.current) {
+      readyRef.current = true;
+      onReady?.();
     }
-    const idle = !reduceMotion && now - lastMovementAtRef.current > 320;
-    const idleFloat = idle ? Math.sin(clock.elapsedTime * 1.05) * 0.022 : 0;
-    const exactIndex = reduceMotion ? Math.min(lastIndex, Math.max(0, activeIndex)) : bounded;
 
-    group.rotation.y = exactIndex * Math.PI * 2;
-    group.rotation.x = reduceMotion ? 0 : THREE.MathUtils.degToRad(2 - 4 * Math.sin(Math.PI * local) ** 2 + (idle ? Math.sin(clock.elapsedTime * 0.8) * 0.12 : 0));
-    group.rotation.z = reduceMotion ? 0 : THREE.MathUtils.degToRad(transitionLift * (segment % 2 === 0 ? 0.45 : -0.45));
-    group.position.y = -1.43 + transitionLift * 0.095 + idleFloat;
-    const scale = MODEL_SCALE * (1 - transitionLift * 0.026);
-    group.scale.setScalar(scale);
+    const now = performance.now();
+    const travel = THREE.MathUtils.clamp(motion.travel.get(), 0, lastIndex);
+    const entry = clamp01(motion.entry.get());
+    const exit = clamp01(motion.exit.get());
 
-    const blend = reduceMotion ? 1 : THREE.MathUtils.smoothstep((now - transitionStartedRef.current) / 620, 0, 1);
-    if (currentMaterialRef.current) currentMaterialRef.current.opacity = blend;
-    if (previousMaterialRef.current) previousMaterialRef.current.opacity = 1 - blend;
-    if (currentScreenRef.current) currentScreenRef.current.scale.setScalar(0.985 + blend * 0.015);
-    if (previousScreenRef.current) previousScreenRef.current.scale.setScalar(1 + blend * 0.012);
-    if (reflectionRef.current) {
-      reflectionRef.current.position.x = -0.128 + ((clock.elapsedTime * 0.035) % 0.256);
-      reflectionRef.current.material.opacity = reduceMotion ? 0.018 : 0.028 + transitionLift * 0.015;
+    const segment = Math.min(Math.max(0, Math.floor(travel)), Math.max(0, lastIndex - 1));
+    const local = lastIndex === 0 ? 0 : clamp01(travel - segment);
+    const lift = Math.sin(Math.PI * local);
+    const facing = segment % 2 === 0 ? 1 : -1;
+
+    if (Math.abs(travel - lastValueRef.current) > 0.0004) {
+      lastValueRef.current = travel;
+      lastMovedRef.current = now;
+    }
+    const resting = !reduceMotion && now - lastMovedRef.current > 420 && lift < 0.06;
+    const breathe = resting ? Math.sin(clock.elapsedTime * 0.9) : 0;
+
+    /* Horizontal journey: settles beside a project, sweeps to the opposite side between them. */
+    const settledSide = Math.round(travel) % 2 === 0 ? 1 : -1;
+    const startX = layout.offsetX * facing;
+    const positionX = reduceMotion ? layout.offsetX * settledSide : startX - 2 * startX * local;
+    const positionY = lift * layout.arc + breathe * 0.006 - (1 - entry) * 0.3 + exit * 0.55;
+    const positionZ = -lift * layout.depth;
+
+    group.position.set(positionX, positionY, positionZ);
+    group.rotation.y = reduceMotion ? 0 : travel * Math.PI * 2;
+    group.rotation.x = reduceMotion ? 0 : lift * 0.045 + breathe * 0.0035;
+    group.rotation.z = reduceMotion ? 0 : Math.sin(Math.PI * 2 * local) * 0.016 * facing;
+
+    const growth = (1 - lift * 0.05) * (0.9 + 0.1 * entry) * (1 - exit * 0.08);
+    group.scale.setScalar(model.fitScale * growth);
+
+    /* A soft contact pool tracks the device instead of paying for a second render pass. */
+    const shadow = shadowRef.current;
+    if (shadow) {
+      const spread = Math.abs(Math.cos(group.rotation.y)) + Math.abs(Math.sin(group.rotation.y)) * model.normalizedDepth;
+      /*
+       * The sprite has to stay comfortably inside the framed width. It only reads as a shadow
+       * because of the transparent rim of its gradient; once the sprite is wider than the frame
+       * that rim falls outside the canvas and all that remains on screen is a flat tint covering
+       * the whole canvas rectangle, with a hard edge exactly at the canvas bounds. Mobile frames
+       * the least world width, so that is where it showed: the sprite was 1.6 units across a
+       * 1.3 unit frame. Clamping against frameWidth keeps the falloff on screen at every
+       * breakpoint without needing a per-breakpoint constant.
+       */
+      const reach = Math.min(spread * growth * 1.35, layout.frameWidth * 0.8);
+      shadow.position.set(positionX, positionY - model.normalizedHeight * 0.5 * growth - 0.03, positionZ + model.normalizedDepth * 0.2);
+      shadow.scale.set(reach, Math.min(model.normalizedDepth * growth * 1.9, layout.frameWidth * 0.55), 1);
+      shadow.material.opacity = (0.46 - lift * 0.22) * entry * (1 - exit);
+    }
+
+    /* The panel changes only while the lid faces away from the viewer. */
+    const nextIndex = THREE.MathUtils.clamp(Math.round(travel), 0, lastIndex);
+    if (nextIndex !== shownRef.current) {
+      const current = currentRef.current;
+      const previous = previousRef.current;
+      if (current && previous) {
+        if (shownRef.current >= 0) {
+          previous.material.map = current.material.map;
+          previous.material.emissiveMap = current.material.emissiveMap;
+          previous.material.needsUpdate = true;
+        }
+        current.material.map = textures[nextIndex];
+        current.material.emissiveMap = textures[nextIndex];
+        current.material.needsUpdate = true;
+        blendStartedRef.current = now;
+      }
+      shownRef.current = nextIndex;
+    }
+
+    const blend = reduceMotion ? THREE.MathUtils.smoothstep((now - blendStartedRef.current) / 420, 0, 1) : 1;
+    if (currentRef.current) currentRef.current.material.opacity = blend;
+    if (previousRef.current) previousRef.current.material.opacity = 1 - blend;
+
+    if (sheenRef.current) {
+      sheenRef.current.position.x = -0.115 + ((clock.elapsedTime * 0.028) % 0.23);
+      sheenRef.current.material.opacity = reduceMotion ? 0.012 : 0.018 + lift * 0.012;
     }
   });
 
   return (
-    <group ref={groupRef} scale={MODEL_SCALE} position={[0, -1.43, 0]}>
-      <primitive object={model} />
-      <group position={SCREEN_POSITION} rotation={[SCREEN_ROTATION_X, 0, 0]}>
-        {previousTexture && (
-          <mesh ref={previousScreenRef} position={[0, 0, 0.0007]} renderOrder={3}>
-            <planeGeometry args={SCREEN_SIZE} />
-            <meshStandardMaterial ref={previousMaterialRef} map={previousTexture} emissiveMap={previousTexture} emissive="#ffffff" emissiveIntensity={0.34} transparent opacity={1} roughness={0.16} metalness={0.01} toneMapped />
-          </mesh>
-        )}
-        {currentTexture && (
-          <mesh ref={currentScreenRef} position={[0, 0, 0.0009]} renderOrder={4}>
-            <planeGeometry args={SCREEN_SIZE} />
-            <meshStandardMaterial ref={currentMaterialRef} map={currentTexture} emissiveMap={currentTexture} emissive="#ffffff" emissiveIntensity={0.34} transparent opacity={1} roughness={0.16} metalness={0.01} toneMapped />
-          </mesh>
-        )}
-        <mesh ref={reflectionRef} position={[-0.128, 0.004, 0.00115]} rotation={[0, 0, -0.2]} renderOrder={5}>
-          <planeGeometry args={[0.025, 0.165]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.03} depthWrite={false} blending={THREE.AdditiveBlending} />
-        </mesh>
+    <>
+      <group ref={groupRef}>
+        <group position={model.offset}>
+          <primitive object={model.object} />
+          <group position={SCREEN_POSITION} rotation={[SCREEN_ROTATION_X, 0, 0]}>
+            {/*
+              * The panel is fully matte and takes no environment. A glossy display material
+              * gathered a specular sheet from the five studio lights and the bounce card, which
+              * washed the artwork out to pale grey and buried the project logo. The screen is a
+              * light source, not a mirror: the emissive map alone carries it, and the thin sheen
+              * plane below supplies the one glass reflection that reads as real.
+              */}
+            <mesh ref={previousRef} position={[0, 0, 0.0007]} renderOrder={3}>
+              <planeGeometry args={SCREEN_SIZE} />
+              <meshStandardMaterial
+                emissive="#ffffff"
+                emissiveIntensity={1}
+                envMapIntensity={0}
+                color="#000000"
+                transparent
+                opacity={0}
+                roughness={1}
+                metalness={0}
+              />
+            </mesh>
+            <mesh ref={currentRef} position={[0, 0, 0.0009]} renderOrder={4}>
+              <planeGeometry args={SCREEN_SIZE} />
+              <meshStandardMaterial
+                emissive="#ffffff"
+                emissiveIntensity={1}
+                envMapIntensity={0}
+                color="#000000"
+                transparent
+                opacity={1}
+                roughness={1}
+                metalness={0}
+              />
+            </mesh>
+            <mesh ref={sheenRef} position={[-0.115, 0.006, 0.0012]} rotation={[0, 0, -0.19]} renderOrder={5}>
+              <planeGeometry args={[0.03, 0.2]} />
+              <meshBasicMaterial color="#ffffff" transparent opacity={0.018} depthWrite={false} blending={THREE.AdditiveBlending} />
+            </mesh>
+          </group>
+        </group>
       </group>
-    </group>
+
+      <mesh ref={shadowRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.32, 0]}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={shadowTexture} transparent opacity={0.45} depthWrite={false} />
+      </mesh>
+    </>
   );
 };
 
-const LaptopFallback = ({ project, linkLabel }) => {
-  const [start, glow, end] = projectPalettes[project.id] || projectPalettes[4];
-  const logoSource = normalizeAssetSource(project.logo);
-  return (
-    <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={linkLabel} className="pointer-events-auto absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-      <img src="/models/laptop-poster.png" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-contain" />
-      <span className="absolute left-[20%] right-[20%] top-[13%] flex h-[47%] flex-col items-center justify-center gap-2 overflow-hidden bg-slate-950 px-4 text-center" style={{ background: `radial-gradient(circle at 50% 42%, ${glow} 0%, ${start} 50%, ${end} 100%)` }}>
-        {logoSource ? <img src={logoSource} alt="" aria-hidden="true" className="max-h-[62%] max-w-[58%] object-contain" /> : <strong className="text-lg text-white sm:text-3xl">{project.titleEn}</strong>}
-        <span className="text-[9px] font-bold text-white sm:text-sm">{project.titleEn}</span>
-      </span>
-    </a>
-  );
-};
+/* ---------------------------------------------------------------- studio */
 
-class WebGLErrorBoundary extends Component {
+const Studio = ({ quality }) => (
+  <>
+    <ambientLight intensity={0.09} color="#a9adb3" />
+    <directionalLight position={[-2.4, 3.4, 2.8]} intensity={0.8} color="#fff4e6" />
+    <directionalLight position={[3.2, 1.6, 2.2]} intensity={0.3} color="#e6eefb" />
+    <directionalLight position={[0, 2.2, -3.4]} intensity={0.5} color="#c3cfdd" />
+    {/* Camera-side key so the closed rear lid still reads as shaped metal when it faces the viewer. */}
+    <directionalLight position={[-1.6, 2, 5.5]} intensity={1.15} color="#eef3fb" />
+    <Environment resolution={quality === "low" ? 96 : 192} frames={1}>
+      <color attach="background" args={["#0b0e13"]} />
+      {/* A softbox above and two wrap panels: the classic product-photography set. */}
+      <Lightformer form="rect" intensity={2.8} position={[-0.4, 3.4, 1.6]} rotation={[-Math.PI / 2.1, 0, 0]} scale={[4, 1.7, 1]} color="#ffffff" />
+      <Lightformer form="rect" intensity={1.5} position={[-3.6, 1.2, 1.6]} rotation={[0, Math.PI / 2.3, 0]} scale={[3.4, 3.2, 1]} color="#eef3ff" />
+      <Lightformer form="rect" intensity={1.2} position={[3.6, 0.8, 1.4]} rotation={[0, -Math.PI / 2.3, 0]} scale={[3.4, 2.8, 1]} color="#fff0dc" />
+      <Lightformer form="rect" intensity={0.9} position={[0, 0.6, -3.8]} rotation={[0, Math.PI, 0]} scale={[6, 2.6, 1]} color="#aab8c8" />
+      <Lightformer form="circle" intensity={0.35} position={[1.4, -2.6, 1.2]} rotation={[Math.PI / 2, 0, 0]} scale={[3, 3, 1]} color="#39424e" />
+      {/* Bounce card behind the camera: without it the closed rear lid reflects nothing at 180 degrees. */}
+      <Lightformer form="rect" intensity={2.6} position={[-0.9, 1.6, 6]} scale={[8, 5, 1]} color="#e8eef7" />
+      <Lightformer form="rect" intensity={1.5} position={[2.8, -0.8, 5.4]} scale={[4, 3.4, 1]} color="#b9c6d6" />
+    </Environment>
+  </>
+);
+
+/* ---------------------------------------------------------------- shell */
+
+class RenderErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { failed: false };
@@ -264,64 +540,82 @@ class WebGLErrorBoundary extends Component {
     return { failed: true };
   }
 
+  componentDidCatch() {
+    this.props.onFail?.();
+  }
+
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
+    return this.state.failed ? null : this.props.children;
   }
 }
 
-const supportsWebGL = () => {
+let webGLSupport = null;
+const detectWebGL = () => {
+  if (webGLSupport !== null) return webGLSupport;
   try {
     const canvas = document.createElement("canvas");
-    return Boolean(window.WebGL2RenderingContext && canvas.getContext("webgl2")) || Boolean(canvas.getContext("webgl"));
+    const context = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    webGLSupport = Boolean(context);
+    const lose = context?.getExtension?.("WEBGL_lose_context");
+    lose?.loseContext?.();
   } catch {
-    return false;
+    webGLSupport = false;
   }
+  return webGLSupport;
 };
 
-const PortfolioLaptop3D = ({ project, activeIndex, travelProgress, total, viewport, reduceMotion, isVisible, linkLabel }) => {
-  const [ready, setReady] = useState(false);
-  const [webGLAvailable, setWebGLAvailable] = useState(null);
+/*
+ * frameWidth is the world width the camera frames, and the device is exactly one unit wide,
+ * so every ratio below is resolution independent. A long focal length (small fov) keeps the
+ * side and rear angles free of the wide-angle stretch a close camera would introduce.
+ */
+/* Stable identity so React Three Fiber applies it once and leaves the rig in control afterwards. */
+const INITIAL_CAMERA = { fov: 15, near: 0.1, far: 60, position: [0, 1, 4.6] };
+
+const LAYOUTS = {
+  desktop: { frameWidth: 2.85, offsetX: 0.62, arc: 0.09, depth: 0.52, pitch: 13, fov: 15 },
+  tablet: { frameWidth: 2.15, offsetX: 0.36, arc: 0.08, depth: 0.44, pitch: 12.5, fov: 17 },
+  /*
+   * offsetX is 0 on mobile on purpose. The device stacks above the copy rather than sitting beside
+   * it, so there is no column to alternate around: it stays centred through the whole journey and
+   * only turns. Any non-zero offset here just reads as the laptop drifting off-centre.
+   */
+  mobile: { frameWidth: 1.3, offsetX: 0, arc: 0.045, depth: 0.24, pitch: 11, fov: 21 },
+};
+
+const PortfolioLaptop3D = ({ projects, motion, viewport, reduceMotion, active, onReady, onUnavailable }) => {
+  const [supported] = useState(() => (typeof window === "undefined" ? false : detectWebGL()));
   const mobile = viewport === "mobile";
+  const layout = LAYOUTS[viewport] || LAYOUTS.desktop;
 
-  useEffect(() => setWebGLAvailable(supportsWebGL()), []);
+  useEffect(() => {
+    if (!supported) onUnavailable?.();
+  }, [supported, onUnavailable]);
 
-  const fallback = <LaptopFallback project={project} linkLabel={linkLabel} />;
+  if (!supported || !projects.length) return null;
+
   return (
-    <div className="relative aspect-[1.42] w-full" data-real-3d-laptop data-model-source={MODEL_URL}>
-      <img src="/models/laptop-poster.png" alt="" aria-hidden="true" className={`pointer-events-none absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ${ready ? "opacity-0" : "opacity-100"}`} />
-      {webGLAvailable === false && fallback}
-      {webGLAvailable && (
-        <WebGLErrorBoundary fallback={fallback}>
-          <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={linkLabel} className="pointer-events-auto absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-            <Canvas
-              className={`transition-opacity duration-500 ${ready ? "opacity-100" : "opacity-0"}`}
-              shadows="basic"
-              dpr={mobile ? [1, 1.2] : [1, 1.5]}
-              frameloop={isVisible ? "always" : "never"}
-              camera={{ fov: mobile ? 41 : 40, near: 0.1, far: 50, position: [0, mobile ? 0.76 : 1.05, mobile ? 7.5 : 7.7] }}
-              gl={{ alpha: true, antialias: !mobile, powerPreference: "high-performance", preserveDrawingBuffer: false }}
-              onCreated={({ gl }) => {
-                gl.setClearColor(0x000000, 0);
-                gl.outputColorSpace = THREE.SRGBColorSpace;
-                gl.toneMapping = THREE.ACESFilmicToneMapping;
-                gl.toneMappingExposure = 1.04;
-              }}
-            >
-              <Suspense fallback={null}>
-                <ResponsiveCamera viewport={viewport} />
-                <ambientLight intensity={0.34} color="#dbeafe" />
-                <directionalLight position={[-4.8, 7.5, 6.5]} intensity={2.4} color="#fff7ed" castShadow shadow-mapSize-width={mobile ? 256 : 512} shadow-mapSize-height={mobile ? 256 : 512} shadow-bias={-0.00018} />
-                <directionalLight position={[5.5, 3, 3]} intensity={1.05} color="#dbeafe" />
-                <spotLight position={[0, 6, -5]} intensity={1.6} color="#ffffff" angle={0.58} penumbra={0.92} />
-                <Environment preset="studio" resolution={mobile ? 32 : 64} environmentIntensity={0.5} />
-                <LaptopModel project={project} activeIndex={activeIndex} travelProgress={travelProgress} total={total} reduceMotion={reduceMotion} onReady={setReady} />
-                <ContactShadows position={[0, -1.64, 0.25]} opacity={0.48} scale={7.8} blur={2.3} far={3.8} resolution={mobile ? 128 : 256} color="#020617" frames={isVisible ? Infinity : 1} />
-              </Suspense>
-            </Canvas>
-          </a>
-        </WebGLErrorBoundary>
-      )}
-    </div>
+    <RenderErrorBoundary onFail={onUnavailable}>
+      <Canvas
+        className="!absolute inset-0"
+        dpr={mobile ? [1, 1.25] : [1, 1.6]}
+        frameloop={active ? "always" : "never"}
+        gl={{ alpha: true, antialias: !mobile, powerPreference: "high-performance", failIfMajorPerformanceCaveat: false }}
+        camera={INITIAL_CAMERA}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x000000, 0);
+          gl.outputColorSpace = THREE.SRGBColorSpace;
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 1.02;
+        }}
+      >
+        <Suspense fallback={null}>
+          <CameraRig frameWidth={layout.frameWidth} pitch={layout.pitch} fov={layout.fov} />
+          <Studio quality={mobile ? "low" : "high"} />
+          <Laptop projects={projects} motion={motion} layout={layout} reduceMotion={reduceMotion} onReady={onReady} />
+        </Suspense>
+      </Canvas>
+    </RenderErrorBoundary>
   );
 };
 
