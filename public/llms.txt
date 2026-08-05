@@ -75,8 +75,8 @@ DoGether is a software company headquartered in Fayoum and Cairo, providing web 
 
 ## Portfolio / أعمالنا
 
-- **Chicken One (تشيكن ون)** — موقع شركة لمجموعة الزعوي — chicken-one.com
-- **El Zawy Stores (نيو الزعوي)** — متجر إلكتروني — elzawy-new.com
+- **Chicken One (تشيكن ون)** — موقع شركة لمجموعة الزاوي — chicken-one.com
+- **El Zawy Stores (نيو الزاوي)** — متجر إلكتروني — elzawy-new.com
 - **Fateer wi 3asal (فطير وعسل)** — منصة طلب طعام — fateerwasal.com
 - **Sharm Kite Surf** — منصة حجز رياضات مائية — sharmkitesurf.com
 - **Aruqah (أروقة)** — منصة عقارية

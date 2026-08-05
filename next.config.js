@@ -17,8 +17,14 @@ const nextConfig = {
         { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
       ],
     },
+    /*
+     * The 3D model belongs in this rule as much as any image does — it is the single largest
+     * static asset the site serves, and it changes only when the file itself is replaced. It was
+     * the one heavy asset falling through to the default cache policy, so every return visitor
+     * was re-downloading it.
+     */
     {
-      source: '/(.*)\\.(png|jpg|jpeg|gif|svg|ico|webp|avif)',
+      source: '/(.*)\\.(png|jpg|jpeg|gif|svg|ico|webp|avif|glb|gltf|bin)',
       headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
     },
     {

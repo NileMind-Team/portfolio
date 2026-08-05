@@ -45,7 +45,13 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    /*
+     * passive tells the browser up front that this listener will never call preventDefault, so it
+     * can start scrolling immediately instead of waiting to see whether the handler cancels the
+     * gesture. Without it every scroll on a touch device pays that wait, which is felt as the page
+     * lagging a finger drag. The handler only reads scrollY, so the promise is safe to make.
+     */
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -73,11 +79,13 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0"
-          >
+          {/*
+            * The logo is marked `priority`, which tells Next to preload it as one of the first
+            * things on the page — and then the wrapper shipped `opacity: 0` around it and waited
+            * for hydration to reveal it. The two instructions worked against each other: the image
+            * arrived early and sat invisible. The fade is CSS now, so the preload actually pays off.
+            */}
+          <div className="flex-shrink-0 motion-safe:animate-hero-enter">
             <a href="#home" className="no-underline">
               <div className="w-14 h-14 sm:w-16 sm:h-16 relative">
                 <Image
@@ -89,7 +97,7 @@ const Navbar = ({ lang, setLang, darkMode, setDarkMode }) => {
                 />
               </div>
             </a>
-          </motion.div>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center">

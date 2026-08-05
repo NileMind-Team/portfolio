@@ -28,6 +28,24 @@ module.exports = {
         "gradient-x": "gradient-x 15s ease infinite",
         "pulse-slow": "pulse 3s ease-in-out infinite",
         "spin-slow": "spin 3s linear infinite",
+        /*
+         * Entry animations for above-the-fold content, in CSS rather than in JavaScript.
+         * `backwards` fill is the whole point: it applies the `from` frame during the delay, so a
+         * staggered element is styled by the animation itself and never needs an inline
+         * `opacity: 0` baked into the HTML waiting for a script to lift it.
+         */
+        "hero-enter": "hero-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards",
+        "hero-rise": "hero-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards",
+      },
+      keyframes: {
+        "hero-enter": {
+          from: { opacity: "0", transform: "translateY(14px)" },
+          to: { opacity: "1", transform: "none" },
+        },
+        "hero-rise": {
+          from: { opacity: "0", transform: "translateY(18px) scale(0.98)" },
+          to: { opacity: "1", transform: "none" },
+        },
       },
       screens: {
         xs: "375px",

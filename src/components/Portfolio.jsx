@@ -5,13 +5,19 @@ import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
-import logo from "../assets/logo1.png";
-import logo1 from "../assets/logo2.png";
-import logo2 from "../assets/logo3.png";
-import logo3 from "../assets/logo4.png";
-import logo4 from "../assets/logo5.png";
+/*
+ * WebP, and capped at 640px wide. These marks exist to be painted onto the laptop panel, where the
+ * widest one is drawn at 40% of an 1100px canvas — about 440px. The PNG originals were up to
+ * 1254px and 1.4MB, so the page was carrying several times the pixels it could ever show. They are
+ * reachable at runtime: picking a category filter rebuilds the showcase from the filtered list, so
+ * any project here can end up on the panel, not just the five featured by default.
+ */
+import logo from "../assets/logo1.webp";
+import logo2 from "../assets/logo3.webp";
+import logo3 from "../assets/logo4.webp";
+import logo4 from "../assets/logo5.webp";
 import heroImage from "../assets/hero.jpeg";
-import sharmLogo from "../assets/sharm-kitesurf.png";
+import sharmLogo from "../assets/sharm-kitesurf.webp";
 import tripyramidsHero from "../../public/tripyramids-hero.jpg";
 import amjadEstateHero from "../../public/amjad-estate-hero.jpg";
 
@@ -259,6 +265,7 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
   const sceneRefs = useRef([]);
   const activeRef = useRef(0);
   const metricsRef = useRef({ anchors: [], entryStart: 0, exitEnd: 1 });
+  const staleRef = useRef(true);
 
   const [mounted, setMounted] = useState(false);
   const [viewport, setViewport] = useState("desktop");
@@ -286,11 +293,16 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
   }, []);
 
   /*
-   * Waypoints are read from layout on every frame rather than cached. Fonts, images and lazy
-   * sections all shift this page after mount, and a cached measurement silently desynchronises
-   * the device from the copy when that happens.
+   * Waypoints describe where the section sits in the document, which only changes when the page is
+   * relaid out — never as a consequence of scrolling. Measuring them inside the scroll handler
+   * meant six getBoundingClientRect calls per scroll event, each one forcing the browser to flush
+   * pending layout before it could answer. That is the classic layout-thrash pattern, and on a page
+   * this size it is what made the section feel heavy even on machines whose GPU was coping fine
+   * with the 3D. The measurement is cached instead, and invalidated by the things that can
+   * genuinely move it: viewport resize, and any resize of the journey or of the document itself,
+   * which is what fonts, images and lazily mounted sections settling actually produce.
    */
-  const readWaypoints = useCallback(() => {
+  const measureWaypoints = useCallback(() => {
     const journey = journeyRef.current;
     const nodes = sceneRefs.current.slice(0, total).filter(Boolean);
     if (!journey || !total || nodes.length !== total) return null;
@@ -309,8 +321,15 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
       exitEnd: Math.max(anchors[total - 1] + 1, journeyBottom - viewportHeight * 0.35),
     };
     metricsRef.current = metrics;
+    staleRef.current = false;
     return metrics;
   }, [total]);
+
+  /* Re-measures only when something has marked the cache stale; otherwise it costs nothing. */
+  const readWaypoints = useCallback(() => {
+    if (!staleRef.current && metricsRef.current.anchors.length === total) return metricsRef.current;
+    return measureWaypoints();
+  }, [measureWaypoints, total]);
 
   const applyScroll = useCallback(
     (position) => {
@@ -365,24 +384,52 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
 
   useEffect(() => {
     /*
-     * Scroll events are already coalesced to one per frame, and the measurement below is a handful
-     * of rect reads, so it runs inline. Deferring it to requestAnimationFrame made the device lag
-     * the page whenever the browser throttled frames.
+     * Scroll events are already coalesced to one per frame, and with the waypoints cached the
+     * handler is now pure arithmetic against numbers already in memory, so it runs inline.
+     * Deferring it to requestAnimationFrame made the device lag the page whenever the browser
+     * throttled frames.
      */
     const schedule = () => applyScroll(window.scrollY);
+    const remeasure = () => {
+      staleRef.current = true;
+      schedule();
+    };
 
-    schedule();
+    remeasure();
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    window.addEventListener("load", schedule);
+    window.addEventListener("resize", remeasure, { passive: true });
+    window.addEventListener("load", remeasure);
     /* Late layout shifts (fonts, images, lazy sections) land within the first few seconds. */
-    const settleTimers = [120, 400, 900, 1800, 3200].map((delay) => window.setTimeout(schedule, delay));
+    const settleTimers = [120, 400, 900, 1800, 3200].map((delay) => window.setTimeout(remeasure, delay));
+
+    /*
+     * The safety net for everything the timers above cannot predict: a lazy section further down
+     * mounting, an image finally arriving, the user opening a details block. Any of those changes
+     * the document height, which is exactly what invalidates the cached anchors — and observing it
+     * costs nothing until it happens, unlike measuring on every scroll event in case it did.
+     */
+    let observer = null;
+    let pending = 0;
+    if (typeof ResizeObserver !== "undefined") {
+      /* Deferred by a frame so the re-read happens outside the observer's own delivery pass. */
+      observer = new ResizeObserver(() => {
+        if (pending) return;
+        pending = window.requestAnimationFrame(() => {
+          pending = 0;
+          remeasure();
+        });
+      });
+      observer.observe(document.documentElement);
+      if (journeyRef.current) observer.observe(journeyRef.current);
+    }
 
     return () => {
+      if (pending) window.cancelAnimationFrame(pending);
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      window.removeEventListener("load", schedule);
+      window.removeEventListener("resize", remeasure);
+      window.removeEventListener("load", remeasure);
       settleTimers.forEach((timer) => window.clearTimeout(timer));
+      observer?.disconnect();
     };
   }, [applyScroll, projectsKey, viewport]);
 
@@ -404,14 +451,15 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
   const goToProject = useCallback(
     (requested) => {
       const target = Math.min(lastIndex, Math.max(0, requested));
-      const anchor = (readWaypoints() || metricsRef.current).anchors[target];
+      /* A deliberate jump is rare and must land exactly, so it always measures rather than caching. */
+      const anchor = (measureWaypoints() || metricsRef.current).anchors[target];
       if (Number.isFinite(anchor)) {
         window.scrollTo({ top: anchor, behavior: reduceMotion ? "auto" : "smooth" });
       } else {
         sceneRefs.current[target]?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
       }
     },
-    [lastIndex, readWaypoints, reduceMotion],
+    [lastIndex, measureWaypoints, reduceMotion],
   );
 
   if (!total) return null;
@@ -553,14 +601,23 @@ const PortfolioJourney = ({ projects, activeIndex, setActiveIndex, lang, visitLa
               travel={travel}
             />
           ))}
-          <div className="flex h-[26svh] items-end justify-center pb-2 md:h-[24vh] md:pb-4">
-            <a
-              href="/work"
-              className="relative z-30 inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-primary/10 px-7 py-3 text-sm font-bold text-primary-dark backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light"
-            >
-              {viewAllLabel}
-            </a>
-          </div>
+        </div>
+
+        {/*
+          * This sits outside the scenes container on purpose. The scenes are in a `z-10` stacking
+          * context, so a `z-30` on the link itself is trapped inside it and can never rise above
+          * the sticky stage at `z-20` — and the stage carries the invisible "Visit Website" hotspot,
+          * 40% of the stage wide with pointer-events enabled, which settled right over part of this
+          * button and swallowed the clicks. Giving the button its own wrapper at the journey level
+          * puts it genuinely above the stage.
+          */}
+        <div className="relative z-30 flex h-[26svh] items-end justify-center pb-2 md:h-[24vh] md:pb-4">
+          <a
+            href="/work"
+            className="inline-flex min-h-12 items-center rounded-full border border-primary/25 bg-primary/10 px-7 py-3 text-sm font-bold text-primary-dark backdrop-blur-md transition hover:border-primary/50 hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:text-primary-light"
+          >
+            {viewAllLabel}
+          </a>
         </div>
       </div>
     </div>
@@ -624,7 +681,7 @@ const Portfolio = ({ lang }) => {
       id: 1,
       category: "website",
       titleEn: "Chicken One - ElZawy",
-      titleAr: "تشيكن ون - الزعوي",
+      titleAr: "تشيكن ون - الزاوي",
       descriptionEn: "Modern corporate website with responsive design and smooth user experience",
       descriptionAr: "موقع شركة عصري بتصميم متجاوب وتجربة مستخدم سلسة",
       logo: logo,
@@ -642,12 +699,17 @@ const Portfolio = ({ lang }) => {
       id: 2,
       category: "website",
       titleEn: "New - ElZawy",
-      titleAr: "نيو - الزعوي",
+      titleAr: "نيو - الزاوي",
       descriptionEn: "Complete e-commerce platform with product management and shopping cart",
       caseStudyEn: "We delivered a complete storefront with catalog management, cart, secure checkout and an admin-ready workflow.",
       caseStudyAr: "نفّذنا متجرًا متكاملًا لإدارة المنتجات والسلة والدفع الآمن مع تجربة جاهزة للإدارة والتوسع.",
       descriptionAr: "منصة تجارة إلكترونية متكاملة مع إدارة المنتجات وسلة التسوق",
-      logo: logo1,
+      /*
+       * This is the one showcase project with no site capture of its own, so its logo is what the
+       * laptop panel actually paints. It was a 966px PNG at 652KB — nine times the weight of the
+       * same mark as WebP, downloaded on the critical path of the 3D scene.
+       */
+      logo: "/project-logos/elzawy-new.webp",
       preview: "/project-screens/elzawy-new.png",
       color: "from-[#D10003] to-[#FF5252]",
       tagsEn: ["E-commerce", "Shopping", "Products"],

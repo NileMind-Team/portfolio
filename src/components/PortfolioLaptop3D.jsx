@@ -27,8 +27,17 @@ const SCREEN_SIZE = [0.31569, 0.19737];
 const BEZEL_X = 0.025;
 const BEZEL_Y = 0.04;
 
+/*
+ * Panel resolution is chosen per breakpoint rather than fixed, because it is paid for twice: once
+ * as main-thread canvas painting when the section is approached, and again as GPU memory for the
+ * mipmap chain of five panels. A mobile stage frames the device at roughly a sixth of the width a
+ * desktop stage does, so 1100px there is between four and five times more texture than the panel
+ * can ever resolve — it bought nothing and cost the frame budget on exactly the machines with the
+ * least of it.
+ */
 const SCREEN_TEXTURE_WIDTH = 1100;
-const SCREEN_TEXTURE_HEIGHT = Math.round((SCREEN_TEXTURE_WIDTH * SCREEN_SIZE[1]) / SCREEN_SIZE[0]);
+const SCREEN_TEXTURE_WIDTH_MOBILE = 640;
+const panelHeightFor = (width) => Math.round((width * SCREEN_SIZE[1]) / SCREEN_SIZE[0]);
 
 /* Restrained, brand-derived display backgrounds. Each tone is sampled from the project logo itself. */
 const SCREEN_THEMES = {
@@ -39,6 +48,20 @@ const SCREEN_THEMES = {
   4: { base: "#05161f", deep: "#01080d", glow: "rgba(41,178,222,0.28)", ink: "#e6f6fd" },
 };
 const DEFAULT_THEME = { base: "#12161c", deep: "#05080b", glow: "rgba(148,163,184,0.22)", ink: "#eef2f6" };
+
+/*
+ * The real site on the real screen. Keyed by project id and kept next to the themes rather than
+ * pushed into the project data, because this is presentation for this one component: the themes
+ * below still matter as the backdrop for any project that has no capture yet, and as the tone the
+ * panel falls back to if a capture fails to load.
+ */
+const SCREEN_SHOTS = {
+  7: "/project-screens/sharm.webp",
+  8: "/project-screens/tripyramids.webp",
+  9: "/project-screens/amjad-estate.webp",
+  4: "/project-screens/cashier.webp",
+  /* New - الزاوي has no capture of its own, so it keeps the logo treatment below. */
+};
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const themeFor = (project) => SCREEN_THEMES[project?.id] || DEFAULT_THEME;
@@ -56,9 +79,39 @@ const roundedRect = (context, x, y, width, height, radius) => {
   context.closePath();
 };
 
-const paintPanel = (context, width, height, project, image) => {
+const paintPanel = (context, width, height, project, shot, logo) => {
   const theme = themeFor(project);
 
+  /*
+   * A capture of the live site, filling the panel edge to edge. The captures are wide desktop
+   * viewports (about 2.2:1) and the lid is 16:10, so the geometry forces a choice: crop the sides,
+   * or match the width and leave a band. The band was tried and it reads as a broken image — half a
+   * screen switched off — so the sides go instead. That is also what genuinely happens: a page laid
+   * out for a wide monitor and then opened on a 16:10 laptop does lose its edges.
+   */
+  if (shot && shot.naturalWidth) {
+    const scale = Math.max(width / shot.naturalWidth, height / shot.naturalHeight);
+    const drawWidth = shot.naturalWidth * scale;
+    const drawHeight = shot.naturalHeight * scale;
+    context.drawImage(shot, (width - drawWidth) / 2, 0, drawWidth, drawHeight);
+
+    /* Just enough falloff at the edges that the panel sits in the lid instead of floating on it. */
+    const edge = context.createRadialGradient(width * 0.5, height * 0.45, width * 0.3, width * 0.5, height * 0.5, width * 0.78);
+    edge.addColorStop(0, "rgba(0,0,0,0)");
+    edge.addColorStop(1, "rgba(0,0,0,0.34)");
+    context.fillStyle = edge;
+    context.fillRect(0, 0, width, height);
+
+    const gloss = context.createLinearGradient(0, 0, width * 0.7, height);
+    gloss.addColorStop(0, "rgba(255,255,255,0.05)");
+    gloss.addColorStop(0.4, "rgba(255,255,255,0.008)");
+    gloss.addColorStop(1, "rgba(255,255,255,0)");
+    context.fillStyle = gloss;
+    context.fillRect(0, 0, width, height);
+    return;
+  }
+
+  const image = logo;
   const backdrop = context.createLinearGradient(0, 0, width * 0.35, height);
   backdrop.addColorStop(0, theme.base);
   backdrop.addColorStop(1, theme.deep);
@@ -124,7 +177,7 @@ const paintPanel = (context, width, height, project, image) => {
   context.fillRect(0, 0, width, height);
 };
 
-const paintScreen = (canvas, project, image) => {
+const paintScreen = (canvas, project, shot, logo) => {
   const context = canvas.getContext("2d");
   if (!context) return;
   const { width, height } = canvas;
@@ -147,7 +200,7 @@ const paintScreen = (canvas, project, image) => {
   roundedRect(context, insetX, insetY, panelWidth, panelHeight, height * 0.028);
   context.clip();
   context.translate(insetX, insetY);
-  paintPanel(context, panelWidth, panelHeight, project, image);
+  paintPanel(context, panelWidth, panelHeight, project, shot, logo);
   context.restore();
 
   /* Camera housing, centred in the top border like the real machine. */
@@ -183,29 +236,61 @@ const loadImage = (source) =>
     image.src = source;
   });
 
-const useScreenTextures = (projects, onReady) => {
+/* Hands the main thread back between panels so five paints never land as one long task. */
+const yieldToBrowser = () =>
+  new Promise((resolve) => {
+    if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(() => resolve(), { timeout: 60 });
+    else window.setTimeout(resolve, 0);
+  });
+
+const useScreenTextures = (projects, mobile, onReady) => {
   const [textures, setTextures] = useState(null);
-  const signature = projects.map((project) => `${project.id}:${resolveSource(project.logo)}`).join("|");
+  const signature = `${mobile ? "m" : "d"}|${projects.map((project) => `${project.id}:${SCREEN_SHOTS[project.id] || ""}:${resolveSource(project.logo)}`).join("|")}`;
 
   useEffect(() => {
     let cancelled = false;
+    const width = mobile ? SCREEN_TEXTURE_WIDTH_MOBILE : SCREEN_TEXTURE_WIDTH;
+    const height = panelHeightFor(width);
+
     const build = async () => {
-      const images = await Promise.all(projects.map((project) => loadImage(resolveSource(project.logo))));
+      /*
+       * The logo is the fallback for a project with no capture of its own, so it is only fetched
+       * when the capture is absent or fails. Loading both unconditionally pulled every project
+       * logo down alongside its screenshot and then threw it away — on this showcase that was well
+       * over a megabyte of images downloaded purely to be discarded, ahead of the model itself.
+       */
+      const pairs = await Promise.all(
+        projects.map(async (project) => {
+          const shot = await loadImage(SCREEN_SHOTS[project.id]);
+          if (shot) return [shot, null];
+          return [null, await loadImage(resolveSource(project.logo))];
+        }),
+      );
       if (cancelled) return;
-      const built = projects.map((project, index) => {
+
+      const built = [];
+      for (let index = 0; index < projects.length; index += 1) {
         const canvas = document.createElement("canvas");
-        canvas.width = SCREEN_TEXTURE_WIDTH;
-        canvas.height = SCREEN_TEXTURE_HEIGHT;
-        paintScreen(canvas, project, images[index]);
+        canvas.width = width;
+        canvas.height = height;
+        paintScreen(canvas, projects[index], pairs[index][0], pairs[index][1]);
         const texture = new THREE.CanvasTexture(canvas);
         texture.colorSpace = THREE.SRGBColorSpace;
-        texture.anisotropy = 8;
+        texture.anisotropy = mobile ? 2 : 8;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.magFilter = THREE.LinearFilter;
         texture.generateMipmaps = true;
         texture.needsUpdate = true;
-        return texture;
-      });
+        built.push(texture);
+        if (index < projects.length - 1) {
+          await yieldToBrowser();
+          if (cancelled) {
+            built.forEach((item) => item.dispose());
+            return;
+          }
+        }
+      }
+
       setTextures(built);
       onReady?.();
     };
@@ -349,7 +434,7 @@ const CameraRig = ({ frameWidth, pitch, fov }) => {
 
 /* ---------------------------------------------------------------- laptop */
 
-const Laptop = ({ projects, motion, layout, reduceMotion, onReady }) => {
+const Laptop = ({ projects, motion, layout, mobile, reduceMotion, onReady }) => {
   const groupRef = useRef(null);
   const shadowRef = useRef(null);
   const currentRef = useRef(null);
@@ -362,7 +447,7 @@ const Laptop = ({ projects, motion, layout, reduceMotion, onReady }) => {
   const readyRef = useRef(false);
 
   const model = useSpaceBlackModel();
-  const textures = useScreenTextures(projects, null);
+  const textures = useScreenTextures(projects, mobile, null);
   const shadowTexture = useMemo(() => makeShadowTexture(), []);
   useEffect(() => () => shadowTexture.dispose(), [shadowTexture]);
 
@@ -627,7 +712,21 @@ const PortfolioLaptop3D = ({ projects, motion, viewport, reduceMotion, active, o
         className="!absolute inset-0"
         dpr={mobile ? [1, 1.25] : [1, 1.6]}
         frameloop={active ? "always" : "never"}
-        gl={{ alpha: true, antialias: !mobile, powerPreference: "high-performance", failIfMajorPerformanceCaveat: false }}
+        /*
+         * Multisampling and pixel density buy the same thing — smooth edges — and paying for both
+         * is waste. On a display that already runs at 2x the canvas is supersampled by the device
+         * ratio alone, so MSAA on top of it costs a second full-resolution buffer and a resolve
+         * pass every frame for a difference no one can see. It stays on for the low-density
+         * displays where the edges genuinely are visible, which is also where the GPU has the
+         * least to render.
+         */
+        gl={{
+          alpha: true,
+          antialias: !mobile && (typeof window === "undefined" || window.devicePixelRatio < 1.5),
+          stencil: false,
+          powerPreference: "high-performance",
+          failIfMajorPerformanceCaveat: false,
+        }}
         camera={INITIAL_CAMERA}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
@@ -639,7 +738,7 @@ const PortfolioLaptop3D = ({ projects, motion, viewport, reduceMotion, active, o
         <Suspense fallback={null}>
           <CameraRig frameWidth={layout.frameWidth} pitch={layout.pitch} fov={layout.fov} />
           <Studio quality={mobile ? "low" : "high"} />
-          <Laptop projects={projects} motion={motion} layout={layout} reduceMotion={reduceMotion} onReady={onReady} />
+          <Laptop projects={projects} motion={motion} layout={layout} mobile={mobile} reduceMotion={reduceMotion} onReady={onReady} />
         </Suspense>
       </Canvas>
     </RenderErrorBoundary>

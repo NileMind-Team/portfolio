@@ -65,12 +65,23 @@ const Hero = ({ lang }) => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
+          {/*
+            * Plain div, and a CSS animation rather than a framer-motion one. This block holds the
+            * h1 and the paragraph below it, and that paragraph is the page's Largest Contentful
+            * Paint element on mobile.
+            *
+            * framer-motion serialises its `initial` prop into the prerendered HTML, so what used to
+            * ship was `style="opacity:0;transform:translateX(30px)"` wrapped around the headline.
+            * The text was in the document from the third millisecond and stayed invisible until
+            * React had downloaded, parsed, executed, hydrated, and only then run the entry
+            * animation. On a desktop CPU that whole chain finishes in half a second and nobody
+            * notices; on the throttled mobile CPU Lighthouse simulates it took 5.6 seconds, against
+            * a 3ms server response. The page was hiding its own content behind its own JavaScript.
+            *
+            * As a CSS animation the fade belongs to the compositor: it starts at first paint with
+            * no JavaScript involved at all, and `from` is the only frame that is ever invisible.
+            */}
+          <div className="text-center motion-safe:animate-hero-enter">
             <div
               className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary-light/10 to-primary-dark/10 text-primary-dark dark:text-primary-light font-medium mb-4 border border-primary-light/20 dark:border-primary-light/30 ${
                 isRTL ? "flex-row" : "flex-row"
@@ -117,11 +128,10 @@ const Hero = ({ lang }) => {
               </a>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 22, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.42 }}
-              className="group relative mx-auto max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-[#10283a] via-[#0d2030] to-[#091722] p-4 text-white shadow-2xl shadow-primary-dark/20 sm:p-5"
+            {/* Also above the fold, so it carries its entry in CSS for the same reason as the block above. */}
+            <div
+              style={{ animationDelay: "0.18s" }}
+              className="group relative mx-auto max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-[#10283a] via-[#0d2030] to-[#091722] p-4 text-white shadow-2xl shadow-primary-dark/20 motion-safe:animate-hero-rise sm:p-5"
             >
               <motion.div
                 animate={{ x: [0, 45, 0], y: [0, -24, 0], scale: [1, 1.15, 1] }}
@@ -148,13 +158,11 @@ const Hero = ({ lang }) => {
                   { icon: <TrendingUp className="h-4 w-4" />, value: "100%", label: t.stat3 },
                   { icon: <Sparkles className="h-4 w-4" />, value: "98%", label: t.stat4 },
                 ].map((stat, index) => (
-                  <motion.div
+                  <div
                     key={stat.label}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 + index * 0.1, duration: 0.45 }}
-                    whileHover={{ y: -3 }}
-                    className="flex min-w-0 flex-col items-center px-1 text-center sm:px-2"
+                    /* The stagger survives as a per-item delay; `backwards` fill covers the wait. */
+                    style={{ animationDelay: `${0.3 + index * 0.09}s` }}
+                    className="flex min-w-0 flex-col items-center px-1 text-center transition-transform hover:-translate-y-[3px] motion-safe:animate-hero-enter sm:px-2"
                   >
                     <motion.span
                       animate={{ rotate: index === 3 ? [0, 12, -12, 0] : 0, scale: [1, 1.08, 1] }}
@@ -165,7 +173,7 @@ const Hero = ({ lang }) => {
                     </motion.span>
                     <strong className="text-lg font-black tracking-tight sm:text-2xl">{stat.value}</strong>
                     <span className="max-w-full truncate text-[10px] text-white/50 sm:text-xs">{stat.label}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -212,8 +220,8 @@ const Hero = ({ lang }) => {
                   className="pointer-events-none absolute bottom-0 top-0 w-16 bg-gradient-to-r from-transparent via-primary-light/10 to-transparent blur-lg"
                 />
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
         </div>
       </div>

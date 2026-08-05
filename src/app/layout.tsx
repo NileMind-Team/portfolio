@@ -52,7 +52,12 @@ export const metadata: Metadata = {
     siteName: 'DoGether',
     locale: 'ar_EG',
     images: [{
-      url: '/og-image.png',
+      /*
+       * JPEG rather than PNG. The card is a photograph-like composition, which is the case PNG
+       * is worst at: it was 608KB where the same image at visually indistinguishable JPEG quality
+       * is 122KB. Chroma subsampling is off so the Arabic lettering keeps its edges.
+       */
+      url: '/og-image.jpg',
       width: 1200,
       height: 630,
       alt: 'DoGether — شركة برمجة في مصر',
@@ -62,7 +67,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'DoGether Tech | تصميم مواقع وشركة برمجة في مصر',
     description: 'تصميم مواقع وبرمجة في مصر. تصميم موقع، تطبيقات، متاجر إلكترونية، أنظمة POS وحلول رقمية.',
-    images: ['/og-image.png'],
+    images: ['/og-image.jpg'],
   },
   alternates: {
     canonical: 'https://dogethertech.com/',

@@ -17,6 +17,10 @@
 next-env.d.ts
 *.tsbuildinfo
 
+# نسخ البناء القديمة (.next.stale-backup، .next.failed-build-*) — كانت بتتراكم
+# في جذر المشروع وتظهر كملفات غير متتبَّعة في git.
+/.next.*
+
 # misc
 .DS_Store
 .env.local
